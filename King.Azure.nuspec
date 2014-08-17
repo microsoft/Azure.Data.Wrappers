@@ -16,8 +16,14 @@
         <copyright>Jef King</copyright>
         <language>en-US</language>
         <tags>Azure Storage</tags>
+        <dependencies>
+            <dependency id="WindowsAzure.Storage" version="4.2.0" />
+        </dependencies>
+        <frameworkAssemblies>
+            <frameworkAssembly assemblyName="System" targetFramework="" />
+        </frameworkAssemblies>
     </metadata>
     <files>
-        <file src="King.Azure\bin\Release\King.Azure.dll" target="King.Azure.dll" />
+        <file src="King.Azure\bin\Release\King.Azure.dll" target="lib\net451\King.Azure.dll" />
     </files>
 </package>
