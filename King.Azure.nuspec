@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+    <metadata>
+        <id>King.Azure</id>
+        <version>1.0.0</version>
+        <title>King.Azure</title>
+        <authors>Jef King</authors>
+        <owners>Jef King</owners>
+        <licenseUrl>https://github.com/jefking/King.Azure/blob/master/LICENSE</licenseUrl>
+        <projectUrl>https://github.com/jefking/King.Azure</projectUrl>
+        <iconUrl>https://raw.githubusercontent.com/jefking/King.Azure/master/icon.png</iconUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Mockable classes for working with Azure Storage.</description>
+        <summary>Alpha release.</summary>
+        <releaseNotes />
+        <copyright>Jef King</copyright>
+        <language>en-US</language>
+        <tags>Azure Storage</tags>
+    </metadata>
+    <files>
+        <file src="King.Azure\bin\Release\King.Azure.dll" target="King.Azure.dll" />
+    </files>
+</package>
