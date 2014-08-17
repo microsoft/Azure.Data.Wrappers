@@ -62,6 +62,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\AzureStorage.cs" />
+    <Compile Include="Data\Container.cs" />
+    <Compile Include="Data\Interfaces.cs" />
+    <Compile Include="Data\StorageQueue.cs" />
+    <Compile Include="Data\StorageQueuedMessage.cs" />
+    <Compile Include="Data\StorageQueuePoller.cs" />
+    <Compile Include="Data\TableStorage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
