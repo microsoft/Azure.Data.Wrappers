@@ -12,6 +12,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{715502
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Testing", "Testing", "{06A1706D-4F93-4BA6-9D64-39887D1B64A8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "King.Azure.Unit.Test", "King.Azure.Unit.Test\King.Azure.Unit.Test.csproj", "{2B927887-8F8A-4169-89CC-2BF955D77D3C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -22,8 +26,15 @@ Global
 		{878A0CE3-D0CF-4678-82AF-E1B48948FEDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{878A0CE3-D0CF-4678-82AF-E1B48948FEDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{878A0CE3-D0CF-4678-82AF-E1B48948FEDB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B927887-8F8A-4169-89CC-2BF955D77D3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B927887-8F8A-4169-89CC-2BF955D77D3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B927887-8F8A-4169-89CC-2BF955D77D3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B927887-8F8A-4169-89CC-2BF955D77D3C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{2B927887-8F8A-4169-89CC-2BF955D77D3C} = {06A1706D-4F93-4BA6-9D64-39887D1B64A8}
 	EndGlobalSection
 EndGlobal
