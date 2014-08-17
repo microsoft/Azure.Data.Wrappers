@@ -15,7 +15,7 @@
     <releaseNotes>Fixing Nuget Assembly versions.</releaseNotes>
     <copyright>Jef King</copyright>
     <language>en-US</language>
-    <tags>Azure Storage</tags>
+    <tags>Azure Storage Mock Mockable Simple Data Table Storage Queue Queuing Blob Query</tags>
     <dependencies>
       <dependency id="WindowsAzure.Storage" version="4.2.1" />
     </dependencies>
