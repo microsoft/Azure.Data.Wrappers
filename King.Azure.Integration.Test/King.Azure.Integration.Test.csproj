@@ -55,6 +55,12 @@
   <ItemGroup>
     <Content Include="icon.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\King.Azure\King.Azure.csproj">
+      <Project>{878a0ce3-d0cf-4678-82af-e1b48948fedb}</Project>
+      <Name>King.Azure</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
