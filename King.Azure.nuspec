@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>King.Azure</id>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <title>King.Azure</title>
     <authors>Jef King</authors>
     <owners>Jef King</owners>
@@ -12,15 +12,15 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Mockable classes for working with Azure Storage.</description>
     <summary>Simplified Windows Azure Library, mockable and tested.</summary>
-    <releaseNotes>Alpha release.</releaseNotes>
+    <releaseNotes>Fixing Nuget Assembly versions.</releaseNotes>
     <copyright>Jef King</copyright>
     <language>en-US</language>
     <tags>Azure Storage</tags>
     <dependencies>
-      <dependency id="WindowsAzure.Storage" version="4.2.0" />
+      <dependency id="WindowsAzure.Storage" version="4.2.1" />
     </dependencies>
     <frameworkAssemblies>
-      <frameworkAssembly assemblyName="System" targetFramework="" />
+      <frameworkAssembly assemblyName="System" targetFramework="net451" />
     </frameworkAssemblies>
   </metadata>
   <files>
