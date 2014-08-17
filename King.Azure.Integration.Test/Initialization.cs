@@ -1,7 +1,6 @@
-﻿namespace King.Service.Integration
+﻿namespace King.Azure.Integration.Test
 {
     using NUnit.Framework;
-    using System;
     using System.Configuration;
     using System.Diagnostics;
 
