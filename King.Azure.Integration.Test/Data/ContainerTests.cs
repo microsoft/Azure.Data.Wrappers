@@ -9,6 +9,7 @@
     public class ContainerTests
     {
         private readonly string ConnectionString = "UseDevelopmentStorage=true;";
+        private const string ContainerName = "testing";
 
         #region Helper
         private class Helper
@@ -24,16 +25,14 @@
         [SetUp]
         public void SetUp()
         {
-            var name = "testing";
-            var storage = new Container(name, ConnectionString);
+            var storage = new Container(ContainerName, ConnectionString);
             storage.CreateIfNotExists().Wait();
         }
 
         [TearDown]
         public void TearDown()
         {
-            var name = "testing";
-            var storage = new Container(name, ConnectionString);
+            var storage = new Container(ContainerName, ConnectionString);
             storage.Delete().Wait();
         }
 
@@ -56,7 +55,7 @@
             };
 
             var blobName = Guid.NewGuid().ToString();
-            var storage = new Container("testing", ConnectionString);
+            var storage = new Container(ContainerName, ConnectionString);
 
             await storage.Save(blobName, helper);
             var returned = await storage.Get<Helper>(blobName);
@@ -72,7 +71,7 @@
             random.NextBytes(bytes);
 
             var blobName = Guid.NewGuid().ToString();
-            var storage = new Container("testing", ConnectionString);
+            var storage = new Container(ContainerName, ConnectionString);
 
             await storage.Save(blobName, bytes);
             var returned = await storage.Get(blobName);

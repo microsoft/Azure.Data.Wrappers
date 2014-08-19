@@ -63,6 +63,15 @@
         }
 
         /// <summary>
+        /// Delete Queue
+        /// </summary>
+        /// <returns></returns>
+        public async Task Delete()
+        {
+            await this.reference.DeleteAsync();
+        }
+
+        /// <summary>
         /// Get Cloud Queue Message
         /// </summary>
         /// <returns>Message</returns>
