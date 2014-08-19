@@ -76,6 +76,10 @@
             {
                 throw new ArgumentException("blobName");
             }
+            if (null == obj)
+            {
+                throw new ArgumentNullException("obj");
+            }
 
             var json = JsonConvert.SerializeObject(obj);
 
@@ -99,6 +103,63 @@
             var blob = this.reference.GetBlockBlobReference(blobName);
             var json = await blob.DownloadTextAsync();
             return JsonConvert.DeserializeObject<T>(json);
+        }
+
+        /// <summary>
+        /// Get Bytes
+        /// </summary>
+        /// <param name="blobName">Blob Name</param>
+        /// <returns>bytes</returns>
+        public virtual async Task<byte[]> Get(string blobName)
+        {
+            if (string.IsNullOrWhiteSpace(blobName))
+            {
+                throw new ArgumentException("blobName");
+            }
+
+            var blob = await this.GetReference(blobName);
+            var bytes = new byte[blob.Properties.Length];
+            await blob.DownloadToByteArrayAsync(bytes, 0);
+
+            return bytes;
+        }
+
+        /// <summary>
+        /// Save Bytes
+        /// </summary>
+        /// <param name="blobName">Blob Name</param>
+        /// <param name="bytes">bytes</param>
+        /// <returns>Task</returns>
+        public virtual async Task Save(string blobName, byte[] bytes, string contentType = "application/octet-stream")
+        {
+            if (string.IsNullOrWhiteSpace(blobName))
+            {
+                throw new ArgumentException("blobName");
+            }
+            if (null == bytes)
+            {
+                throw new ArgumentNullException("bytes");
+            }
+
+            var blob = await this.GetReference(blobName);
+            blob.Properties.ContentType = contentType;
+            await blob.SetPropertiesAsync();
+            await blob.UploadFromByteArrayAsync(bytes, 0, bytes.Length);
+        }
+
+        /// <summary>
+        /// Get Reference
+        /// </summary>
+        /// <param name="blobName">Blob Name</param>
+        /// <returns>Cloud Block Blob</returns>
+        public virtual async Task<ICloudBlob> GetReference(string blobName)
+        {
+            if (string.IsNullOrWhiteSpace(blobName))
+            {
+                throw new ArgumentException("blobName");
+            }
+
+            return await this.reference.GetBlobReferenceFromServerAsync(blobName);
         }
         #endregion
     }
