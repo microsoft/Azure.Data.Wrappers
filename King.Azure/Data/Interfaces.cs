@@ -1,8 +1,8 @@
 ﻿namespace King.Azure.Data
 {
+    using Microsoft.WindowsAzure.Storage.Blob;
     using Microsoft.WindowsAzure.Storage.Queue;
     using Microsoft.WindowsAzure.Storage.Table;
-    using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
@@ -73,6 +73,29 @@
         /// <param name="blobName">Blob Name</param>
         /// <returns>Object</returns>
         Task<T> Get<T>(string blobName);
+
+        /// <summary>
+        /// Get Reference
+        /// </summary>
+        /// <param name="blobName">Blob Name</param>
+        /// <returns>Cloud Blob</returns>
+        Task<ICloudBlob> GetReference(string blobName);
+
+        /// <summary>
+        /// Save Binary Data
+        /// </summary>
+        /// <param name="blobName">Blob Name</param>
+        /// <param name="bytes">Bytes</param>
+        /// <param name="contentType">Content Type</param>
+        /// <returns>Task</returns>
+        Task Save(string blobName, byte[] bytes, string contentType = "application/octet-stream");
+        
+        /// <summary>
+        /// Get Binary Data
+        /// </summary>
+        /// <param name="blobName">Blob Name</param>
+        /// <returns>Bytes</returns>
+        Task<byte[]> Get(string blobName);
         #endregion
     }
 
