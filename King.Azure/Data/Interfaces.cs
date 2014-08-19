@@ -79,7 +79,7 @@
         /// </summary>
         /// <param name="blobName">Blob Name</param>
         /// <returns>Cloud Blob</returns>
-        Task<ICloudBlob> GetReference(string blobName);
+        CloudBlockBlob GetReference(string blobName);
 
         /// <summary>
         /// Save Binary Data

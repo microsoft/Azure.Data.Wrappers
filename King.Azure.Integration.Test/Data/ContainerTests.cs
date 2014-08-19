@@ -21,6 +21,22 @@
         }
         #endregion
 
+        [SetUp]
+        public async Task SetUp()
+        {
+            var name = "testing";
+            var storage = new Container(name, ConnectionString);
+            await storage.CreateIfNotExists();
+        }
+
+        [TearDown]
+        public async Task TearDown()
+        {
+            var name = "testing";
+            var storage = new Container(name, ConnectionString);
+            await storage.Delete();
+        }
+
         [Test]
         public async Task CreateIfNotExists()
         {
@@ -39,15 +55,30 @@
                 Id = Guid.NewGuid(),
             };
 
-            var name = 'a' + Guid.NewGuid().ToString().ToLowerInvariant().Replace('-', 'a');
-            var blobName = "happyBlob";
-            var storage = new Container(name, ConnectionString);
-            var created = await storage.CreateIfNotExists();
+            var blobName = Guid.NewGuid().ToString();
+            var storage = new Container("testing", ConnectionString);
 
             await storage.Save(blobName, helper);
             var returned = await storage.Get<Helper>(blobName);
             Assert.IsNotNull(returned);
             Assert.AreEqual(helper.Id, returned.Id);
+        }
+
+        [Test]
+        public async Task RoundTripBytes()
+        {
+            var random = new Random();
+            var bytes = new byte[1024];
+            random.NextBytes(bytes);
+
+            var blobName = Guid.NewGuid().ToString();
+            var storage = new Container("testing", ConnectionString);
+
+            await storage.Save(blobName, bytes);
+            var returned = await storage.Get(blobName);
+            Assert.IsNotNull(returned);
+            Assert.AreEqual(bytes.Length, returned.Length);
+            Assert.AreEqual(bytes, returned);
         }
     }
 }

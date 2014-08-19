@@ -95,10 +95,10 @@
 
         [Test]
         [ExpectedException(typeof(ArgumentException))]
-        public async Task GetReferenceBlobNameNull()
+        public void GetReferenceBlobNameNull()
         {
             var c = new Container("test", "UseDevelopmentStorage=true");
-            await c.GetReference(null);
+            c.GetReference(null);
         }
     }
 }
