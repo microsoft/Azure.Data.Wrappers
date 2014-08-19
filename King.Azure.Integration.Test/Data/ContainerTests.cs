@@ -22,19 +22,19 @@
         #endregion
 
         [SetUp]
-        public async Task SetUp()
+        public void SetUp()
         {
             var name = "testing";
             var storage = new Container(name, ConnectionString);
-            await storage.CreateIfNotExists();
+            storage.CreateIfNotExists().Wait();
         }
 
         [TearDown]
-        public async Task TearDown()
+        public void TearDown()
         {
             var name = "testing";
             var storage = new Container(name, ConnectionString);
-            await storage.Delete();
+            storage.Delete().Wait();
         }
 
         [Test]

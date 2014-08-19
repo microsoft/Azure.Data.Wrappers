@@ -58,6 +58,12 @@
     {
         #region Methods
         /// <summary>
+        /// Delete Container
+        /// </summary>
+        /// <returns>Task</returns>
+        Task Delete();
+
+        /// <summary>
         /// Save Object as Json to Blob Storage
         /// </summary>
         /// <typeparam name="T">Type</typeparam>
