@@ -110,6 +110,9 @@
 
             var blob = this.GetReference(blobName);
             await blob.UploadTextAsync(json);
+
+            blob.Properties.ContentType = "application/json";
+            await blob.SetPropertiesAsync();
         }
 
         /// <summary>

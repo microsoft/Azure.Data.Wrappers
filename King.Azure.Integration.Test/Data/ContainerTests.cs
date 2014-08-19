@@ -67,6 +67,24 @@
         }
 
         [Test]
+        public async Task JsonContentType()
+        {
+            var helper = new Helper()
+            {
+                Id = Guid.NewGuid(),
+            };
+
+            var blobName = Guid.NewGuid().ToString();
+            var storage = new Container(ContainerName, ConnectionString);
+
+            await storage.Save(blobName, helper);
+            var returned = await storage.Properties(blobName);
+
+            Assert.IsNotNull(returned);
+            Assert.AreEqual("application/json", returned.ContentType);
+        }
+
+        [Test]
         public async Task RoundTripBytes()
         {
             var random = new Random();
