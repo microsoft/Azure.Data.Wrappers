@@ -273,5 +273,20 @@
             Assert.IsNotNull(returned);
             Assert.IsFalse(returned.Any());
         }
+
+        [Test]
+        public void QueryByRowPartitionNull()
+        {
+            var returned = storage.QueryByRow<Helper>(null);
+            Assert.IsNotNull(returned);
+            Assert.IsFalse(returned.Any());
+        }
+
+        [Test]
+        public void QueryByPartitionAndRowPartitionNullRowNull()
+        {
+            var returned = storage.QueryByPartitionAndRow<Helper>(null, null);
+            Assert.IsNull(returned);
+        }
     }
 }
