@@ -124,6 +124,26 @@
         }
 
         /// <summary>
+        /// Delete By Partition
+        /// </summary>
+        /// <param name="partitionKey">Partition Key</param>
+        /// <returns>Task</returns>
+        public virtual async Task DeleteByPartition(string partitionKey)
+        {
+            var entities = this.QueryByPartition<TableEntity>(partitionKey);
+            if (null != entities && entities.Any())
+            {
+                var batchOperation = new TableBatchOperation();
+                foreach (var entity in entities)
+                {
+                    batchOperation.Delete(entity);
+                }
+
+                await this.reference.ExecuteBatchAsync(batchOperation);
+            }
+        }
+
+        /// <summary>
         /// Query By Partition
         /// </summary>
         /// <remarks>
@@ -154,8 +174,6 @@
             var query = new TableQuery<T>().Where(filter);
             return this.reference.ExecuteQuery<T>(query).FirstOrDefault();
         }
-
-
         #endregion
     }
 }

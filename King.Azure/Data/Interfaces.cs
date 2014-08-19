@@ -44,10 +44,34 @@
         /// <returns></returns>
         IEnumerable<T> QueryByPartition<T>(string partition)
             where T : ITableEntity, new();
+
+        /// <summary>
+        /// Query By Partition
+        /// </summary>
+        /// <remarks>
+        /// Without providing the partion this query may not perform well.
+        /// </remarks>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="rowKey"></param>
+        /// <returns></returns>
         IEnumerable<T> QueryByRow<T>(string rowKey)
             where T : ITableEntity, new();
+
+        /// <summary>
+        /// Query By Partition
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="rowKey"></param>
+        /// <returns></returns>
         T QueryByPartitionAndRow<T>(string partitionKey, string rowKey)
             where T : ITableEntity, new();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="partitionKey"></param>
+        /// <returns></returns>
+        Task DeleteByPartition(string partitionKey);
         #endregion
     }
 

@@ -1,8 +1,8 @@
 ﻿namespace King.Service.Integration
 {
     using King.Azure.Data;
-    using NUnit.Framework;
     using Microsoft.WindowsAzure.Storage.Table;
+    using NUnit.Framework;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -28,7 +28,7 @@
         [SetUp]
         public void Init()
         {
-            var table = 'a' + Guid.NewGuid().ToString().ToLowerInvariant().Replace('-', 'a');
+            var table = "testing";
             this.storage = new TableStorage(table, ConnectionString);
             storage.CreateIfNotExists().Wait();
         }
@@ -232,6 +232,46 @@
             var returned = storage.QueryByPartitionAndRow<Helper>(z.PartitionKey, z.RowKey);
             Assert.IsNotNull(returned);
             Assert.AreEqual(z.Id, returned.Id);
+        }
+
+        [Test]
+        public async Task DeleteByPartition()
+        {
+            var random = new Random();
+            var count = random.Next(1, 25);
+            var entities = new List<Helper>();
+            var partition = Guid.NewGuid().ToString();
+            for (var i = 0; i < count; i++)
+            {
+                var h = new Helper()
+                {
+                    PartitionKey = partition,
+                    RowKey = Guid.NewGuid().ToString(),
+                    Id = Guid.NewGuid(),
+                };
+                entities.Add(h);
+            }
+
+            await storage.Insert(entities);
+            await storage.DeleteByPartition(partition);
+
+            var returned = storage.QueryByPartition<Helper>(partition);
+            Assert.IsNotNull(returned);
+            Assert.IsFalse(returned.Any());
+        }
+
+        [Test]
+        public async Task DeleteByPartitionPartitionNull()
+        {
+            await storage.DeleteByPartition(null);
+        }
+
+        [Test]
+        public void QueryByPartitionPartitionNull()
+        {
+            var returned = storage.QueryByPartition<Helper>(null);
+            Assert.IsNotNull(returned);
+            Assert.IsFalse(returned.Any());
         }
     }
 }
