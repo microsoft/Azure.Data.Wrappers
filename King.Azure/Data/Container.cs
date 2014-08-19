@@ -73,6 +73,22 @@
         }
 
         /// <summary>
+        /// Delete from Blob Storage
+        /// </summary>
+        /// <param name="blobName">Blob Name</param>
+        /// <returns>Object</returns>
+        public virtual async Task Delete(string blobName)
+        {
+            if (string.IsNullOrWhiteSpace(blobName))
+            {
+                throw new ArgumentException("blobName");
+            }
+
+            var blob = this.GetReference(blobName);
+            await blob.DeleteAsync();
+        }
+
+        /// <summary>
         /// Save Object as Json to Blob Storage
         /// </summary>
         /// <typeparam name="T">Type</typeparam>

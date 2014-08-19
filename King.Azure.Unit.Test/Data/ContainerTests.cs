@@ -44,6 +44,14 @@
 
         [Test]
         [ExpectedException(typeof(ArgumentException))]
+        public async Task DeleteBlobNameNull()
+        {
+            var c = new Container("test", "UseDevelopmentStorage=true");
+            await c.Delete(null);
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentException))]
         public async Task GetBlobNameNull()
         {
             var c = new Container("test", "UseDevelopmentStorage=true");

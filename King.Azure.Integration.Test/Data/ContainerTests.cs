@@ -1,8 +1,10 @@
 ﻿namespace King.Service.Integration
 {
     using King.Azure.Data;
+    using Microsoft.WindowsAzure.Storage;
     using NUnit.Framework;
     using System;
+    using System.Net;
     using System.Threading.Tasks;
 
     [TestFixture]
@@ -59,6 +61,7 @@
 
             await storage.Save(blobName, helper);
             var returned = await storage.Get<Helper>(blobName);
+
             Assert.IsNotNull(returned);
             Assert.AreEqual(helper.Id, returned.Id);
         }
@@ -75,9 +78,27 @@
 
             await storage.Save(blobName, bytes);
             var returned = await storage.Get(blobName);
+
             Assert.IsNotNull(returned);
             Assert.AreEqual(bytes.Length, returned.Length);
             Assert.AreEqual(bytes, returned);
+        }
+
+        [Test]
+        [ExpectedException(typeof(StorageException))]
+        public async Task Delete()
+        {
+            var helper = new Helper()
+            {
+                Id = Guid.NewGuid(),
+            };
+
+            var blobName = Guid.NewGuid().ToString();
+            var storage = new Container(ContainerName, ConnectionString);
+
+            await storage.Save(blobName, helper);
+            await storage.Delete(blobName);
+            await storage.Get<Helper>(blobName);
         }
     }
 }
