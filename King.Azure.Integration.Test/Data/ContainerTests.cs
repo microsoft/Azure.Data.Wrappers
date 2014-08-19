@@ -85,6 +85,42 @@
         }
 
         [Test]
+        public async Task BytesDefaultContentType()
+        {
+            var random = new Random();
+            var bytes = new byte[1024];
+            random.NextBytes(bytes);
+
+            var blobName = Guid.NewGuid().ToString();
+            var storage = new Container(ContainerName, ConnectionString);
+
+            await storage.Save(blobName, bytes);
+            var returned = await storage.Properties(blobName);
+
+            Assert.IsNotNull(returned);
+            Assert.AreEqual(bytes.Length, returned.Length);
+            Assert.AreEqual("application/octet-stream", returned.ContentType);
+        }
+
+        [Test]
+        public async Task BytesContentType()
+        {
+            var random = new Random();
+            var bytes = new byte[1024];
+            random.NextBytes(bytes);
+
+            var blobName = Guid.NewGuid().ToString();
+            var storage = new Container(ContainerName, ConnectionString);
+
+            await storage.Save(blobName, bytes, "application/pdf");
+            var returned = await storage.Properties(blobName);
+
+            Assert.IsNotNull(returned);
+            Assert.AreEqual(bytes.Length, returned.Length);
+            Assert.AreEqual("application/pdf", returned.ContentType);
+        }
+
+        [Test]
         [ExpectedException(typeof(StorageException))]
         public async Task Delete()
         {

@@ -108,5 +108,13 @@
             var c = new Container("test", "UseDevelopmentStorage=true");
             c.GetReference(null);
         }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentException))]
+        public async Task PropertiesBlobNameNull()
+        {
+            var c = new Container("test", "UseDevelopmentStorage=true");
+            await c.Properties(null);
+        }
     }
 }

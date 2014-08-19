@@ -96,6 +96,13 @@
         /// <param name="blobName">Blob Name</param>
         /// <returns>Bytes</returns>
         Task<byte[]> Get(string blobName);
+
+        /// <summary>
+        /// Blob Properties
+        /// </summary>
+        /// <param name="blobName">Blob Name</param>
+        /// <returns>Blob Container Properties</returns>
+        Task<BlobProperties> Properties(string blobName);
         #endregion
     }
 

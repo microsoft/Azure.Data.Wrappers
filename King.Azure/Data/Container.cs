@@ -174,6 +174,23 @@
         }
 
         /// <summary>
+        /// Blob Properties
+        /// </summary>
+        /// <param name="blobName">Blob Name</param>
+        /// <returns>Blob Container Properties</returns>
+        public virtual async Task<BlobProperties> Properties(string blobName)
+        {
+            if (string.IsNullOrWhiteSpace(blobName))
+            {
+                throw new ArgumentException("blobName");
+            }
+
+            var blob = this.GetReference(blobName);
+            await blob.FetchAttributesAsync();
+            return blob.Properties;
+        }
+
+        /// <summary>
         /// Get Reference
         /// </summary>
         /// <param name="blobName">Blob Name</param>
