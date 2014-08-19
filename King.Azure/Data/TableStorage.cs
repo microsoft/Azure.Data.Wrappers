@@ -115,12 +115,45 @@
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="partitionKey"></param>
-        /// <returns></returns>
+        /// <returns>Entities</returns>
         public virtual IEnumerable<T> QueryByPartition<T>(string partitionKey)
             where T : ITableEntity, new()
         {
             var query = new TableQuery<T>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, partitionKey));
             return this.reference.ExecuteQuery<T>(query);
+        }
+
+        /// <summary>
+        /// Query By Partition
+        /// </summary>
+        /// <remarks>
+        /// Without providing the partion this query may not perform well.
+        /// </remarks>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="rowKey">Row Key</param>
+        /// <returns>Entities</returns>
+        public virtual IEnumerable<T> QueryByRow<T>(string rowKey)
+            where T : ITableEntity, new()
+        {
+            var query = new TableQuery<T>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, rowKey));
+            return this.reference.ExecuteQuery<T>(query);
+        }
+
+        /// <summary>
+        /// Query By Partition and Row
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="partitionKey">Partition Key</param>
+        /// <param name="rowKey">Row</param>
+        /// <returns></returns>
+        public virtual T QueryByPartitionAndRow<T>(string partitionKey, string rowKey)
+            where T : ITableEntity, new()
+        {
+            var partitionFilter = TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, partitionKey);
+            var rowFilter = TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, rowKey);
+            var filter = TableQuery.CombineFilters(partitionFilter, TableOperators.And, rowFilter);
+            var query = new TableQuery<T>().Where(filter);
+            return this.reference.ExecuteQuery<T>(query).FirstOrDefault();
         }
 
         /// <summary>
@@ -144,35 +177,21 @@
         }
 
         /// <summary>
-        /// Query By Partition
+        /// Delete By Partition and Row
         /// </summary>
-        /// <remarks>
-        /// Without providing the partion this query may not perform well.
-        /// </remarks>
-        /// <typeparam name="T"></typeparam>
+        /// <param name="partitionKey">Partition Key</param>
         /// <param name="rowKey"></param>
-        /// <returns></returns>
-        public virtual IEnumerable<T> QueryByRow<T>(string rowKey)
-            where T : ITableEntity, new()
+        /// <returns>Task</returns>
+        public virtual async Task DeleteByPartitionAndRow(string partitionKey, string row)
         {
-            var query = new TableQuery<T>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, rowKey));
-            return this.reference.ExecuteQuery<T>(query);
-        }
+            var entity = this.QueryByPartitionAndRow<TableEntity>(partitionKey, row);
+            if (null != entity)
+            {
+                var batchOperation = new TableBatchOperation();
+                batchOperation.Delete(entity);
 
-        /// <summary>
-        /// Query By Partition
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="rowKey"></param>
-        /// <returns></returns>
-        public virtual T QueryByPartitionAndRow<T>(string partitionKey, string rowKey)
-            where T : ITableEntity, new()
-        {
-            var partitionFilter = TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, partitionKey);
-            var rowFilter = TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, rowKey);
-            var filter = TableQuery.CombineFilters(partitionFilter, TableOperators.And, rowFilter);
-            var query = new TableQuery<T>().Where(filter);
-            return this.reference.ExecuteQuery<T>(query).FirstOrDefault();
+                await this.reference.ExecuteBatchAsync(batchOperation);
+            }
         }
         #endregion
     }

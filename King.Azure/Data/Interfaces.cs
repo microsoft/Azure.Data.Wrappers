@@ -72,6 +72,14 @@
         /// <param name="partitionKey"></param>
         /// <returns></returns>
         Task DeleteByPartition(string partitionKey);
+
+        /// <summary>
+        /// Delete By Partition and Row
+        /// </summary>
+        /// <param name="partitionKey">Partition Key</param>
+        /// <param name="rowKey"></param>
+        /// <returns>Task</returns>
+        Task DeleteByPartitionAndRow(string partitionKey, string row);
         #endregion
     }
 
