@@ -54,4 +54,12 @@ table.QueryByRow<Model>("key");
 
 ### Queues
 ```
+var queue = new StorageQueue(Queue", "UseDevelopmentStorage=true");
+await queue.CreateIfNotExists();
+
+//Queue Message
+await queue.Save(Message);
+
+//Dequeue Message
+await queue.Get();
 ```
