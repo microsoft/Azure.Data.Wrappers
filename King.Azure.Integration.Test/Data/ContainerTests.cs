@@ -162,7 +162,7 @@
             var random = new Random();
             var bytes = new byte[64];
             random.NextBytes(bytes);
-            var count = random.Next();
+            var count = random.Next(1, 100);
             var storage = new Container(ContainerName, ConnectionString);
             for (var i = 0; i < count; i++)
             {
