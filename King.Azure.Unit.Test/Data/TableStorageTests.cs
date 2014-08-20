@@ -20,6 +20,18 @@
         }
 
         [Test]
+        public void PartitionKey()
+        {
+            Assert.AreEqual("PartitionKey", TableStorage.PartitionKey);
+        }
+
+        [Test]
+        public void RowKey()
+        {
+            Assert.AreEqual("RowKey", TableStorage.RowKey);
+        }
+
+        [Test]
         [ExpectedException(typeof(ArgumentException))]
         public void ConstructorTableNull()
         {

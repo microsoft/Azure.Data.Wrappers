@@ -2,8 +2,8 @@
 {
     using Microsoft.WindowsAzure.Storage.Table;
     using System;
-    using System.Linq;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
 
     /// <summary>
@@ -15,6 +15,16 @@
     public class TableStorage : AzureStorage, ITableStorage
     {
         #region Members
+        /// <summary>
+        /// Partition Key
+        /// </summary>
+        public const string PartitionKey = "PartitionKey";
+        
+        /// <summary>
+        /// Row Key
+        /// </summary>
+        public const string RowKey = "RowKey";
+
         /// <summary>
         /// Table Client
         /// </summary>
@@ -119,7 +129,7 @@
         public virtual IEnumerable<T> QueryByPartition<T>(string partitionKey)
             where T : ITableEntity, new()
         {
-            var query = new TableQuery<T>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, partitionKey));
+            var query = new TableQuery<T>().Where(TableQuery.GenerateFilterCondition(PartitionKey, QueryComparisons.Equal, partitionKey));
             return this.reference.ExecuteQuery<T>(query);
         }
 
@@ -135,7 +145,7 @@
         public virtual IEnumerable<T> QueryByRow<T>(string rowKey)
             where T : ITableEntity, new()
         {
-            var query = new TableQuery<T>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, rowKey));
+            var query = new TableQuery<T>().Where(TableQuery.GenerateFilterCondition(RowKey, QueryComparisons.Equal, rowKey));
             return this.reference.ExecuteQuery<T>(query);
         }
 
@@ -149,8 +159,8 @@
         public virtual T QueryByPartitionAndRow<T>(string partitionKey, string rowKey)
             where T : ITableEntity, new()
         {
-            var partitionFilter = TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, partitionKey);
-            var rowFilter = TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, rowKey);
+            var partitionFilter = TableQuery.GenerateFilterCondition(PartitionKey, QueryComparisons.Equal, partitionKey);
+            var rowFilter = TableQuery.GenerateFilterCondition(RowKey, QueryComparisons.Equal, rowKey);
             var filter = TableQuery.CombineFilters(partitionFilter, TableOperators.And, rowFilter);
             var query = new TableQuery<T>().Where(filter);
             return this.reference.ExecuteQuery<T>(query).FirstOrDefault();
