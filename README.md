@@ -20,15 +20,28 @@ await container.CreateIfNotExists();
 
 //Save Json Model to Blob
 var model = new object();
-container.Save("Model", model);
+await container.Save("Model", model);
+
+//Get Model
+await container.Get<object>("Model");
 
 //Save bytes to Blob
 var bytes = new byte[];
-container.Save("Binary", bytes);
+await container.Save("Binary", bytes);
+
+//Get Bytes
+await container.Get("Binary");
 ```
 
 ### Table Storage
 ```
+var table = new TableStorage("Table", "UseDevelopmentStorage=true");
+await table.CreateIfNotExists();
+
+// Store Entity
+var entity = new TableEntity();
+await table.Insert(entity);
+
 ```
 
 ### Queues
