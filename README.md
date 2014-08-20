@@ -7,3 +7,16 @@ BETA Release
 ```
 PM> Install-Package King.Azure
 ```
+
+## Get Started
+### Blob Storage
+```
+```
+
+### Table Storage
+```
+```
+
+### Queues
+```
+```
