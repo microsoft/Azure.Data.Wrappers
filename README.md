@@ -1,6 +1,10 @@
-King.Azure
+Azure Storage Simplified
+- Blob Storage
+- Table Storage
+- Queues
+- Mockable, dependancy injection
 
-BETA Release
+### BETA Release
 
 ## NuGet
 [Add via NuGet](https://www.nuget.org/packages/King.Azure)
