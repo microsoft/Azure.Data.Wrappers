@@ -160,9 +160,9 @@
         public async Task List()
         {
             var random = new Random();
-            var bytes = new byte[64];
+            var bytes = new byte[16];
             random.NextBytes(bytes);
-            var count = random.Next(1, 100);
+            var count = random.Next(1, 32);
             var storage = new Container(ContainerName, ConnectionString);
             for (var i = 0; i < count; i++)
             {
