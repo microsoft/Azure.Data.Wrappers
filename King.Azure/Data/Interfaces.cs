@@ -6,6 +6,7 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
+    #region ITableStorage
     /// <summary>
     /// Table Storage Interface
     /// </summary>
@@ -82,6 +83,7 @@
         Task DeleteByPartitionAndRow(string partitionKey, string row);
         #endregion
     }
+    #endregion
 
     /// <summary>
     /// Blob Container
@@ -135,9 +137,18 @@
         /// <param name="blobName">Blob Name</param>
         /// <returns>Blob Container Properties</returns>
         Task<BlobProperties> Properties(string blobName);
+
+        /// <summary>
+        /// List Blobs
+        /// </summary>
+        /// <param name="prefix">Prefix</param>
+        /// <param name="useFlatBlobListing">Use Flat Blob Listing</param>
+        /// <returns>Blobs</returns>
+        IEnumerable<IListBlobItem> List(string prefix = null, bool useFlatBlobListing = false);
         #endregion
     }
 
+    #region IQueue<T>
     /// <summary>
     /// IQueue
     /// </summary>
@@ -166,6 +177,7 @@
         Task Save(T message);
         #endregion
     }
+    #endregion
 
     /// <summary>
     /// IStorage Queue

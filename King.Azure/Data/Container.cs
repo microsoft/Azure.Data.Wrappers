@@ -3,6 +3,7 @@
     using Microsoft.WindowsAzure.Storage.Blob;
     using Newtonsoft.Json;
     using System;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     /// <summary>
@@ -206,6 +207,17 @@
             }
 
             return this.reference.GetBlockBlobReference(blobName);
+        }
+
+        /// <summary>
+        /// List Blobs
+        /// </summary>
+        /// <param name="prefix">Prefix</param>
+        /// <param name="useFlatBlobListing">Use Flat Blob Listing</param>
+        /// <returns>Blobs</returns>
+        public IEnumerable<IListBlobItem> List(string prefix = null, bool useFlatBlobListing = false)
+        {
+            return this.reference.ListBlobs(prefix, useFlatBlobListing);
         }
         #endregion
     }

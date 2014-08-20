@@ -4,6 +4,7 @@
     using Microsoft.WindowsAzure.Storage;
     using NUnit.Framework;
     using System;
+    using System.Linq;
     using System.Net;
     using System.Threading.Tasks;
 
@@ -153,6 +154,24 @@
             await storage.Save(blobName, helper);
             await storage.Delete(blobName);
             await storage.Get<Helper>(blobName);
+        }
+
+        [Test]
+        public async Task List()
+        {
+            var random = new Random();
+            var bytes = new byte[64];
+            random.NextBytes(bytes);
+            var count = random.Next();
+            var storage = new Container(ContainerName, ConnectionString);
+            for (var i = 0; i < count; i++)
+            {
+                var blobName = Guid.NewGuid().ToString();
+                await storage.Save(blobName, bytes);
+            }
+
+            var blobs = storage.List();
+            Assert.AreEqual(count, blobs.Count());
         }
     }
 }
