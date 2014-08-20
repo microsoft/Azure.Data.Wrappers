@@ -1,3 +1,3 @@
 King.Azure
 
-ALPHA
+BETA Release
