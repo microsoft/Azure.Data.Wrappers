@@ -42,6 +42,14 @@ await table.CreateIfNotExists();
 var entity = new TableEntity();
 await table.Insert(entity);
 
+//Query by Partition & Row
+table.QueryByPartitionAndRow<Model>("partition", "key");
+
+//Query by Partition
+table.QueryByPartition<Model>("partition");
+
+//Query by Row
+table.QueryByRow<Model>("key");
 ```
 
 ### Queues
