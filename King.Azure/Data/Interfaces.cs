@@ -250,6 +250,12 @@
         /// </summary>
         /// <returns>Queued Item</returns>
         Task<IQueued<T>> Poll();
+        
+        /// <summary>
+        /// Poll for Queued Message
+        /// </summary>
+        /// <returns>Queued Item</returns>
+        Task<IEnumerable<IQueued<T>>> PollMany(int messageCount = 5);
         #endregion
     }
 
