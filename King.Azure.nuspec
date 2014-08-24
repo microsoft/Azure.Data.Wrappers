@@ -15,7 +15,7 @@
     <releaseNotes>Dequeue and Poller return multiple items from queue at a time.</releaseNotes>
     <copyright>Jef King</copyright>
     <language>en-US</language>
-    <tags>Azure Storage Mock Mockable Simple Data Table Storage Queue Queuing Blob Query dependency injection Cloud</tags>
+    <tags>King.Azure Azure Storage Mock Mockable Simple Data Table Storage Queue Queuing Blob Query dependency injection Cloud</tags>
     <dependencies>
       <dependency id="WindowsAzure.Storage" />
     </dependencies>
