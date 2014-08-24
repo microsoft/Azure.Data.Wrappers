@@ -1,6 +1,8 @@
 ﻿namespace King.Azure.Data
 {
     using System;
+    using System.Linq;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     /// <summary>
@@ -51,6 +53,28 @@
         {
             var msg = await this.queue.Get();
             return null == msg ? null : new StorageQueuedMessage<T>(this.queue, msg);
+        }
+
+        /// <summary>
+        /// Poll for Queued Message
+        /// </summary>
+        /// <returns>Queued Item</returns>
+        public virtual async Task<IEnumerable<IQueued<T>>> PollMany(int messageCount = 5)
+        {
+            if (0 > messageCount)
+            {
+                throw new ArgumentException("Message count must be greater than 0.");
+            }
+
+            var msgs = await this.queue.GetMany(messageCount);
+            if (null == msgs)
+            {
+                return null;
+            }
+
+            return from m in msgs
+                   where msgs != null
+                   select new StorageQueuedMessage<T>(this.queue, m);
         }
         #endregion
     }
