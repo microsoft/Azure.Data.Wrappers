@@ -61,5 +61,14 @@
             var t = new StorageQueue(name, ConnectionString);
             await t.Save(null);
         }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentException))]
+        public async Task GetManyNegative()
+        {
+            var name = Guid.NewGuid().ToString();
+            var t = new StorageQueue(name, ConnectionString);
+            await t.GetMany(-1);
+        }
     }
 }

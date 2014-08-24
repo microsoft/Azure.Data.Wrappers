@@ -85,6 +85,7 @@
     }
     #endregion
 
+    #region IContainer
     /// <summary>
     /// Blob Container
     /// </summary>
@@ -147,6 +148,7 @@
         IEnumerable<IListBlobItem> List(string prefix = null, bool useFlatBlobListing = false);
         #endregion
     }
+    #endregion
 
     #region IQueue<T>
     /// <summary>
@@ -179,12 +181,21 @@
     }
     #endregion
 
+    #region IStorageQueue
     /// <summary>
     /// IStorage Queue
     /// </summary>
     public interface IStorageQueue : IQueue<CloudQueueMessage>, IAzureStorage
     {
+        #region Methods
+        /// <summary>
+        /// Get Many Cloud Queue Message
+        /// </summary>
+        /// <returns>Messages</returns>
+        Task<IEnumerable<CloudQueueMessage>> GetMany(int messageCount = 5);
+        #endregion
     }
+    #endregion
 
     /// <summary>
     /// Azure Storage

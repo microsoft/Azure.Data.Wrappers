@@ -2,6 +2,7 @@
 {
     using Microsoft.WindowsAzure.Storage.Queue;
     using System;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     /// <summary>
@@ -78,6 +79,20 @@
         public virtual async Task<CloudQueueMessage> Get()
         {
             return await this.reference.GetMessageAsync();
+        }
+
+        /// <summary>
+        /// Get Many Cloud Queue Message
+        /// </summary>
+        /// <returns>Messages</returns>
+        public virtual async Task<IEnumerable<CloudQueueMessage>> GetMany(int messageCount = 5)
+        {
+            if (0 > messageCount)
+            {
+                throw new ArgumentException("Message count must be greater than 0.");
+            }
+
+            return await this.reference.GetMessagesAsync(messageCount);
         }
 
         /// <summary>
