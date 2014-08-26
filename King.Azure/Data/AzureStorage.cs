@@ -6,13 +6,13 @@
     /// <summary>
     /// Azure Storage
     /// </summary>
-    public class AzureStorage
+    public class AzureStorage : IStorageAccount
     {
         #region Members
         /// <summary>
-        /// Account
+        /// Cloud Storage Account
         /// </summary>
-        protected readonly CloudStorageAccount account;
+        private readonly CloudStorageAccount account;
         #endregion
 
         #region Constructors
@@ -28,6 +28,19 @@
             }
 
             this.account = CloudStorageAccount.Parse(connectionString);
+        }
+        #endregion
+
+        #region Properties
+        /// <summary>
+        /// Cloud Storage Account
+        /// </summary>
+        public CloudStorageAccount Account
+        {
+            get
+            {
+                return this.account;
+            }
         }
         #endregion
     }

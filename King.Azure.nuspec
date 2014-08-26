@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>King.Azure</id>
-    <version>1.0.7</version>
+    <version>1.0.8</version>
     <title>King.Azure</title>
     <authors>Jef King</authors>
     <owners>Jef King</owners>
@@ -12,7 +12,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Mockable classes for working with Azure Storage.</description>
     <summary>Simplified Windows Azure Library, mockable and tested.</summary>
-    <releaseNotes>Dequeue and Poller return multiple items from queue at a time.</releaseNotes>
+    <releaseNotes>More flexibility when using a storage account.</releaseNotes>
     <copyright>Jef King</copyright>
     <language>en-US</language>
     <tags>King.Azure Azure Storage Mock Mockable Simple Data Table Storage Queue Queuing Blob Query dependency injection Cloud</tags>

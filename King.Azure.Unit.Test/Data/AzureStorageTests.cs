@@ -16,6 +16,12 @@
         }
 
         [Test]
+        public void IsIStorageAccount()
+        {
+            Assert.IsNotNull(new AzureStorage(ConnectionString) as IStorageAccount);
+        }
+
+        [Test]
         [ExpectedException(typeof(ArgumentException))]
         public void ConstructorNull()
         {

@@ -1,10 +1,30 @@
 ﻿namespace King.Azure.Data
 {
+    using Microsoft.WindowsAzure.Storage;
     using Microsoft.WindowsAzure.Storage.Blob;
     using Microsoft.WindowsAzure.Storage.Queue;
     using Microsoft.WindowsAzure.Storage.Table;
     using System.Collections.Generic;
     using System.Threading.Tasks;
+
+    #region IAccount
+    /// <summary>
+    /// Azure Storage Account
+    /// </summary>
+    public interface IStorageAccount
+    {
+
+        #region Properties
+        /// <summary>
+        /// Cloud Storage Account
+        /// </summary>
+        CloudStorageAccount Account
+        {
+            get;
+        }
+        #endregion
+    }
+    #endregion
 
     #region ITableStorage
     /// <summary>
@@ -197,12 +217,16 @@
     }
     #endregion
 
+    #region IAzureStorage
     /// <summary>
     /// Azure Storage
     /// </summary>
     public interface IAzureStorage
     {
         #region Properties
+        /// <summary>
+        /// Name
+        /// </summary>
         string Name
         {
             get;
@@ -223,7 +247,9 @@
         Task Delete();
         #endregion
     }
+    #endregion
 
+    #region IProcessor
     /// <summary>
     /// IProcessor
     /// </summary>
@@ -238,7 +264,9 @@
         Task<bool> Process(T data);
         #endregion
     }
+    #endregion
 
+    #region IPoller
     /// <summary>
     /// IPoller
     /// </summary>
@@ -258,7 +286,9 @@
         Task<IEnumerable<IQueued<T>>> PollMany(int messageCount = 5);
         #endregion
     }
+    #endregion
 
+    #region IQueued
     /// <summary>
     /// IQueued
     /// </summary>
@@ -285,4 +315,5 @@
         Task<T> Data();
         #endregion
     }
+    #endregion
 }

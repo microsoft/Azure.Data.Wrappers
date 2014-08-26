@@ -36,7 +36,7 @@
                 throw new ArgumentException("name");
             }
 
-            this.client = this.account.CreateCloudBlobClient();
+            this.client = this.Account.CreateCloudBlobClient();
             this.reference = this.client.GetContainerReference(name);
         }
         #endregion

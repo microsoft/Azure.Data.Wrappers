@@ -49,7 +49,7 @@
                 throw new ArgumentException("tableName");
             }
 
-            this.client = base.account.CreateCloudTableClient();
+            this.client = base.Account.CreateCloudTableClient();
             this.reference = client.GetTableReference(tableName);
         }
         #endregion

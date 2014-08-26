@@ -35,7 +35,7 @@
                 throw new ArgumentException("name");
             }
 
-            this.client = base.account.CreateCloudQueueClient();
+            this.client = base.Account.CreateCloudQueueClient();
             this.reference = client.GetQueueReference(name);
         }
         #endregion
