@@ -21,6 +21,11 @@
         /// Reference
         /// </summary>
         protected readonly CloudBlobContainer reference;
+
+        /// <summary>
+        /// Is Public
+        /// </summary>
+        protected readonly bool isPublic = false;
         #endregion
 
         #region Constructors
@@ -28,7 +33,7 @@
         /// Queue
         /// </summary>
         /// <param name="name">Name</param>
-        public Container(string name, string connectionString)
+        public Container(string name, string connectionString, bool isPublic = false)
             : base(connectionString)
         {
             if (string.IsNullOrWhiteSpace(name))
@@ -38,6 +43,7 @@
 
             this.client = this.Account.CreateCloudBlobClient();
             this.reference = this.client.GetContainerReference(name);
+            this.isPublic = isPublic;
         }
         #endregion
 
@@ -58,10 +64,21 @@
         /// <summary>
         /// Create If Not Exists
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Created</returns>
         public virtual async Task<bool> CreateIfNotExists()
         {
-            return await this.reference.CreateIfNotExistsAsync();
+            var result = await this.reference.CreateIfNotExistsAsync();
+            if (result)
+            {
+                var permissions = new BlobContainerPermissions()
+                {
+                    PublicAccess = this.isPublic ? BlobContainerPublicAccessType.Blob : BlobContainerPublicAccessType.Off
+                };
+
+                await this.reference.SetPermissionsAsync(permissions);
+            }
+
+            return result;
         }
 
         /// <summary>

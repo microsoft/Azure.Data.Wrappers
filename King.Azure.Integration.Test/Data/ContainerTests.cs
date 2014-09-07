@@ -2,6 +2,7 @@
 {
     using King.Azure.Data;
     using Microsoft.WindowsAzure.Storage;
+    using Microsoft.WindowsAzure.Storage.Blob;
     using NUnit.Framework;
     using System;
     using System.Linq;
@@ -47,6 +48,26 @@
             var created = await storage.CreateIfNotExists();
 
             Assert.IsTrue(created);
+
+            var blobClient = storage.Account.CreateCloudBlobClient();
+            var container = blobClient.GetContainerReference(name);
+            var permissions = await container.GetPermissionsAsync();
+            Assert.AreEqual(BlobContainerPublicAccessType.Off, permissions.PublicAccess);
+        }
+
+        [Test]
+        public async Task CreateIfNotExistsPublic()
+        {
+            var name = 'a' + Guid.NewGuid().ToString().ToLowerInvariant().Replace('-', 'a');
+            var storage = new Container(name, ConnectionString, true);
+            var created = await storage.CreateIfNotExists();
+
+            Assert.IsTrue(created);
+
+            var blobClient = storage.Account.CreateCloudBlobClient();
+            var container = blobClient.GetContainerReference(name);
+            var permissions = await container.GetPermissionsAsync();
+            Assert.AreEqual(BlobContainerPublicAccessType.Blob, permissions.PublicAccess);
         }
 
         [Test]
