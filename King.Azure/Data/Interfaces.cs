@@ -40,12 +40,6 @@
         Task<bool> Create();
 
         /// <summary>
-        /// Delete Table
-        /// </summary>
-        /// <param name="tableName"></param>
-        Task Delete();
-
-        /// <summary>
         /// Insert or update the record in table
         /// </summary>
         /// <param name="item">Scheduled Task Entry</param>
