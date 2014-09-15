@@ -28,12 +28,12 @@
         /// <summary>
         /// Table Client
         /// </summary>
-        protected readonly CloudTableClient client;
+        private readonly CloudTableClient client;
 
         /// <summary>
         /// Table
         /// </summary>
-        protected readonly CloudTable reference;
+        private readonly CloudTable reference;
         #endregion
 
         #region Constructors
@@ -63,6 +63,28 @@
             get
             {
                 return this.reference.Name;
+            }
+        }
+
+        /// <summary>
+        /// Table Client
+        /// </summary>
+        public CloudTableClient Client
+        {
+            get
+            {
+                return this.client;
+            }
+        }
+
+        /// <summary>
+        /// Table
+        /// </summary>
+        public CloudTable Reference
+        {
+            get
+            {
+                return this.reference;
             }
         }
         #endregion
@@ -190,7 +212,7 @@
         /// Delete By Partition and Row
         /// </summary>
         /// <param name="partitionKey">Partition Key</param>
-        /// <param name="rowKey"></param>
+        /// <param name="rowKey">Row Key</param>
         /// <returns>Task</returns>
         public virtual async Task DeleteByPartitionAndRow(string partitionKey, string row)
         {

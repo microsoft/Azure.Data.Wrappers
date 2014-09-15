@@ -12,14 +12,14 @@
     {
         #region Members
         /// <summary>
-        /// Client
+        /// Cloud Queue Client
         /// </summary>
-        protected readonly CloudQueueClient client;
+        private readonly CloudQueueClient client;
 
         /// <summary>
-        /// Reference
+        /// Cloud Reference
         /// </summary>
-        protected readonly CloudQueue reference;
+        private readonly CloudQueue reference;
         #endregion
 
         #region Constructors
@@ -49,6 +49,28 @@
             get
             {
                 return this.reference.Name;
+            }
+        }
+
+        /// <summary>
+        /// Cloud Queue Client
+        /// </summary>
+        public CloudQueueClient Client
+        {
+            get
+            {
+                return this.client;
+            }
+        }
+
+        /// <summary>
+        /// Cloud Reference
+        /// </summary>
+        public CloudQueue Reference
+        {
+            get
+            {
+                return this.reference;
             }
         }
         #endregion
