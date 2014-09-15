@@ -13,7 +13,6 @@
     /// </summary>
     public interface IStorageAccount
     {
-
         #region Properties
         /// <summary>
         /// Cloud Storage Account
@@ -96,6 +95,24 @@
         /// <returns>Task</returns>
         Task DeleteByPartitionAndRow(string partitionKey, string row);
         #endregion
+
+        #region Properties
+        /// <summary>
+        /// Table Client
+        /// </summary>
+        CloudTableClient Client
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Table
+        /// </summary>
+        CloudTable Reference
+        {
+            get;
+        }
+        #endregion
     }
     #endregion
 
@@ -161,6 +178,32 @@
         /// <returns>Blobs</returns>
         IEnumerable<IListBlobItem> List(string prefix = null, bool useFlatBlobListing = false);
         #endregion
+
+        #region Properties
+        /// <summary>
+        /// Is Public
+        /// </summary>
+        bool IsPublic
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Client
+        /// </summary>
+        CloudBlobClient Client
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Reference
+        /// </summary>
+        CloudBlobContainer Reference
+        {
+            get;
+        }
+        #endregion
     }
     #endregion
 
@@ -207,6 +250,24 @@
         /// </summary>
         /// <returns>Messages</returns>
         Task<IEnumerable<CloudQueueMessage>> GetMany(int messageCount = 5);
+        #endregion
+
+        #region Properties
+        /// <summary>
+        /// Cloud Queue Client
+        /// </summary>
+        CloudQueueClient Client
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Cloud Reference
+        /// </summary>
+        CloudQueue Reference
+        {
+            get;
+        }
         #endregion
     }
     #endregion

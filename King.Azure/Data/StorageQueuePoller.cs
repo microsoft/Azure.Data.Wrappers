@@ -63,7 +63,7 @@
         {
             if (0 > messageCount)
             {
-                throw new ArgumentException("Message count must be greater than 0.");
+                messageCount = 5;
             }
 
             var msgs = await this.queue.GetMany(messageCount);
