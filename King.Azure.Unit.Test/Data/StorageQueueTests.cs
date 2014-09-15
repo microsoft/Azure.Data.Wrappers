@@ -45,6 +45,22 @@
         }
 
         [Test]
+        public void Client()
+        {
+            var name = Guid.NewGuid().ToString();
+            var t = new StorageQueue(name, ConnectionString);
+            Assert.IsNotNull(t.Client);
+        }
+
+        [Test]
+        public void Reference()
+        {
+            var name = Guid.NewGuid().ToString();
+            var t = new StorageQueue(name, ConnectionString);
+            Assert.IsNotNull(t.Reference);
+        }
+
+        [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public async Task DeleteNull()
         {

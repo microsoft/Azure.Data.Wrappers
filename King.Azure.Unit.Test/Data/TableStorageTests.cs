@@ -7,16 +7,18 @@
     [TestFixture]
     public class TableStorageTests
     {
+        private const string ConnectionString = "UseDevelopmentStorage=true;";
+
         [Test]
         public void Constructor()
         {
-            new TableStorage("TestTable", "UseDevelopmentStorage=true");
+            new TableStorage("TestTable", ConnectionString);
         }
 
         [Test]
         public void IsITableStorage()
         {
-            Assert.IsNotNull(new TableStorage("TestTable", "UseDevelopmentStorage=true") as ITableStorage);
+            Assert.IsNotNull(new TableStorage("TestTable", ConnectionString) as ITableStorage);
         }
 
         [Test]
@@ -35,7 +37,7 @@
         [ExpectedException(typeof(ArgumentException))]
         public void ConstructorTableNull()
         {
-            new TableStorage(null, "UseDevelopmentStorage=true");
+            new TableStorage(null, ConnectionString);
         }
 
         [Test]
@@ -49,8 +51,24 @@
         public void Name()
         {
             var name = Guid.NewGuid().ToString();
-            var t = new TableStorage(name, "UseDevelopmentStorage=true");
+            var t = new TableStorage(name, ConnectionString);
             Assert.AreEqual(name, t.Name);
+        }
+
+        [Test]
+        public void Client()
+        {
+            var name = Guid.NewGuid().ToString();
+            var t = new TableStorage(name, ConnectionString);
+            Assert.IsNotNull(t.Client);
+        }
+
+        [Test]
+        public void Reference()
+        {
+            var name = Guid.NewGuid().ToString();
+            var t = new TableStorage(name, ConnectionString);
+            Assert.IsNotNull(t.Reference);
         }
     }
 }
