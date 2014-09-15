@@ -25,11 +25,41 @@
     }
     #endregion
 
+    #region IStorageClient
+    public interface IStorageClient<T>
+    {
+        #region Properties
+        /// <summary>
+        /// Storage Client
+        /// </summary>
+        T Client
+        {
+            get;
+        }
+        #endregion
+    }
+    #endregion
+
+    #region IStorageReference
+    public interface IStorageReference<T>
+    {
+        #region Properties
+        /// <summary>
+        /// Storage Reference
+        /// </summary>
+        T Reference
+        {
+            get;
+        }
+        #endregion
+    }
+    #endregion
+
     #region ITableStorage
     /// <summary>
     /// Table Storage Interface
     /// </summary>
-    public interface ITableStorage : IAzureStorage
+    public interface ITableStorage : IAzureStorage, IStorageReference<CloudTable>, IStorageClient<CloudTableClient>
     {
         #region Methods
         /// <summary>
@@ -95,24 +125,6 @@
         /// <returns>Task</returns>
         Task DeleteByPartitionAndRow(string partitionKey, string row);
         #endregion
-
-        #region Properties
-        /// <summary>
-        /// Table Client
-        /// </summary>
-        CloudTableClient Client
-        {
-            get;
-        }
-
-        /// <summary>
-        /// Table
-        /// </summary>
-        CloudTable Reference
-        {
-            get;
-        }
-        #endregion
     }
     #endregion
 
@@ -120,7 +132,7 @@
     /// <summary>
     /// Blob Container
     /// </summary>
-    public interface IContainer : IAzureStorage
+    public interface IContainer : IAzureStorage, IStorageReference<CloudBlobContainer>, IStorageClient<CloudBlobClient>
     {
         #region Methods
         /// <summary>
@@ -187,22 +199,6 @@
         {
             get;
         }
-
-        /// <summary>
-        /// Client
-        /// </summary>
-        CloudBlobClient Client
-        {
-            get;
-        }
-
-        /// <summary>
-        /// Reference
-        /// </summary>
-        CloudBlobContainer Reference
-        {
-            get;
-        }
         #endregion
     }
     #endregion
@@ -242,7 +238,7 @@
     /// <summary>
     /// IStorage Queue
     /// </summary>
-    public interface IStorageQueue : IQueue<CloudQueueMessage>, IAzureStorage
+    public interface IStorageQueue : IQueue<CloudQueueMessage>, IAzureStorage, IStorageReference<CloudQueue>, IStorageClient<CloudQueueClient>
     {
         #region Methods
         /// <summary>
@@ -250,24 +246,6 @@
         /// </summary>
         /// <returns>Messages</returns>
         Task<IEnumerable<CloudQueueMessage>> GetMany(int messageCount = 5);
-        #endregion
-
-        #region Properties
-        /// <summary>
-        /// Cloud Queue Client
-        /// </summary>
-        CloudQueueClient Client
-        {
-            get;
-        }
-
-        /// <summary>
-        /// Cloud Reference
-        /// </summary>
-        CloudQueue Reference
-        {
-            get;
-        }
         #endregion
     }
     #endregion
