@@ -43,6 +43,30 @@
         }
 
         [Test]
+        public void IsPublic()
+        {
+            var name = Guid.NewGuid().ToString();
+            var t = new Container(name, "UseDevelopmentStorage=true", true);
+            Assert.IsTrue(t.IsPublic);
+        }
+
+        [Test]
+        public void Client()
+        {
+            var name = Guid.NewGuid().ToString();
+            var t = new Container(name, "UseDevelopmentStorage=true");
+            Assert.IsNotNull(t.Client);
+        }
+
+        [Test]
+        public void Reference()
+        {
+            var name = Guid.NewGuid().ToString();
+            var t = new Container(name, "UseDevelopmentStorage=true");
+            Assert.IsNotNull(t.Reference);
+        }
+
+        [Test]
         [ExpectedException(typeof(ArgumentException))]
         public async Task DeleteBlobNameNull()
         {

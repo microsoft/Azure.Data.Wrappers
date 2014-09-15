@@ -7,7 +7,7 @@
     using System.Threading.Tasks;
 
     /// <summary>
-    /// Queue
+    /// Container
     /// </summary>
     public class Container : AzureStorage, IContainer
     {
@@ -15,17 +15,17 @@
         /// <summary>
         /// Client
         /// </summary>
-        protected readonly CloudBlobClient client;
+        private readonly CloudBlobClient client;
 
         /// <summary>
         /// Reference
         /// </summary>
-        protected readonly CloudBlobContainer reference;
+        private readonly CloudBlobContainer reference;
 
         /// <summary>
         /// Is Public
         /// </summary>
-        protected readonly bool isPublic = false;
+        private readonly bool isPublic = false;
         #endregion
 
         #region Constructors
@@ -56,6 +56,39 @@
             get
             {
                 return this.reference.Name;
+            }
+        }
+
+        /// <summary>
+        /// Is Public
+        /// </summary>
+        public bool IsPublic
+        {
+            get
+            {
+                return this.isPublic;
+            }
+        }
+
+        /// <summary>
+        /// Client
+        /// </summary>
+        public CloudBlobClient Client
+        {
+            get
+            {
+                return this.client;
+            }
+        }
+
+        /// <summary>
+        /// Reference
+        /// </summary>
+        public CloudBlobContainer Reference
+        {
+            get
+            {
+                return this.reference;
             }
         }
         #endregion
