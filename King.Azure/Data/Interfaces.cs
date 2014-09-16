@@ -136,6 +136,13 @@
     {
         #region Methods
         /// <summary>
+        /// Blob Exists
+        /// </summary>
+        /// <param name="blobName">Blob Name</param>
+        /// <returns>bool</returns>
+        Task<bool> Exists(string blobName);
+
+        /// <summary>
         /// Save Object as Json to Blob Storage
         /// </summary>
         /// <typeparam name="T">Type</typeparam>

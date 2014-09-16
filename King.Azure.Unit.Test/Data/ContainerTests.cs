@@ -8,25 +8,25 @@
     [TestFixture]
     public class ContainerTests
     {
-        private const string ConnectionString = "UseDevelopmentStorage=true;";
+        private const string connectionString = "UseDevelopmentStorage=true;";
 
         [Test]
         public void Constructor()
         {
-            new Container("test", ConnectionString);
+            new Container("test", connectionString);
         }
 
         [Test]
         public void IsIContainer()
         {
-            Assert.IsNotNull(new Container("test", ConnectionString) as IContainer);
+            Assert.IsNotNull(new Container("test", connectionString) as IContainer);
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentException))]
         public void ConstructorTableNull()
         {
-            new Container(null, ConnectionString);
+            new Container(null, connectionString);
         }
 
         [Test]
@@ -40,7 +40,7 @@
         public void Name()
         {
             var name = Guid.NewGuid().ToString();
-            var t = new Container(name, ConnectionString);
+            var t = new Container(name, connectionString);
             Assert.AreEqual(name, t.Name);
         }
 
@@ -48,7 +48,7 @@
         public void IsPublic()
         {
             var name = Guid.NewGuid().ToString();
-            var t = new Container(name, ConnectionString, true);
+            var t = new Container(name, connectionString, true);
             Assert.IsTrue(t.IsPublic);
         }
 
@@ -56,7 +56,7 @@
         public void Client()
         {
             var name = Guid.NewGuid().ToString();
-            var t = new Container(name, ConnectionString);
+            var t = new Container(name, connectionString);
             Assert.IsNotNull(t.Client);
         }
 
@@ -64,7 +64,7 @@
         public void Reference()
         {
             var name = Guid.NewGuid().ToString();
-            var t = new Container(name, ConnectionString);
+            var t = new Container(name, connectionString);
             Assert.IsNotNull(t.Reference);
         }
 
@@ -72,15 +72,23 @@
         [ExpectedException(typeof(ArgumentException))]
         public async Task DeleteBlobNameNull()
         {
-            var c = new Container("test", ConnectionString);
+            var c = new Container("test", connectionString);
             await c.Delete(null);
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentException))]
+        public async Task ExistsBlobNameNull()
+        {
+            var c = new Container("test", connectionString);
+            await c.Exists(null);
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentException))]
         public async Task GetBlobNameNull()
         {
-            var c = new Container("test", ConnectionString);
+            var c = new Container("test", connectionString);
             await c.Get<object>(null);
         }
 
@@ -88,7 +96,7 @@
         [ExpectedException(typeof(ArgumentException))]
         public async Task SaveBlobNameNull()
         {
-            var c = new Container("test", ConnectionString);
+            var c = new Container("test", connectionString);
             await c.Save(null, new object());
         }
 
@@ -96,7 +104,7 @@
         [ExpectedException(typeof(ArgumentNullException))]
         public async Task SaveObjectNull()
         {
-            var c = new Container("test", ConnectionString);
+            var c = new Container("test", connectionString);
             await c.Save(Guid.NewGuid().ToString(), null);
         }
 
@@ -104,7 +112,7 @@
         [ExpectedException(typeof(ArgumentException))]
         public async Task GetBytesBlobNameNull()
         {
-            var c = new Container("test", ConnectionString);
+            var c = new Container("test", connectionString);
             await c.Get(null);
         }
 
@@ -116,14 +124,14 @@
             var bytes = new byte[1024];
             random.NextBytes(bytes);
 
-            var c = new Container("test", ConnectionString);
+            var c = new Container("test", connectionString);
             await c.Save(null, bytes);
         }
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public async Task SaveBytesNull()
         {
-            var c = new Container("test", ConnectionString);
+            var c = new Container("test", connectionString);
             await c.Save(Guid.NewGuid().ToString(), null);
         }
 
@@ -131,7 +139,7 @@
         [ExpectedException(typeof(ArgumentException))]
         public void GetReferenceBlobNameNull()
         {
-            var c = new Container("test", ConnectionString);
+            var c = new Container("test", connectionString);
             c.GetReference(null);
         }
 
@@ -139,7 +147,7 @@
         [ExpectedException(typeof(ArgumentException))]
         public async Task PropertiesBlobNameNull()
         {
-            var c = new Container("test", ConnectionString);
+            var c = new Container("test", connectionString);
             await c.Properties(null);
         }
     }

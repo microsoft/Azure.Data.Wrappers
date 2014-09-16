@@ -140,6 +140,22 @@
         }
 
         /// <summary>
+        /// Blob Exists
+        /// </summary>
+        /// <param name="blobName">Blob Name</param>
+        /// <returns>bool</returns>
+        public virtual async Task<bool> Exists(string blobName)
+        {
+            if (string.IsNullOrWhiteSpace(blobName))
+            {
+                throw new ArgumentException("blobName");
+            }
+
+            var blob = this.GetReference(blobName);
+            return await blob.ExistsAsync();
+        }
+
+        /// <summary>
         /// Save Object as Json to Blob Storage
         /// </summary>
         /// <typeparam name="T">Type</typeparam>

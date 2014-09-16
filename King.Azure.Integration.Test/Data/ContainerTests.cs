@@ -71,6 +71,27 @@
         }
 
         [Test]
+        public async Task Exists()
+        {
+            var helper = new Helper()
+            {
+                Id = Guid.NewGuid(),
+            };
+
+            var blobName = Guid.NewGuid().ToString();
+            var storage = new Container(ContainerName, ConnectionString);
+
+            var exists = await storage.Exists(blobName);
+
+            Assert.IsFalse(exists);
+
+            await storage.Save(blobName, helper);
+            exists = await storage.Exists(blobName);
+
+            Assert.IsTrue(exists);
+        }
+
+        [Test]
         public async Task RoundTrip()
         {
             var helper = new Helper()
