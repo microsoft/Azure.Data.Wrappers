@@ -2,6 +2,7 @@
 {
     using King.Azure.Data;
     using Microsoft.WindowsAzure.Storage.Queue;
+    using Newtonsoft.Json;
     using NUnit.Framework;
     using System;
     using System.Linq;
@@ -41,12 +42,26 @@
         public async Task RoundTrip()
         {
             var storage = new StorageQueue(QueueName, ConnectionString);
-            
+
             var msg = new CloudQueueMessage(Guid.NewGuid().ToByteArray());
             await storage.Save(msg);
             var returned = await storage.Get();
 
             Assert.AreEqual(msg.AsBytes, returned.AsBytes);
+        }
+
+        [Test]
+        public async Task RoundTripObject()
+        {
+            var storage = new StorageQueue(QueueName, ConnectionString);
+            var expected = Guid.NewGuid();
+            await storage.Save(expected);
+
+            var returned = await storage.Get();
+
+            var guid = JsonConvert.DeserializeObject<Guid>(returned.AsString);
+
+            Assert.AreEqual(expected, guid);
         }
 
         [Test]

@@ -1,12 +1,13 @@
 ﻿namespace King.Azure.Data
 {
     using Microsoft.WindowsAzure.Storage.Queue;
-    using System;
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
     /// <summary>
-    /// Queue
+    /// Storage Queue
     /// </summary>
     public class StorageQueue : AzureStorage, IStorageQueue
     {
@@ -130,6 +131,21 @@
             }
 
             await this.reference.AddMessageAsync(message);
+        }
+
+        /// <summary>
+        /// Save Object to queue, as json
+        /// </summary>
+        /// <param name="obj">object</param>
+        /// <returns>Task</returns>
+        public virtual async Task Save(object obj)
+        {
+            if (null == obj)
+            {
+                throw new ArgumentNullException("obj");
+            }
+
+            await this.Save(new CloudQueueMessage(JsonConvert.SerializeObject(obj)));
         }
 
         /// <summary>

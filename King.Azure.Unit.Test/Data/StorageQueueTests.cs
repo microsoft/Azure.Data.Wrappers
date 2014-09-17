@@ -1,6 +1,7 @@
 ﻿namespace King.Azure.Unit.Test.Data
 {
     using King.Azure.Data;
+    using Microsoft.WindowsAzure.Storage.Queue;
     using NUnit.Framework;
     using System;
     using System.Threading.Tasks;
@@ -71,11 +72,20 @@
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
+        public async Task SaveMessageNull()
+        {
+            var name = Guid.NewGuid().ToString();
+            var t = new StorageQueue(name, ConnectionString);
+            await t.Save((CloudQueueMessage)null);
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
         public async Task SaveNull()
         {
             var name = Guid.NewGuid().ToString();
             var t = new StorageQueue(name, ConnectionString);
-            await t.Save(null);
+            await t.Save((object)null);
         }
 
         [Test]

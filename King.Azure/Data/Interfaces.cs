@@ -253,6 +253,13 @@
         /// </summary>
         /// <returns>Messages</returns>
         Task<IEnumerable<CloudQueueMessage>> GetMany(int messageCount = 5);
+
+        /// <summary>
+        /// Save Specific Message to Queue
+        /// </summary>
+        /// <param name="obj">Object</param>
+        /// <returns>Task</returns>
+        Task Save(object obj);
         #endregion
     }
     #endregion
