@@ -287,6 +287,7 @@
             var blob = this.GetReference(blobName);
             var stream = new MemoryStream();
             await blob.DownloadRangeToStreamAsync(stream, 0, properties.Length);
+            stream.Position = 0;
             return stream;
         }
 
