@@ -4,6 +4,7 @@
     using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Threading.Tasks;
 
     /// <summary>
@@ -273,6 +274,20 @@
             }
 
             return this.reference.GetBlockBlobReference(blobName);
+        }
+
+        /// <summary>
+        /// Get Stream
+        /// </summary>
+        /// <param name="blobName">Blob Name</param>
+        /// <returns>Stream</returns>
+        public virtual async Task<Stream> Stream(string blobName)
+        {
+            var properties = await this.Properties(blobName);
+            var blob = this.GetReference(blobName);
+            var stream = new MemoryStream();
+            await blob.DownloadRangeToStreamAsync(stream, 0, properties.Length);
+            return stream;
         }
 
         /// <summary>

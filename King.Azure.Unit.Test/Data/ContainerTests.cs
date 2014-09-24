@@ -94,6 +94,14 @@
 
         [Test]
         [ExpectedException(typeof(ArgumentException))]
+        public async Task StreamBlobNameNull()
+        {
+            var c = new Container("test", connectionString);
+            await c.Stream(null);
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentException))]
         public async Task SaveBlobNameNull()
         {
             var c = new Container("test", connectionString);

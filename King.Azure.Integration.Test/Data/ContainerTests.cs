@@ -5,6 +5,7 @@
     using Microsoft.WindowsAzure.Storage.Blob;
     using NUnit.Framework;
     using System;
+    using System.IO;
     using System.Linq;
     using System.Net;
     using System.Threading.Tasks;
@@ -143,6 +144,27 @@
             Assert.IsNotNull(returned);
             Assert.AreEqual(bytes.Length, returned.Length);
             Assert.AreEqual(bytes, returned);
+        }
+
+        [Test]
+        public async Task RoundTripStream()
+        {
+            var random = new Random();
+            var bytes = new byte[1024];
+            random.NextBytes(bytes);
+
+            var blobName = Guid.NewGuid().ToString();
+            var storage = new Container(ContainerName, ConnectionString);
+
+            await storage.Save(blobName, bytes);
+            using (var returned = await storage.Stream(blobName) as MemoryStream)
+            {
+                var stored = returned.ToArray();
+
+                Assert.IsNotNull(stored);
+                Assert.AreEqual(bytes.Length, stored.Length);
+                Assert.AreEqual(bytes, stored);
+            }
         }
 
         [Test]

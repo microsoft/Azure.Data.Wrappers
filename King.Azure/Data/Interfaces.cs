@@ -5,6 +5,7 @@
     using Microsoft.WindowsAzure.Storage.Queue;
     using Microsoft.WindowsAzure.Storage.Table;
     using System.Collections.Generic;
+    using System.IO;
     using System.Threading.Tasks;
 
     #region IAccount
@@ -158,6 +159,13 @@
         /// <param name="blobName">Blob Name</param>
         /// <returns>Object</returns>
         Task<T> Get<T>(string blobName);
+
+        /// <summary>
+        /// Stream Blob
+        /// </summary>
+        /// <param name="blobName">Blob Name</param>
+        /// <returns>Stream</returns>
+        Task<Stream> Stream(string blobName);
 
         /// <summary>
         /// Get Reference
