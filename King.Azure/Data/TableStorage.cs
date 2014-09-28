@@ -19,11 +19,16 @@
         /// Partition Key
         /// </summary>
         public const string PartitionKey = "PartitionKey";
-        
+
         /// <summary>
         /// Row Key
         /// </summary>
         public const string RowKey = "RowKey";
+
+        /// <summary>
+        /// ETag
+        /// </summary>
+        public const string ETag = "ETag";
 
         /// <summary>
         /// Table Client
@@ -142,14 +147,14 @@
             }
             
             var properties = new Dictionary<string, EntityProperty>();
-            foreach (var key in entity.Keys.Where(k => k != "ParitionKey" && k != "RowKey" && k != "ETag"))
+            foreach (var key in entity.Keys.Where(k => k != PartitionKey && k != RowKey && k != ETag))
             {
                 properties.Add(key, EntityProperty.CreateEntityPropertyFromObject(entity[key]));
             }
 
-            var partitionKey = entity["ParitionKey"] as string;
-            var rowKey = entity["RowKey"] as string;
-            var etag = entity["ETag"] as string;
+            var partitionKey = entity[PartitionKey] as string;
+            var rowKey = entity[RowKey] as string;
+            var etag = entity[ETag] as string;
             var dynamicEntity = new DynamicTableEntity(partitionKey, rowKey, etag, properties);
 
             return await this.InsertOrReplace(dynamicEntity);

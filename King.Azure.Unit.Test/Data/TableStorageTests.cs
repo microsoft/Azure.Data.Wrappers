@@ -34,6 +34,12 @@
         }
 
         [Test]
+        public void ETag()
+        {
+            Assert.AreEqual("ETag", TableStorage.ETag);
+        }
+
+        [Test]
         [ExpectedException(typeof(ArgumentException))]
         public void ConstructorTableNull()
         {
