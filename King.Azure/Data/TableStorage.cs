@@ -127,7 +127,7 @@
         }
 
         /// <summary>
-        /// Insert Or Replace Dictionary
+        /// Insert Or Replace Entity (Dictionary)
         /// </summary>
         /// <remarks>
         /// Specify: PartitionKey, RowKey and ETag
