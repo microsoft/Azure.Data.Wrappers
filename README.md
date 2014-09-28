@@ -42,6 +42,13 @@ await table.CreateIfNotExists();
 var entity = new TableEntity();
 await table.Insert(entity);
 
+// Store Dictionary
+var entity = new Dictionary<string, object>();
+entity.Add("PartitionKey", "MyPartition");
+entity.Add("RowKey", "MyRow");
+entity.Add("CustomValue", Guid.NewGuid());
+await storage.InsertOrReplace(entity);
+
 //Query by Partition & Row
 table.QueryByPartitionAndRow<Model>("partition", "key");
 
