@@ -132,27 +132,27 @@
         /// <remarks>
         /// Specify: PartitionKey, RowKey and ETag
         /// </remarks>
-        /// <param name="data">Entity</param>
+        /// <param name="entity">Entity</param>
         /// <returns>Result</returns>
-        public virtual async Task<TableResult> InsertOrReplace(IDictionary<string, object> data)
+        public virtual async Task<TableResult> InsertOrReplace(IDictionary<string, object> entity)
         {
-            if (null == data)
+            if (null == entity)
             {
                 throw new ArgumentNullException("data");
             }
             
             var properties = new Dictionary<string, EntityProperty>();
-            foreach (var d in data.Keys.Where(k => k != "ParitionKey" && k != "RowKey" && k != "ETag"))
+            foreach (var key in entity.Keys.Where(k => k != "ParitionKey" && k != "RowKey" && k != "ETag"))
             {
-                properties.Add(d, EntityProperty.CreateEntityPropertyFromObject(data[d]));
+                properties.Add(key, EntityProperty.CreateEntityPropertyFromObject(entity[key]));
             }
 
-            var partitionKey = data["ParitionKey"] as string;
-            var rowKey = data["RowKey"] as string;
-            var etag = data["ETag"] as string;
-            var entity = new DynamicTableEntity(partitionKey, rowKey, etag, properties);
+            var partitionKey = entity["ParitionKey"] as string;
+            var rowKey = entity["RowKey"] as string;
+            var etag = entity["ETag"] as string;
+            var dynamicEntity = new DynamicTableEntity(partitionKey, rowKey, etag, properties);
 
-            return await this.InsertOrReplace(entity);
+            return await this.InsertOrReplace(dynamicEntity);
         }
 
         /// <summary>
