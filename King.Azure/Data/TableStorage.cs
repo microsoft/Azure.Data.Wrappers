@@ -226,20 +226,34 @@
         }
 
         /// <summary>
-        /// Delete By Partition and Row
+        /// Delete By Row
+        /// </summary>
+        /// <param name="rowKey">Row Key</param>
+        /// <returns>Task</returns>
+        public virtual async Task DeleteByRow(string rowKey)
+        {
+            var entities = this.QueryByRow<TableEntity>(rowKey);
+            if (null != entities && entities.Any())
+            {
+                foreach (var entity in entities)
+                {
+                    await this.reference.ExecuteAsync(TableOperation.Delete(entity));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Delete By Partition and Row 
         /// </summary>
         /// <param name="partitionKey">Partition Key</param>
         /// <param name="rowKey">Row Key</param>
         /// <returns>Task</returns>
-        public virtual async Task DeleteByPartitionAndRow(string partitionKey, string row)
+        public virtual async Task DeleteByPartitionAndRow(string partitionKey, string rowKey)
         {
-            var entity = this.QueryByPartitionAndRow<TableEntity>(partitionKey, row);
+            var entity = this.QueryByPartitionAndRow<TableEntity>(partitionKey, rowKey);
             if (null != entity)
             {
-                var batchOperation = new TableBatchOperation();
-                batchOperation.Delete(entity);
-
-                await this.reference.ExecuteBatchAsync(batchOperation);
+                await this.reference.ExecuteAsync(TableOperation.Delete(entity));
             }
         }
         #endregion

@@ -119,6 +119,13 @@
         Task DeleteByPartition(string partitionKey);
 
         /// <summary>
+        /// Delete By Row
+        /// </summary>
+        /// <param name="rowKey">Row Key</param>
+        /// <returns>Task</returns>
+        Task DeleteByRow(string rowKey);
+
+        /// <summary>
         /// Delete By Partition and Row
         /// </summary>
         /// <param name="partitionKey">Partition Key</param>

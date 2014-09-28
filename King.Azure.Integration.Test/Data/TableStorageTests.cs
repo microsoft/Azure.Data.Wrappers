@@ -261,6 +261,12 @@
         }
 
         [Test]
+        public async Task DeleteByPartitionPartitionNull()
+        {
+            await storage.DeleteByPartition(null);
+        }
+
+        [Test]
         public async Task DeleteByPartitionAndRow()
         {
             var h = new Helper()
@@ -275,12 +281,6 @@
 
             var returned = storage.QueryByPartitionAndRow<Helper>(h.PartitionKey, h.RowKey);
             Assert.IsNull(returned);
-        }
-
-        [Test]
-        public async Task DeleteByPartitionPartitionNull()
-        {
-            await storage.DeleteByPartition(null);
         }
 
         [Test]
@@ -304,6 +304,36 @@
         {
             var returned = storage.QueryByPartitionAndRow<Helper>(null, null);
             Assert.IsNull(returned);
+        }
+
+        [Test]
+        public async Task DeleteByRow()
+        {
+            var random = new Random();
+            var count = random.Next(1, 25);
+            var rowKey = Guid.NewGuid().ToString();
+            for (var i = 0; i < count; i++)
+            {
+                var h = new Helper()
+                {
+                    PartitionKey = Guid.NewGuid().ToString(),
+                    RowKey = rowKey,
+                    Id = Guid.NewGuid(),
+                };
+                await storage.InsertOrReplace(h);
+            }
+
+            await storage.DeleteByRow(rowKey);
+
+            var returned = storage.QueryByRow<Helper>(rowKey);
+            Assert.IsNotNull(returned);
+            Assert.IsFalse(returned.Any());
+        }
+
+        [Test]
+        public async Task DeleteByRowRowNull()
+        {
+            await storage.DeleteByRow(null);
         }
     }
 }
