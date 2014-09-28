@@ -136,6 +136,52 @@
         }
 
         [Test]
+        public async Task InsertOrReplaceDictionary()
+        {
+            var p = Guid.NewGuid().ToString();
+            var r = Guid.NewGuid().ToString();
+            var entity = new Dictionary<string, object>();
+            entity.Add(TableStorage.PartitionKey, p);
+            entity.Add(TableStorage.RowKey, r);
+            await storage.InsertOrReplace(entity);
+
+            var e = storage.QueryByPartitionAndRow<TableEntity>(p, r);
+            Assert.IsNotNull(e);
+            Assert.AreEqual(entity[TableStorage.PartitionKey], e.PartitionKey);
+            Assert.AreEqual(entity[TableStorage.RowKey], e.RowKey);
+        }
+
+        [Test]
+        public async Task InsertOrReplaceDictionaryNoRow()
+        {
+            var p = Guid.NewGuid().ToString();
+            var entity = new Dictionary<string, object>();
+            entity.Add(TableStorage.PartitionKey, p);
+            await storage.InsertOrReplace(entity);
+
+            var returned = storage.QueryByPartition<TableEntity>(p);
+            Assert.IsNotNull(returned);
+            Assert.AreEqual(1, returned.Count());
+            var e = returned.FirstOrDefault();
+            Assert.AreEqual(entity[TableStorage.PartitionKey], e.PartitionKey);
+        }
+
+        [Test]
+        public async Task InsertOrReplaceDictionaryNoPartition()
+        {
+            var r = Guid.NewGuid().ToString();
+            var entity = new Dictionary<string, object>();
+            entity.Add(TableStorage.RowKey, r);
+            await storage.InsertOrReplace(entity);
+
+            var returned = storage.QueryByRow<TableEntity>(r);
+            Assert.IsNotNull(returned);
+            Assert.AreEqual(1, returned.Count());
+            var e = returned.FirstOrDefault();
+            Assert.AreEqual(entity[TableStorage.RowKey], e.RowKey);
+        }
+
+        [Test]
         public async Task QueryByPartition()
         {
             var random = new Random();
