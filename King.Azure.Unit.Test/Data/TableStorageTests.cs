@@ -3,6 +3,8 @@
     using King.Azure.Data;
     using NUnit.Framework;
     using System;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
 
     [TestFixture]
     public class TableStorageTests
@@ -75,6 +77,15 @@
             var name = Guid.NewGuid().ToString();
             var t = new TableStorage(name, ConnectionString);
             Assert.IsNotNull(t.Reference);
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public async Task InsertDictionaryNull()
+        {
+            var name = Guid.NewGuid().ToString();
+            var t = new TableStorage(name, ConnectionString);
+            await t.InsertOrReplace((IDictionary<string, object>)null);
         }
     }
 }
