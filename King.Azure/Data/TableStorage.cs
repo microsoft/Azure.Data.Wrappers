@@ -126,7 +126,14 @@
             return await this.reference.ExecuteAsync(TableOperation.InsertOrReplace(entry));
         }
 
-
+        /// <summary>
+        /// Insert Or Replace Dictionary
+        /// </summary>
+        /// <remarks>
+        /// Specify: PartitionKey, RowKey and ETag
+        /// </remarks>
+        /// <param name="data">Entity</param>
+        /// <returns>Result</returns>
         public virtual async Task<TableResult> InsertOrReplace(IDictionary<string, object> data)
         {
             if (null == data)
