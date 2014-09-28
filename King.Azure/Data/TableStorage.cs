@@ -123,13 +123,17 @@
         /// <param name="item">Scheduled Task Entry</param>
         public virtual async Task<TableResult> InsertOrReplace(ITableEntity entry)
         {
-            var insertOperation = TableOperation.InsertOrReplace(entry);
-            return await this.reference.ExecuteAsync(insertOperation);
+            return await this.reference.ExecuteAsync(TableOperation.InsertOrReplace(entry));
         }
 
 
         public virtual async Task<TableResult> InsertOrReplace(IDictionary<string, object> data)
         {
+            if (null == data)
+            {
+                throw new ArgumentNullException("data");
+            }
+            
             var properties = new Dictionary<string, EntityProperty>();
             foreach (var d in data.Keys.Where(k => k != "ParitionKey" && k != "RowKey" && k != "ETag"))
             {
