@@ -80,6 +80,16 @@
         /// </summary>
         /// <param name="entities"></param>
         Task<IEnumerable<TableResult>> Insert(IEnumerable<ITableEntity> entities);
+        
+        /// <summary>
+        /// Insert Or Replace Dictionary
+        /// </summary>
+        /// <remarks>
+        /// Specify: PartitionKey, RowKey and ETag
+        /// </remarks>
+        /// <param name="data">Entity</param>
+        /// <returns>Result</returns>
+        Task<TableResult> InsertOrReplace(IDictionary<string, object> data);
 
         /// <summary>
         /// Query By Partition
