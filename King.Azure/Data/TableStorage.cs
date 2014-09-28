@@ -58,7 +58,7 @@
         /// <summary>
         /// Table Name
         /// </summary>
-        public string Name
+        public virtual string Name
         {
             get
             {
@@ -69,7 +69,7 @@
         /// <summary>
         /// Table Client
         /// </summary>
-        public CloudTableClient Client
+        public virtual CloudTableClient Client
         {
             get
             {
@@ -80,7 +80,7 @@
         /// <summary>
         /// Table
         /// </summary>
-        public CloudTable Reference
+        public virtual CloudTable Reference
         {
             get
             {
@@ -125,6 +125,23 @@
         {
             var insertOperation = TableOperation.InsertOrReplace(entry);
             return await this.reference.ExecuteAsync(insertOperation);
+        }
+
+
+        public virtual async Task<TableResult> InsertOrReplace(IDictionary<string, object> data)
+        {
+            var properties = new Dictionary<string, EntityProperty>();
+            foreach (var d in data.Keys.Where(k => k != "ParitionKey" && k != "RowKey" && k != "ETag"))
+            {
+                properties.Add(d, EntityProperty.CreateEntityPropertyFromObject(data[d]));
+            }
+
+            var partitionKey = data["ParitionKey"] as string;
+            var rowKey = data["RowKey"] as string;
+            var etag = data["ETag"] as string;
+            var entity = new DynamicTableEntity(partitionKey, rowKey, etag, properties);
+
+            return await this.InsertOrReplace(entity);
         }
 
         /// <summary>
