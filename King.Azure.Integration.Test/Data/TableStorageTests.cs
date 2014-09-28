@@ -143,12 +143,14 @@
             var entity = new Dictionary<string, object>();
             entity.Add(TableStorage.PartitionKey, p);
             entity.Add(TableStorage.RowKey, r);
+            entity.Add("Id", Guid.NewGuid());
             await storage.InsertOrReplace(entity);
 
-            var e = storage.QueryByPartitionAndRow<TableEntity>(p, r);
+            var e = storage.QueryByPartitionAndRow<Helper>(p, r);
             Assert.IsNotNull(e);
             Assert.AreEqual(entity[TableStorage.PartitionKey], e.PartitionKey);
             Assert.AreEqual(entity[TableStorage.RowKey], e.RowKey);
+            Assert.AreEqual(entity["Id"], e.Id);
         }
 
         [Test]
