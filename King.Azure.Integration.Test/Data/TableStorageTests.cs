@@ -154,6 +154,24 @@
         }
 
         [Test]
+        public async Task InsertOrReplaceDictionaryPartitionRowGuid()
+        {
+            var p = Guid.NewGuid();
+            var r = Guid.NewGuid();
+            var entity = new Dictionary<string, object>();
+            entity.Add(TableStorage.PartitionKey, p);
+            entity.Add(TableStorage.RowKey, r);
+            entity.Add("Id", Guid.NewGuid());
+            await storage.InsertOrReplace(entity);
+
+            var e = storage.QueryByPartitionAndRow<Helper>(p.ToString(), r.ToString());
+            Assert.IsNotNull(e);
+            Assert.AreEqual(entity[TableStorage.PartitionKey].ToString(), e.PartitionKey);
+            Assert.AreEqual(entity[TableStorage.RowKey].ToString(), e.RowKey);
+            Assert.AreEqual(entity["Id"], e.Id);
+        }
+
+        [Test]
         public async Task InsertOrReplaceDictionaryNoRow()
         {
             var p = Guid.NewGuid().ToString();

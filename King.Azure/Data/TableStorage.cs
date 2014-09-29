@@ -152,9 +152,9 @@
                 properties.Add(key, EntityProperty.CreateEntityPropertyFromObject(entity[key]));
             }
 
-            var partitionKey = entity.Keys.Contains(PartitionKey) ? entity[PartitionKey] as string : string.Empty;
-            var rowKey = entity.Keys.Contains(RowKey) ? entity[RowKey] as string : string.Empty;
-            var etag = entity.Keys.Contains(ETag) ? entity[ETag] as string : null;
+            var partitionKey = entity.Keys.Contains(PartitionKey) ? entity[PartitionKey].ToString() : string.Empty;
+            var rowKey = entity.Keys.Contains(RowKey) ? entity[RowKey].ToString() : string.Empty;
+            var etag = entity.Keys.Contains(ETag) ? entity[ETag].ToString() : null;
             var dynamicEntity = new DynamicTableEntity(partitionKey, rowKey, etag, properties);
 
             return await this.InsertOrReplace(dynamicEntity);
