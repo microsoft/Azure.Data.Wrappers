@@ -7,22 +7,24 @@
     [TestFixture]
     public class AzureStorageResourcesTests
     {
+        private readonly string ConnectionString = "UseDevelopmentStorage=true;";
+
         [Test]
         public void Constructor()
         {
-            new AzureStorageResources(Guid.NewGuid().ToString());
+            new AzureStorageResources(ConnectionString);
         }
 
         [Test]
         public void IsIAzureStorageResources()
         {
-            Assert.IsNotNull(new AzureStorageResources(Guid.NewGuid().ToString()) as IAzureStorageResources);
+            Assert.IsNotNull(new AzureStorageResources(ConnectionString) as IAzureStorageResources);
         }
 
         [Test]
         public void IsAzureStorage()
         {
-            Assert.IsNotNull(new AzureStorageResources(Guid.NewGuid().ToString()) as AzureStorage);
+            Assert.IsNotNull(new AzureStorageResources(ConnectionString) as AzureStorage);
         }
     }
 }
