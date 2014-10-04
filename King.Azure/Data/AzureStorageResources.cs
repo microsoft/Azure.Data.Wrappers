@@ -1,15 +1,12 @@
 ﻿namespace King.Azure.Data
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// Azure Storage Resources
     /// </summary>
-    public class AzureStorageResources : AzureStorage
+    public class AzureStorageResources : AzureStorage, IAzureStorageResources
     {
         #region Constructors
         /// <summary>
@@ -27,7 +24,7 @@
         /// List Tables
         /// </summary>
         /// <returns>Table Names</returns>
-        public IEnumerable<string> Tables()
+        public virtual IEnumerable<string> Tables()
         {
             var client = base.Account.CreateCloudTableClient();
             return from t in client.ListTables()
@@ -38,7 +35,7 @@
         /// List Containers
         /// </summary>
         /// <returns>Containers</returns>
-        public IEnumerable<string> Containers()
+        public virtual IEnumerable<string> Containers()
         {
             var client = base.Account.CreateCloudBlobClient();
             return from t in client.ListContainers()
@@ -49,7 +46,7 @@
         /// List Queues
         /// </summary>
         /// <returns>Queue Names</returns>
-        public IEnumerable<string> Queues()
+        public virtual IEnumerable<string> Queues()
         {
             var client = base.Account.CreateCloudQueueClient();
             return from t in client.ListQueues()

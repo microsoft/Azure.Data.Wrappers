@@ -410,34 +410,19 @@
         /// List Tables
         /// </summary>
         /// <returns>Table Names</returns>
-        public IEnumerable<string> Tables()
-        {
-            var client = base.Account.CreateCloudTableClient();
-            return from t in client.ListTables()
-                   select t.Name;
-        }
+        IEnumerable<string> Tables();
 
         /// <summary>
         /// List Containers
         /// </summary>
         /// <returns>Containers</returns>
-        public IEnumerable<string> Containers()
-        {
-            var client = base.Account.CreateCloudBlobClient();
-            return from t in client.ListContainers()
-                   select t.Name;
-        }
+        IEnumerable<string> Containers();
 
         /// <summary>
         /// List Queues
         /// </summary>
         /// <returns>Queue Names</returns>
-        public IEnumerable<string> Queues()
-        {
-            var client = base.Account.CreateCloudQueueClient();
-            return from t in client.ListQueues()
-                   select t.Name;
-        }
+        IEnumerable<string> Queues();
         #endregion
     }
     #endregion
