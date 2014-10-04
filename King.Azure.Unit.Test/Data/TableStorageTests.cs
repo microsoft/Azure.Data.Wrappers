@@ -1,6 +1,7 @@
 ﻿namespace King.Azure.Unit.Test.Data
 {
     using King.Azure.Data;
+    using Microsoft.WindowsAzure.Storage.Table;
     using NUnit.Framework;
     using System;
     using System.Collections.Generic;
@@ -86,6 +87,15 @@
             var name = Guid.NewGuid().ToString();
             var t = new TableStorage(name, ConnectionString);
             await t.InsertOrReplace((IDictionary<string, object>)null);
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public async Task QueryTableQueryNull()
+        {
+            var name = Guid.NewGuid().ToString();
+            var t = new TableStorage(name, ConnectionString);
+            t.Query<TableEntity>(null);
         }
     }
 }

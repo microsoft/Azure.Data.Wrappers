@@ -185,7 +185,7 @@
             where T : ITableEntity, new()
         {
             var query = new TableQuery<T>().Where(TableQuery.GenerateFilterCondition(PartitionKey, QueryComparisons.Equal, partitionKey));
-            return this.reference.ExecuteQuery<T>(query);
+            return this.Query<T>(query);
         }
 
         /// <summary>
@@ -201,7 +201,7 @@
             where T : ITableEntity, new()
         {
             var query = new TableQuery<T>().Where(TableQuery.GenerateFilterCondition(RowKey, QueryComparisons.Equal, rowKey));
-            return this.reference.ExecuteQuery<T>(query);
+            return this.Query<T>(query);
         }
 
         /// <summary>
@@ -218,7 +218,25 @@
             var rowFilter = TableQuery.GenerateFilterCondition(RowKey, QueryComparisons.Equal, rowKey);
             var filter = TableQuery.CombineFilters(partitionFilter, TableOperators.And, rowFilter);
             var query = new TableQuery<T>().Where(filter);
-            return this.reference.ExecuteQuery<T>(query).FirstOrDefault();
+
+            return this.Query<T>(query).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Query
+        /// </summary>
+        /// <typeparam name="T">Type</typeparam>
+        /// <param name="query">Table Query</param>
+        /// <returns>Results</returns>
+        public virtual IEnumerable<T> Query<T>(TableQuery<T> query)
+            where T : ITableEntity, new()
+        {
+            if (null ==  query)
+            {
+                throw new ArgumentNullException("query");
+            }
+
+            return this.reference.ExecuteQuery<T>(query);
         }
 
         /// <summary>

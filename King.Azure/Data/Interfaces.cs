@@ -120,12 +120,21 @@
         /// <returns></returns>
         T QueryByPartitionAndRow<T>(string partitionKey, string rowKey)
             where T : ITableEntity, new();
+        
+        /// <summary>
+        /// Query
+        /// </summary>
+        /// <typeparam name="T">Type</typeparam>
+        /// <param name="query">Table Query</param>
+        /// <returns>Results</returns>
+        IEnumerable<T> Query<T>(TableQuery<T> query)
+            where T : ITableEntity, new();
 
         /// <summary>
-        /// 
+        /// Delete By Partition
         /// </summary>
-        /// <param name="partitionKey"></param>
-        /// <returns></returns>
+        /// <param name="partitionKey">Partition Key</param>
+        /// <returns>Task</returns>
         Task DeleteByPartition(string partitionKey);
 
         /// <summary>
