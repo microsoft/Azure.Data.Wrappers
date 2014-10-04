@@ -71,6 +71,7 @@
     <Compile Include="Data\AzureStorage.cs" />
     <Compile Include="Data\Container.cs" />
     <Compile Include="Data\Interfaces.cs" />
+    <Compile Include="Data\AzureStorageResources.cs" />
     <Compile Include="Data\StorageQueue.cs" />
     <Compile Include="Data\StorageQueuedMessage.cs" />
     <Compile Include="Data\StorageQueuePoller.cs" />
