@@ -407,22 +407,22 @@
 
         #region Methods
         /// <summary>
-        /// List Tables
+        /// List Table Names
         /// </summary>
         /// <returns>Table Names</returns>
-        IEnumerable<string> Tables();
+        IEnumerable<string> TableNames();
 
         /// <summary>
-        /// List Containers
+        /// List Container Names
         /// </summary>
-        /// <returns>Containers</returns>
-        IEnumerable<string> Containers();
+        /// <returns>Container Names</returns>
+        IEnumerable<string> ContainerNames();
 
         /// <summary>
-        /// List Queues
+        /// List Queue Names
         /// </summary>
         /// <returns>Queue Names</returns>
-        IEnumerable<string> Queues();
+        IEnumerable<string> QueueNames();
         #endregion
     }
     #endregion

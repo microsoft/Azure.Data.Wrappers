@@ -21,10 +21,10 @@
 
         #region Methods
         /// <summary>
-        /// List Tables
+        /// List Table Names
         /// </summary>
         /// <returns>Table Names</returns>
-        public virtual IEnumerable<string> Tables()
+        public virtual IEnumerable<string> TableNames()
         {
             var client = base.Account.CreateCloudTableClient();
             return from t in client.ListTables()
@@ -32,10 +32,10 @@
         }
 
         /// <summary>
-        /// List Containers
+        /// List Container Names
         /// </summary>
-        /// <returns>Containers</returns>
-        public virtual IEnumerable<string> Containers()
+        /// <returns>Container Names</returns>
+        public virtual IEnumerable<string> ContainerNames()
         {
             var client = base.Account.CreateCloudBlobClient();
             return from t in client.ListContainers()
@@ -43,10 +43,10 @@
         }
 
         /// <summary>
-        /// List Queues
+        /// List Queue Names
         /// </summary>
         /// <returns>Queue Names</returns>
-        public virtual IEnumerable<string> Queues()
+        public virtual IEnumerable<string> QueueNames()
         {
             var client = base.Account.CreateCloudQueueClient();
             return from t in client.ListQueues()
