@@ -9,9 +9,6 @@
     /// <summary>
     /// Table Storage
     /// </summary>
-    /// <remarks>
-    /// http://www.windowsazure.com/en-us/develop/net/how-to-guides/table-services/
-    /// </remarks>
     public class TableStorage : AzureStorage, ITableStorage
     {
         #region Members
