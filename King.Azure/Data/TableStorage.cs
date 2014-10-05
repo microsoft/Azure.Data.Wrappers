@@ -23,6 +23,11 @@
         public const string RowKey = "RowKey";
 
         /// <summary>
+        /// Timestamp
+        /// </summary>
+        public const string Timestamp = "Timestamp";
+
+        /// <summary>
         /// ETag
         /// </summary>
         public const string ETag = "ETag";
@@ -169,14 +174,14 @@
         public virtual async Task<IEnumerable<TableResult>> Insert(IEnumerable<ITableEntity> entities)
         {
             var result = new List<TableResult>();
-            var metaList = entities.Select((x, i) => new { Index = i, Value = x })
-                            .GroupBy(x => x.Index / MaimumxInsertBatch)
+            var batches = entities.Select((x, i) => new { Index = i, Value = x })
+                            .GroupBy(x => x.Index / TableStorage.MaimumxInsertBatch)
                             .Select(x => x.Select(v => v.Value).ToList());
 
-            foreach (var meta in metaList)
+            foreach (var batch in batches)
             {
                 var batchOperation = new TableBatchOperation();
-                meta.ForEach(e => batchOperation.InsertOrMerge(e));
+                batch.ForEach(e => batchOperation.InsertOrMerge(e));
                 await this.reference.ExecuteBatchAsync(batchOperation);
             }
 
@@ -290,9 +295,10 @@
                 {
                     dic.Add(p.Key, p.Value.PropertyAsObject);
                 }
-                dic.Add(PartitionKey, e.PartitionKey);
-                dic.Add(RowKey, e.RowKey);
-                dic.Add(ETag, e.ETag);
+                dic.Add(TableStorage.PartitionKey, e.PartitionKey);
+                dic.Add(TableStorage.RowKey, e.RowKey);
+                dic.Add(TableStorage.ETag, e.ETag);
+                dic.Add(TableStorage.Timestamp, e.Timestamp);
                 results.Add(dic);
             }
 

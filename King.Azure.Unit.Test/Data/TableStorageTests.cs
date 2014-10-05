@@ -37,6 +37,12 @@
         }
 
         [Test]
+        public void Timestamp()
+        {
+            Assert.AreEqual("Timestamp", TableStorage.Timestamp);
+        }
+
+        [Test]
         public void ETag()
         {
             Assert.AreEqual("ETag", TableStorage.ETag);
