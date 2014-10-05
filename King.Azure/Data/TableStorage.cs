@@ -298,7 +298,7 @@
                 dic.Add(TableStorage.PartitionKey, e.PartitionKey);
                 dic.Add(TableStorage.RowKey, e.RowKey);
                 dic.Add(TableStorage.ETag, e.ETag);
-                dic.Add(TableStorage.Timestamp, e.Timestamp);
+                dic.Add(TableStorage.Timestamp, e.Timestamp.DateTime);
                 results.Add(dic);
             }
 

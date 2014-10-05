@@ -500,8 +500,11 @@
             foreach (var r in returned)
             {
                 var exists = (from e in entities
-                              where e.RowKey == (string)r[TableStorage.RowKey]
-                              && e.Id == (Guid)r["Id"]
+                              where e.PartitionKey == (string)r[TableStorage.PartitionKey]
+                                && e.RowKey == (string)r[TableStorage.RowKey]
+                                && e.Id == (Guid)r["Id"]
+                                && !string.IsNullOrWhiteSpace((string)r[TableStorage.ETag])
+                                && DateTime.UtcNow.Date == ((DateTime)r[TableStorage.Timestamp]).Date
                               select true).FirstOrDefault();
                 Assert.IsTrue(exists);
             }
