@@ -268,20 +268,34 @@
         /// </summary>
         /// <param name="query">Query</param>
         /// <returns>Entities</returns>
-        public virtual async Task<IEnumerable<DynamicTableEntity>> Query(TableQuery query)
+        public virtual async Task<IEnumerable<IDictionary<string, object>>> Query(TableQuery query)
         {
             if (null == query)
             {
                 throw new ArgumentNullException("query");
             }
 
-            var entities = new List<DynamicTableEntity>();
+            var entities = new List<IDictionary<string, object>>();
             TableContinuationToken token = null;
             
             do
             {
                 var queryResult = await this.reference.ExecuteQuerySegmentedAsync(query, token);
-                entities.AddRange(queryResult.Results);
+                foreach (var e in queryResult.Results)
+                {
+                    var properties = new Dictionary<string, EntityProperty>();
+                    e.ReadEntity(properties, new Microsoft.WindowsAzure.Storage.OperationContext());
+
+                    var dic = new Dictionary<string, object>();
+                    foreach (var p in properties)
+                    {
+                        dic.Add(p.Key, p.Value.PropertyAsObject);
+                    }
+                    dic.Add(PartitionKey, e.PartitionKey);
+                    dic.Add(RowKey, e.RowKey);
+                    dic.Add(ETag, e.ETag);
+                    entities.Add(dic);
+                }
                 token = queryResult.ContinuationToken;
             }
             while (null != token);

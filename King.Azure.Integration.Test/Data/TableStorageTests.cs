@@ -465,7 +465,7 @@
             foreach (var r in returned)
             {
                 var exists = (from e in entities
-                              where e.RowKey == r.RowKey
+                              where e.RowKey == (string)r[TableStorage.RowKey]
                               select true).FirstOrDefault();
                 Assert.IsTrue(exists);
             }

@@ -135,7 +135,7 @@
         /// </summary>
         /// <param name="query">Query</param>
         /// <returns>Entities</returns>
-        Task<IEnumerable<DynamicTableEntity>> Query(TableQuery query);
+        Task<IEnumerable<IDictionary<string, object>>> Query(TableQuery query);
 
         /// <summary>
         /// Delete By Partition
