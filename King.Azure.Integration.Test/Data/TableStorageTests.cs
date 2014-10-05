@@ -295,7 +295,7 @@
 
             await storage.Insert(entities);
 
-            var returned = storage.QueryByPartitionAndRow<Helper>(z.PartitionKey, z.RowKey);
+            var returned = await storage.QueryByPartitionAndRow<Helper>(z.PartitionKey, z.RowKey);
             Assert.IsNotNull(returned);
             Assert.AreEqual(z.Id, returned.Id);
         }
@@ -345,7 +345,7 @@
             await storage.InsertOrReplace(h);
             await storage.DeleteByPartitionAndRow(h.PartitionKey, h.RowKey);
 
-            var returned = storage.QueryByPartitionAndRow<Helper>(h.PartitionKey, h.RowKey);
+            var returned = await storage.QueryByPartitionAndRow<Helper>(h.PartitionKey, h.RowKey);
             Assert.IsNull(returned);
         }
 
@@ -366,9 +366,9 @@
         }
 
         [Test]
-        public void QueryByPartitionAndRowPartitionNullRowNull()
+        public async Task QueryByPartitionAndRowPartitionNullRowNull()
         {
-            var returned = storage.QueryByPartitionAndRow<Helper>(null, null);
+            var returned = await storage.QueryByPartitionAndRow<Helper>(null, null);
             Assert.IsNull(returned);
         }
 
