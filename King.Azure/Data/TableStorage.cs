@@ -28,6 +28,11 @@
         public const string ETag = "ETag";
 
         /// <summary>
+        /// Maximum Insert Batch
+        /// </summary>
+        public const int MaimumxInsertBatch = 100;
+
+        /// <summary>
         /// Table Client
         /// </summary>
         private readonly CloudTableClient client;
@@ -165,8 +170,9 @@
         {
             var result = new List<TableResult>();
             var metaList = entities.Select((x, i) => new { Index = i, Value = x })
-                            .GroupBy(x => x.Index / 100)
+                            .GroupBy(x => x.Index / MaimumxInsertBatch)
                             .Select(x => x.Select(v => v.Value).ToList());
+
             foreach (var meta in metaList)
             {
                 var batchOperation = new TableBatchOperation();
