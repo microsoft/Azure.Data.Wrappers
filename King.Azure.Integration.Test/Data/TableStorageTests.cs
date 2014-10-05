@@ -560,17 +560,15 @@
         {
             var random = new Random();
             var count = random.Next(1, 25);
-            var entities = new List<Helper>();
+            var entities = new List<IDictionary<string, object>>();
             var partition = Guid.NewGuid().ToString();
             for (var i = 0; i < count; i++)
             {
-                var h = new Helper()
-                {
-                    PartitionKey = partition,
-                    RowKey = Guid.NewGuid().ToString(),
-                    Id = Guid.NewGuid(),
-                };
-                entities.Add(h);
+                var dic = new Dictionary<string, object>();
+                dic.Add(TableStorage.PartitionKey, partition);
+                dic.Add(TableStorage.RowKey, Guid.NewGuid().ToString());
+                dic.Add("Id", Guid.NewGuid());
+                entities.Add(dic);
             }
 
             await storage.Insert(entities);
@@ -581,8 +579,8 @@
             foreach (var r in returned)
             {
                 var exists = (from e in entities
-                              where e.RowKey == (string)r[TableStorage.RowKey]
-                              && e.Id == (Guid)r["Id"]
+                              where (string)e[TableStorage.RowKey] == (string)r[TableStorage.RowKey]
+                                && (Guid)e["Id"] == (Guid)r["Id"]
                               select true).FirstOrDefault();
                 Assert.IsTrue(exists);
             }
@@ -593,19 +591,17 @@
         {
             var random = new Random();
             var count = random.Next(1, 25);
-            var entities = new List<Helper>();
+            var entities = new List<IDictionary<string, object>>();
             var rowKey = Guid.NewGuid().ToString();
             for (var i = 0; i < count; i++)
             {
-                var h = new Helper()
-                {
-                    PartitionKey = Guid.NewGuid().ToString(),
-                    RowKey = rowKey,
-                    Id = Guid.NewGuid(),
-                };
-                entities.Add(h);
+                var dic = new Dictionary<string, object>();
+                dic.Add(TableStorage.PartitionKey, Guid.NewGuid().ToString());
+                dic.Add(TableStorage.RowKey, rowKey);
+                dic.Add("Id", Guid.NewGuid());
+                entities.Add(dic);
 
-                await storage.InsertOrReplace(h);
+                await storage.InsertOrReplace(dic);
             }
 
             var returned = await storage.QueryByRow(rowKey);
@@ -614,8 +610,8 @@
             foreach (var r in returned)
             {
                 var exists = (from e in entities
-                              where e.RowKey == (string)r[TableStorage.RowKey]
-                              && e.Id == (Guid)r["Id"]
+                              where (string)e[TableStorage.RowKey] == (string)r[TableStorage.RowKey]
+                                && (Guid)e["Id"] == (Guid)r["Id"]
                               select true).FirstOrDefault();
                 Assert.IsTrue(exists);
             }
@@ -626,32 +622,29 @@
         {
             var random = new Random();
             var count = random.Next(1, 25);
-            var entities = new List<Helper>();
+            var entities = new List<IDictionary<string, object>>();
             var partition = Guid.NewGuid().ToString();
             for (var i = 0; i < count; i++)
             {
-                var h = new Helper()
-                {
-                    PartitionKey = partition,
-                    RowKey = Guid.NewGuid().ToString(),
-                    Id = Guid.NewGuid(),
-                };
-                entities.Add(h);
+                var dic = new Dictionary<string, object>();
+                dic.Add(TableStorage.PartitionKey, partition);
+                dic.Add(TableStorage.RowKey, Guid.NewGuid().ToString());
+                dic.Add("Id", Guid.NewGuid());
+                entities.Add(dic);
             }
 
-            var z = new Helper()
-            {
-                PartitionKey = partition,
-                RowKey = Guid.NewGuid().ToString(),
-                Id = Guid.NewGuid(),
-            };
+            var rowKey = Guid.NewGuid().ToString();
+            var z = new Dictionary<string, object>();
+            z.Add(TableStorage.PartitionKey, partition);
+            z.Add(TableStorage.RowKey, rowKey);
+            z.Add("Id", Guid.NewGuid());
             entities.Add(z);
 
             await storage.Insert(entities);
 
-            var returned = await storage.QueryByPartitionAndRow(z.PartitionKey, z.RowKey);
+            var returned = await storage.QueryByPartitionAndRow(partition, rowKey);
             Assert.IsNotNull(returned);
-            Assert.AreEqual(z.Id, returned["Id"]);
+            Assert.AreEqual(z["Id"], returned["Id"]);
         }
     }
 }

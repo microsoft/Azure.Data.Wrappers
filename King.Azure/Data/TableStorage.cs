@@ -363,7 +363,7 @@
         /// <returns>Entities</returns>
         public virtual async Task<IEnumerable<IDictionary<string, object>>> QueryByPartition(string partitionKey)
         {
-            var query = new TableQuery().Where(TableQuery.GenerateFilterCondition(PartitionKey, QueryComparisons.Equal, partitionKey));
+            var query = new TableQuery().Where(TableQuery.GenerateFilterCondition(TableStorage.PartitionKey, QueryComparisons.Equal, partitionKey));
             return await this.Query(query);
         }
 
@@ -377,7 +377,7 @@
         /// <returns>Entities</returns>
         public virtual async Task<IEnumerable<IDictionary<string, object>>> QueryByRow(string rowKey)
         {
-            var query = new TableQuery().Where(TableQuery.GenerateFilterCondition(RowKey, QueryComparisons.Equal, rowKey));
+            var query = new TableQuery().Where(TableQuery.GenerateFilterCondition(TableStorage.RowKey, QueryComparisons.Equal, rowKey));
             return await this.Query(query);
         }
 
@@ -389,8 +389,8 @@
         /// <returns></returns>
         public virtual async Task<IDictionary<string, object>> QueryByPartitionAndRow(string partitionKey, string rowKey)
         {
-            var partitionFilter = TableQuery.GenerateFilterCondition(PartitionKey, QueryComparisons.Equal, partitionKey);
-            var rowFilter = TableQuery.GenerateFilterCondition(RowKey, QueryComparisons.Equal, rowKey);
+            var partitionFilter = TableQuery.GenerateFilterCondition(TableStorage.PartitionKey, QueryComparisons.Equal, partitionKey);
+            var rowFilter = TableQuery.GenerateFilterCondition(TableStorage.RowKey, QueryComparisons.Equal, rowKey);
             var filter = TableQuery.CombineFilters(partitionFilter, TableOperators.And, rowFilter);
             var query = new TableQuery().Where(filter);
 
