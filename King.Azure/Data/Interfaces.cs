@@ -97,7 +97,7 @@
         /// <typeparam name="T"></typeparam>
         /// <param name="partition"></param>
         /// <returns></returns>
-        IEnumerable<T> QueryByPartition<T>(string partition)
+        Task<IEnumerable<T>> QueryByPartition<T>(string partition)
             where T : ITableEntity, new();
 
         /// <summary>
@@ -109,7 +109,7 @@
         /// <typeparam name="T"></typeparam>
         /// <param name="rowKey"></param>
         /// <returns></returns>
-        IEnumerable<T> QueryByRow<T>(string rowKey)
+        Task<IEnumerable<T>> QueryByRow<T>(string rowKey)
             where T : ITableEntity, new();
 
         /// <summary>
@@ -118,7 +118,7 @@
         /// <typeparam name="T"></typeparam>
         /// <param name="rowKey"></param>
         /// <returns></returns>
-        T QueryByPartitionAndRow<T>(string partitionKey, string rowKey)
+        Task<T> QueryByPartitionAndRow<T>(string partitionKey, string rowKey)
             where T : ITableEntity, new();
         
         /// <summary>
@@ -127,8 +127,15 @@
         /// <typeparam name="T">Type</typeparam>
         /// <param name="query">Table Query</param>
         /// <returns>Results</returns>
-        IEnumerable<T> Query<T>(TableQuery<T> query)
+        Task<IEnumerable<T>> Query<T>(TableQuery<T> query)
             where T : ITableEntity, new();
+        
+        /// <summary>
+        /// Generic Query
+        /// </summary>
+        /// <param name="query">Query</param>
+        /// <returns>Entities</returns>
+        Task<IEnumerable<DynamicTableEntity>> Query(TableQuery query);
 
         /// <summary>
         /// Delete By Partition

@@ -178,11 +178,11 @@
         /// <typeparam name="T"></typeparam>
         /// <param name="partitionKey"></param>
         /// <returns>Entities</returns>
-        public virtual IEnumerable<T> QueryByPartition<T>(string partitionKey)
+        public virtual async Task<IEnumerable<T>> QueryByPartition<T>(string partitionKey)
             where T : ITableEntity, new()
         {
             var query = new TableQuery<T>().Where(TableQuery.GenerateFilterCondition(PartitionKey, QueryComparisons.Equal, partitionKey));
-            return this.Query<T>(query);
+            return await this.Query<T>(query);
         }
 
         /// <summary>
@@ -194,11 +194,11 @@
         /// <typeparam name="T"></typeparam>
         /// <param name="rowKey">Row Key</param>
         /// <returns>Entities</returns>
-        public virtual IEnumerable<T> QueryByRow<T>(string rowKey)
+        public virtual async Task<IEnumerable<T>> QueryByRow<T>(string rowKey)
             where T : ITableEntity, new()
         {
             var query = new TableQuery<T>().Where(TableQuery.GenerateFilterCondition(RowKey, QueryComparisons.Equal, rowKey));
-            return this.Query<T>(query);
+            return await this.Query<T>(query);
         }
 
         /// <summary>
@@ -208,7 +208,7 @@
         /// <param name="partitionKey">Partition Key</param>
         /// <param name="rowKey">Row</param>
         /// <returns></returns>
-        public virtual T QueryByPartitionAndRow<T>(string partitionKey, string rowKey)
+        public virtual async Task<T> QueryByPartitionAndRow<T>(string partitionKey, string rowKey)
             where T : ITableEntity, new()
         {
             var partitionFilter = TableQuery.GenerateFilterCondition(PartitionKey, QueryComparisons.Equal, partitionKey);
@@ -216,7 +216,8 @@
             var filter = TableQuery.CombineFilters(partitionFilter, TableOperators.And, rowFilter);
             var query = new TableQuery<T>().Where(filter);
 
-            return this.Query<T>(query).FirstOrDefault();
+            var result = await this.Query<T>(query);
+            return result.FirstOrDefault();
         }
 
         /// <summary>
@@ -225,15 +226,50 @@
         /// <typeparam name="T">Type</typeparam>
         /// <param name="query">Table Query</param>
         /// <returns>Results</returns>
-        public virtual IEnumerable<T> Query<T>(TableQuery<T> query)
+        public virtual async Task<IEnumerable<T>> Query<T>(TableQuery<T> query)
             where T : ITableEntity, new()
         {
-            if (null ==  query)
+            if (null == query)
+            {
+                throw new ArgumentNullException("query");
+            }
+            
+            var entities = new List<T>();
+            TableContinuationToken token = null;
+
+            while (null == token)
+            {
+                var queryResult = await this.reference.ExecuteQuerySegmentedAsync<T>(query, token);
+                entities.AddRange(queryResult.Results);
+                token = queryResult.ContinuationToken;
+            }
+
+            return entities;
+        }
+
+        /// <summary>
+        /// Generic Query
+        /// </summary>
+        /// <param name="query">Query</param>
+        /// <returns>Entities</returns>
+        public virtual async Task<IEnumerable<DynamicTableEntity>> Query(TableQuery query)
+        {
+            if (null == query)
             {
                 throw new ArgumentNullException("query");
             }
 
-            return this.reference.ExecuteQuery<T>(query);
+            var entities = new List<DynamicTableEntity>();
+            TableContinuationToken token = null;
+
+            while (null == token)
+            {
+                var queryResult = await this.reference.ExecuteQuerySegmentedAsync(new TableQuery(), token);
+                entities.AddRange(queryResult.Results);
+                token = queryResult.ContinuationToken;
+            }
+
+            return entities;
         }
 
         /// <summary>
@@ -243,7 +279,7 @@
         /// <returns>Task</returns>
         public virtual async Task DeleteByPartition(string partitionKey)
         {
-            var entities = this.QueryByPartition<TableEntity>(partitionKey);
+            var entities = await this.QueryByPartition<TableEntity>(partitionKey);
             if (null != entities && entities.Any())
             {
                 var batchOperation = new TableBatchOperation();
@@ -263,7 +299,7 @@
         /// <returns>Task</returns>
         public virtual async Task DeleteByRow(string rowKey)
         {
-            var entities = this.QueryByRow<TableEntity>(rowKey);
+            var entities = await this.QueryByRow<TableEntity>(rowKey);
             if (null != entities && entities.Any())
             {
                 foreach (var entity in entities)
@@ -281,7 +317,7 @@
         /// <returns>Task</returns>
         public virtual async Task DeleteByPartitionAndRow(string partitionKey, string rowKey)
         {
-            var entity = this.QueryByPartitionAndRow<TableEntity>(partitionKey, rowKey);
+            var entity = await this.QueryByPartitionAndRow<TableEntity>(partitionKey, rowKey);
             if (null != entity)
             {
                 await this.reference.ExecuteAsync(TableOperation.Delete(entity));
