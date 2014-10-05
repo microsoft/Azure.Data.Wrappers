@@ -523,17 +523,15 @@
         {
             var random = new Random();
             var count = random.Next(1, 25);
-            var entities = new List<Helper>();
+            var entities = new List<IDictionary<string, object>>();
             var partition = Guid.NewGuid().ToString();
             for (var i = 0; i < count; i++)
             {
-                var h = new Helper()
-                {
-                    PartitionKey = partition,
-                    RowKey = Guid.NewGuid().ToString(),
-                    Id = Guid.NewGuid(),
-                };
-                entities.Add(h);
+                var dic = new Dictionary<string, object>();
+                dic.Add(TableStorage.PartitionKey, partition);
+                dic.Add(TableStorage.RowKey, Guid.NewGuid().ToString());
+                dic.Add("Id", Guid.NewGuid());
+                entities.Add(dic);
             }
 
             await storage.Insert(entities);
@@ -547,9 +545,9 @@
             foreach (var r in returned)
             {
                 var exists = (from e in entities
-                              where e.PartitionKey == (string)r[TableStorage.PartitionKey]
-                                && e.RowKey == (string)r[TableStorage.RowKey]
-                                && e.Id == (Guid)r["Id"]
+                              where (string)e[TableStorage.PartitionKey] == (string)r[TableStorage.PartitionKey]
+                                && (string)e[TableStorage.RowKey] == (string)r[TableStorage.RowKey]
+                                && (Guid)e["Id"] == (Guid)r["Id"]
                                 && !string.IsNullOrWhiteSpace((string)r[TableStorage.ETag])
                                 && DateTime.UtcNow.Date == ((DateTime)r[TableStorage.Timestamp]).Date
                               select true).FirstOrDefault();
