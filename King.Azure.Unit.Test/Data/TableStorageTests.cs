@@ -95,7 +95,7 @@
         {
             var name = Guid.NewGuid().ToString();
             var t = new TableStorage(name, ConnectionString);
-            t.Query<TableEntity>(null);
+            await t.Query<TableEntity>(null);
         }
     }
 }

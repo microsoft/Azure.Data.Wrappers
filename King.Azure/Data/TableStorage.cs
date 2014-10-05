@@ -237,12 +237,13 @@
             var entities = new List<T>();
             TableContinuationToken token = null;
 
-            while (null == token)
+            do
             {
                 var queryResult = await this.reference.ExecuteQuerySegmentedAsync<T>(query, token);
                 entities.AddRange(queryResult.Results);
                 token = queryResult.ContinuationToken;
             }
+            while (null != token);
 
             return entities;
         }
@@ -261,13 +262,14 @@
 
             var entities = new List<DynamicTableEntity>();
             TableContinuationToken token = null;
-
-            while (null == token)
+            
+            do
             {
-                var queryResult = await this.reference.ExecuteQuerySegmentedAsync(new TableQuery(), token);
+                var queryResult = await this.reference.ExecuteQuerySegmentedAsync(query, token);
                 entities.AddRange(queryResult.Results);
                 token = queryResult.ContinuationToken;
             }
+            while (null != token);
 
             return entities;
         }
