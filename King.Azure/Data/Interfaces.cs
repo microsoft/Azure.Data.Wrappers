@@ -137,6 +137,31 @@
             where T : ITableEntity, new();
         
         /// <summary>
+        /// Query By Partition
+        /// </summary>
+        /// <param name="partitionKey"></param>
+        /// <returns>Entities</returns>
+        Task<IEnumerable<IDictionary<string, object>>> QueryByPartition(string partitionKey);
+
+        /// <summary>
+        /// Query By Partition
+        /// </summary>
+        /// <remarks>
+        /// Without providing the partion this query may not perform well.
+        /// </remarks>
+        /// <param name="rowKey">Row Key</param>
+        /// <returns>Entities</returns>
+        Task<IEnumerable<IDictionary<string, object>>> QueryByRow(string rowKey);
+
+        /// <summary>
+        /// Query By Partition and Row
+        /// </summary>
+        /// <param name="partitionKey">Partition Key</param>
+        /// <param name="rowKey">Row</param>
+        /// <returns></returns>
+        Task<IDictionary<string, object>> QueryByPartitionAndRow(string partitionKey, string rowKey);
+
+        /// <summary>
         /// Generic Query
         /// </summary>
         /// <param name="query">Query</param>

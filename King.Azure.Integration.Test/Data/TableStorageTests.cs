@@ -554,5 +554,104 @@
                 Assert.IsTrue(exists);
             }
         }
+
+        [Test]
+        public async Task QueryByPartitionDictionary()
+        {
+            var random = new Random();
+            var count = random.Next(1, 25);
+            var entities = new List<Helper>();
+            var partition = Guid.NewGuid().ToString();
+            for (var i = 0; i < count; i++)
+            {
+                var h = new Helper()
+                {
+                    PartitionKey = partition,
+                    RowKey = Guid.NewGuid().ToString(),
+                    Id = Guid.NewGuid(),
+                };
+                entities.Add(h);
+            }
+
+            await storage.Insert(entities);
+
+            var returned = await storage.QueryByPartition(partition);
+            Assert.IsNotNull(returned);
+            Assert.AreEqual(count, returned.Count());
+            foreach (var r in returned)
+            {
+                var exists = (from e in entities
+                              where e.RowKey == (string)r[TableStorage.RowKey]
+                              && e.Id == (Guid)r["Id"]
+                              select true).FirstOrDefault();
+                Assert.IsTrue(exists);
+            }
+        }
+
+        [Test]
+        public async Task QueryByRowDictionary()
+        {
+            var random = new Random();
+            var count = random.Next(1, 25);
+            var entities = new List<Helper>();
+            var rowKey = Guid.NewGuid().ToString();
+            for (var i = 0; i < count; i++)
+            {
+                var h = new Helper()
+                {
+                    PartitionKey = Guid.NewGuid().ToString(),
+                    RowKey = rowKey,
+                    Id = Guid.NewGuid(),
+                };
+                entities.Add(h);
+
+                await storage.InsertOrReplace(h);
+            }
+
+            var returned = await storage.QueryByRow(rowKey);
+            Assert.IsNotNull(returned);
+            Assert.AreEqual(count, returned.Count());
+            foreach (var r in returned)
+            {
+                var exists = (from e in entities
+                              where e.RowKey == (string)r[TableStorage.RowKey]
+                              && e.Id == (Guid)r["Id"]
+                              select true).FirstOrDefault();
+                Assert.IsTrue(exists);
+            }
+        }
+
+        [Test]
+        public async Task QueryByPartitionAndRowDictionary()
+        {
+            var random = new Random();
+            var count = random.Next(1, 25);
+            var entities = new List<Helper>();
+            var partition = Guid.NewGuid().ToString();
+            for (var i = 0; i < count; i++)
+            {
+                var h = new Helper()
+                {
+                    PartitionKey = partition,
+                    RowKey = Guid.NewGuid().ToString(),
+                    Id = Guid.NewGuid(),
+                };
+                entities.Add(h);
+            }
+
+            var z = new Helper()
+            {
+                PartitionKey = partition,
+                RowKey = Guid.NewGuid().ToString(),
+                Id = Guid.NewGuid(),
+            };
+            entities.Add(z);
+
+            await storage.Insert(entities);
+
+            var returned = await storage.QueryByPartitionAndRow(z.PartitionKey, z.RowKey);
+            Assert.IsNotNull(returned);
+            Assert.AreEqual(z.Id, returned["Id"]);
+        }
     }
 }
