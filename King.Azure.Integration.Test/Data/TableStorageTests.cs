@@ -401,5 +401,74 @@
         {
             await storage.DeleteByRow(null);
         }
+
+        [Test]
+        public async Task QueryByPartitionGreaterThan1000()
+        {
+            var random = new Random();
+            var count = random.Next(1001, 2500);
+            var entities = new List<Helper>();
+            var partition = Guid.NewGuid().ToString();
+            for (var i = 0; i < count; i++)
+            {
+                var h = new Helper()
+                {
+                    PartitionKey = partition,
+                    RowKey = Guid.NewGuid().ToString(),
+                    Id = Guid.NewGuid(),
+                };
+
+                entities.Add(h);
+            }
+
+            await storage.Insert(entities);
+
+            var returned = await storage.QueryByPartition<Helper>(partition);
+            Assert.IsNotNull(returned);
+            Assert.AreEqual(count, returned.Count());
+            foreach (var r in returned)
+            {
+                var exists = (from e in entities
+                              where e.RowKey == r.RowKey
+                              && e.Id == r.Id
+                              select true).FirstOrDefault();
+                Assert.IsTrue(exists);
+            }
+        }
+
+        [Test]
+        public async Task QueryGreaterThan1000()
+        {
+            var random = new Random();
+            var count = random.Next(1001, 2500);
+            var entities = new List<Helper>();
+            var partition = Guid.NewGuid().ToString();
+            for (var i = 0; i < count; i++)
+            {
+                var h = new Helper()
+                {
+                    PartitionKey = partition,
+                    RowKey = Guid.NewGuid().ToString(),
+                    Id = Guid.NewGuid(),
+                };
+
+                entities.Add(h);
+            }
+
+            await storage.Insert(entities);
+
+            var query = new TableQuery();
+            query.Where(TableQuery.GenerateFilterCondition(TableStorage.PartitionKey, QueryComparisons.Equal, partition));
+            var returned = await storage.Query(query);
+            Assert.IsNotNull(returned);
+            Assert.AreEqual(count, returned.Count());
+            foreach (var r in returned)
+            {
+                var exists = (from e in entities
+                              where e.RowKey == r.RowKey
+                              select true).FirstOrDefault();
+                Assert.IsTrue(exists);
+            }
+        }
     }
 }

@@ -163,13 +163,22 @@
         /// <param name="entities"></param>
         public virtual async Task<IEnumerable<TableResult>> Insert(IEnumerable<ITableEntity> entities)
         {
-            var batchOperation = new TableBatchOperation();
-            foreach (var entity in entities)
+            var result = new List<TableResult>();
+            var metaList = entities.Select((x, i) => new { Index = i, Value = x })
+                            .GroupBy(x => x.Index / 100)
+                            .Select(x => x.Select(v => v.Value).ToList());
+            foreach (var meta in metaList)
             {
-                batchOperation.InsertOrMerge(entity);
+                var batchOperation = new TableBatchOperation();
+                foreach (var entity in meta)
+                {
+                    batchOperation.InsertOrMerge(entity);
+                }
+
+                await this.reference.ExecuteBatchAsync(batchOperation);
             }
 
-            return await this.reference.ExecuteBatchAsync(batchOperation);
+            return result;
         }
 
         /// <summary>
