@@ -191,6 +191,27 @@
         }
 
         /// <summary>
+        /// Insert Batch
+        /// </summary>
+        /// <param name="entities">Entities</param>
+        public virtual async Task<IEnumerable<TableResult>> Insert(IEnumerable<ITableEntity> entities)
+        {
+            var result = new List<TableResult>();
+            var batches = entities.Select((x, i) => new { Index = i, Value = x })
+                            .GroupBy(x => x.Index / TableStorage.MaimumxInsertBatch)
+                            .Select(x => x.Select(v => v.Value).ToList());
+
+            foreach (var batch in batches)
+            {
+                var batchOperation = new TableBatchOperation();
+                batch.ForEach(e => batchOperation.InsertOrMerge(e));
+                await this.reference.ExecuteBatchAsync(batchOperation);
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// Insert Or Replace Entity (Dictionary)
         /// </summary>
         /// <remarks>
@@ -217,27 +238,6 @@
             var dynamicEntity = new DynamicTableEntity(partitionKey, rowKey, etag, properties);
 
             return await this.InsertOrReplace(dynamicEntity);
-        }
-
-        /// <summary>
-        /// Insert Batch
-        /// </summary>
-        /// <param name="entities"></param>
-        public virtual async Task<IEnumerable<TableResult>> Insert(IEnumerable<ITableEntity> entities)
-        {
-            var result = new List<TableResult>();
-            var batches = entities.Select((x, i) => new { Index = i, Value = x })
-                            .GroupBy(x => x.Index / TableStorage.MaimumxInsertBatch)
-                            .Select(x => x.Select(v => v.Value).ToList());
-
-            foreach (var batch in batches)
-            {
-                var batchOperation = new TableBatchOperation();
-                batch.ForEach(e => batchOperation.InsertOrMerge(e));
-                await this.reference.ExecuteBatchAsync(batchOperation);
-            }
-
-            return result;
         }
         #endregion
 
