@@ -275,32 +275,34 @@
                 throw new ArgumentNullException("query");
             }
 
-            var entities = new List<IDictionary<string, object>>();
+            var entities = new List<DynamicTableEntity>();
             TableContinuationToken token = null;
             
             do
             {
                 var queryResult = await this.reference.ExecuteQuerySegmentedAsync(query, token);
-                foreach (var e in queryResult.Results)
-                {
-                    var properties = new Dictionary<string, EntityProperty>();
-                    e.ReadEntity(properties, new Microsoft.WindowsAzure.Storage.OperationContext());
-
-                    var dic = new Dictionary<string, object>();
-                    foreach (var p in properties)
-                    {
-                        dic.Add(p.Key, p.Value.PropertyAsObject);
-                    }
-                    dic.Add(PartitionKey, e.PartitionKey);
-                    dic.Add(RowKey, e.RowKey);
-                    dic.Add(ETag, e.ETag);
-                    entities.Add(dic);
-                }
+                entities.AddRange(queryResult.Results);
                 token = queryResult.ContinuationToken;
             }
             while (null != token);
 
-            return entities;
+            var results = new List<IDictionary<string, object>>();
+            foreach (var e in entities)
+            {
+                var properties = new Dictionary<string, EntityProperty>();
+                e.ReadEntity(properties, new Microsoft.WindowsAzure.Storage.OperationContext());
+
+                var dic = new Dictionary<string, object>();
+                foreach (var p in properties)
+                {
+                    dic.Add(p.Key, p.Value.PropertyAsObject);
+                }
+                dic.Add(PartitionKey, e.PartitionKey);
+                dic.Add(RowKey, e.RowKey);
+                dic.Add(ETag, e.ETag);
+                results.Add(dic);
+            }
+            return results;
         }
 
         /// <summary>
