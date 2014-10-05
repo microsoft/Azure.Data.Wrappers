@@ -124,7 +124,6 @@
             };
             var entities = new List<TableEntity>();
             entities.Add(entity);
-            await storage.Insert(entities);
             await storage.InsertOrReplace(entity);
 
             var returned = await storage.QueryByPartition<TableEntity>("partition");
@@ -133,6 +132,54 @@
             var e = returned.First();
             Assert.AreEqual(entity.PartitionKey, e.PartitionKey);
             Assert.AreEqual(entity.RowKey, e.RowKey);
+        }
+
+        [Test]
+        public async Task InsertBatch()
+        {
+            var random = new Random();
+            var count = random.Next(1, 25);
+            var partition = Guid.NewGuid().ToString();
+            var entities = new List<TableEntity>(count);
+            for (var i = 0; i < count; i++)
+            {
+                var entity = new TableEntity()
+                {
+                    PartitionKey = partition,
+                    RowKey = Guid.NewGuid().ToString(),
+                };
+                entities.Add(entity);
+            }
+            await storage.Insert(entities);
+
+            var returned = await storage.QueryByPartition<TableEntity>(partition);
+            Assert.IsNotNull(returned);
+            Assert.AreEqual(count, returned.Count());
+        }
+
+        [Test]
+        public async Task InsertDictionaryBatch()
+        {
+            var random = new Random();
+            var count = random.Next(1, 25);
+            var partition = Guid.NewGuid().ToString();
+            var entities = new List<IDictionary<string, object>>(count);
+            for (var i = 0; i < count; i++)
+            {
+                var dic = new Dictionary<string, object>();
+                dic.Add(TableStorage.PartitionKey, partition);
+                dic.Add(TableStorage.RowKey, Guid.NewGuid());
+                dic.Add("Extraa", DateTime.UtcNow);
+                entities.Add(dic);
+            }
+            await storage.Insert(entities);
+
+            var query = new TableQuery();
+            query.Where(TableQuery.GenerateFilterCondition(TableStorage.PartitionKey, QueryComparisons.Equal, partition));
+            var returned = await storage.Query(query);
+
+            Assert.IsNotNull(returned);
+            Assert.AreEqual(count, returned.Count());
         }
 
         [Test]
