@@ -176,11 +176,7 @@
             foreach (var meta in metaList)
             {
                 var batchOperation = new TableBatchOperation();
-                foreach (var entity in meta)
-                {
-                    batchOperation.InsertOrMerge(entity);
-                }
-
+                meta.ForEach(e => batchOperation.InsertOrMerge(e));
                 await this.reference.ExecuteBatchAsync(batchOperation);
             }
 
@@ -289,11 +285,8 @@
             var results = new List<IDictionary<string, object>>();
             foreach (var e in entities)
             {
-                var properties = new Dictionary<string, EntityProperty>();
-                e.ReadEntity(properties, new Microsoft.WindowsAzure.Storage.OperationContext());
-
                 var dic = new Dictionary<string, object>();
-                foreach (var p in properties)
+                foreach (var p in e.Properties)
                 {
                     dic.Add(p.Key, p.Value.PropertyAsObject);
                 }
@@ -302,6 +295,7 @@
                 dic.Add(ETag, e.ETag);
                 results.Add(dic);
             }
+
             return results;
         }
 
@@ -316,11 +310,7 @@
             if (null != entities && entities.Any())
             {
                 var batchOperation = new TableBatchOperation();
-                foreach (var entity in entities)
-                {
-                    batchOperation.Delete(entity);
-                }
-
+                entities.ToList().ForEach(e => batchOperation.Delete(e));
                 await this.reference.ExecuteBatchAsync(batchOperation);
             }
         }
