@@ -406,7 +406,7 @@
         public async Task QueryByPartitionGreaterThan1000()
         {
             var random = new Random();
-            var count = random.Next(1001, 2500);
+            var count = random.Next(1001, 1250);
             var entities = new List<Helper>();
             var partition = Guid.NewGuid().ToString();
             for (var i = 0; i < count; i++)
@@ -440,7 +440,7 @@
         public async Task QueryGreaterThan1000()
         {
             var random = new Random();
-            var count = random.Next(1001, 2500);
+            var count = random.Next(1001, 1250);
             var entities = new List<Helper>();
             var partition = Guid.NewGuid().ToString();
             for (var i = 0; i < count; i++)
