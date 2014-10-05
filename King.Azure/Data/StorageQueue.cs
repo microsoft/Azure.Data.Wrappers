@@ -1,10 +1,10 @@
 ﻿namespace King.Azure.Data
 {
     using Microsoft.WindowsAzure.Storage.Queue;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+    using Newtonsoft.Json;
+    using System;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
 
     /// <summary>
     /// Storage Queue

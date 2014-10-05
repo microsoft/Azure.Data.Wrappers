@@ -92,6 +92,12 @@
         Task<TableResult> InsertOrReplace(IDictionary<string, object> entity);
 
         /// <summary>
+        /// Insert Batch
+        /// </summary>
+        /// <param name="entities">Entities</param>
+        Task<IEnumerable<TableResult>> Insert(IEnumerable<IDictionary<string, object>> entities);
+
+        /// <summary>
         /// Query By Partition
         /// </summary>
         /// <typeparam name="T"></typeparam>
