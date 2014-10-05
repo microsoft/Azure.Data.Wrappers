@@ -67,7 +67,7 @@
             }
 
             var msgs = await this.queue.GetMany(messageCount);
-            if (null == msgs)
+            if (null == msgs || !msgs.Any())
             {
                 return null;
             }
