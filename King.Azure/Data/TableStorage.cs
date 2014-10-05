@@ -101,7 +101,7 @@
         }
         #endregion
 
-        #region Methods
+        #region Create Table
         /// <summary>
         /// Create If Not Exists
         /// </summary>
@@ -119,7 +119,9 @@
         {
             return await this.reference.CreateIfNotExistsAsync();
         }
+        #endregion
 
+        #region Delete
         /// <summary>
         /// Delete Table
         /// </summary>
@@ -129,6 +131,56 @@
             await this.reference.DeleteAsync();
         }
 
+        /// <summary>
+        /// Delete By Partition
+        /// </summary>
+        /// <param name="partitionKey">Partition Key</param>
+        /// <returns>Task</returns>
+        public virtual async Task DeleteByPartition(string partitionKey)
+        {
+            var entities = await this.QueryByPartition<TableEntity>(partitionKey);
+            if (null != entities && entities.Any())
+            {
+                var batchOperation = new TableBatchOperation();
+                entities.ToList().ForEach(e => batchOperation.Delete(e));
+                await this.reference.ExecuteBatchAsync(batchOperation);
+            }
+        }
+
+        /// <summary>
+        /// Delete By Row
+        /// </summary>
+        /// <param name="rowKey">Row Key</param>
+        /// <returns>Task</returns>
+        public virtual async Task DeleteByRow(string rowKey)
+        {
+            var entities = await this.QueryByRow<TableEntity>(rowKey);
+            if (null != entities && entities.Any())
+            {
+                foreach (var entity in entities)
+                {
+                    await this.reference.ExecuteAsync(TableOperation.Delete(entity));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Delete By Partition and Row 
+        /// </summary>
+        /// <param name="partitionKey">Partition Key</param>
+        /// <param name="rowKey">Row Key</param>
+        /// <returns>Task</returns>
+        public virtual async Task DeleteByPartitionAndRow(string partitionKey, string rowKey)
+        {
+            var entity = await this.QueryByPartitionAndRow<TableEntity>(partitionKey, rowKey);
+            if (null != entity)
+            {
+                await this.reference.ExecuteAsync(TableOperation.Delete(entity));
+            }
+        }
+        #endregion
+
+        #region Save
         /// <summary>
         /// Insert or update the record in table
         /// </summary>
@@ -187,7 +239,9 @@
 
             return result;
         }
+        #endregion
 
+        #region Query Object
         /// <summary>
         /// Query By Partition
         /// </summary>
@@ -263,7 +317,9 @@
 
             return entities;
         }
+        #endregion
 
+        #region Query Dictionary
         /// <summary>
         /// Generic Query
         /// </summary>
@@ -303,54 +359,6 @@
             }
 
             return results;
-        }
-
-        /// <summary>
-        /// Delete By Partition
-        /// </summary>
-        /// <param name="partitionKey">Partition Key</param>
-        /// <returns>Task</returns>
-        public virtual async Task DeleteByPartition(string partitionKey)
-        {
-            var entities = await this.QueryByPartition<TableEntity>(partitionKey);
-            if (null != entities && entities.Any())
-            {
-                var batchOperation = new TableBatchOperation();
-                entities.ToList().ForEach(e => batchOperation.Delete(e));
-                await this.reference.ExecuteBatchAsync(batchOperation);
-            }
-        }
-
-        /// <summary>
-        /// Delete By Row
-        /// </summary>
-        /// <param name="rowKey">Row Key</param>
-        /// <returns>Task</returns>
-        public virtual async Task DeleteByRow(string rowKey)
-        {
-            var entities = await this.QueryByRow<TableEntity>(rowKey);
-            if (null != entities && entities.Any())
-            {
-                foreach (var entity in entities)
-                {
-                    await this.reference.ExecuteAsync(TableOperation.Delete(entity));
-                }
-            }
-        }
-
-        /// <summary>
-        /// Delete By Partition and Row 
-        /// </summary>
-        /// <param name="partitionKey">Partition Key</param>
-        /// <param name="rowKey">Row Key</param>
-        /// <returns>Task</returns>
-        public virtual async Task DeleteByPartitionAndRow(string partitionKey, string rowKey)
-        {
-            var entity = await this.QueryByPartitionAndRow<TableEntity>(partitionKey, rowKey);
-            if (null != entity)
-            {
-                await this.reference.ExecuteAsync(TableOperation.Delete(entity));
-            }
         }
         #endregion
     }
