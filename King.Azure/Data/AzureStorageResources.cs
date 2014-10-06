@@ -61,7 +61,7 @@
         /// <returns>Containers</returns>
         public virtual IEnumerable<IContainer> Containers()
         {
-            var names = this.TableNames();
+            var names = this.ContainerNames();
             foreach (var name in names)
             {
                 yield return new Container(name, base.Account);
@@ -85,7 +85,7 @@
         /// <returns>Queues</returns>
         public virtual IEnumerable<IStorageQueue> Queues()
         {
-            var names = this.TableNames();
+            var names = this.QueueNames();
             foreach (var name in names)
             {
                 yield return new StorageQueue(name, base.Account);
