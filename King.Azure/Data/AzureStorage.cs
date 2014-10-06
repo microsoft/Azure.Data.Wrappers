@@ -29,6 +29,20 @@
 
             this.account = CloudStorageAccount.Parse(connectionString);
         }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="account">Storage Account</param>
+        public AzureStorage(CloudStorageAccount account)
+        {
+            if (null == account)
+            {
+                throw new ArgumentNullException("account");
+            }
+
+            this.account = account;
+        }
         #endregion
 
         #region Properties

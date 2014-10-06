@@ -1,6 +1,7 @@
 ﻿namespace King.Azure.Unit.Test.Data
 {
     using King.Azure.Data;
+    using Microsoft.WindowsAzure.Storage;
     using NUnit.Framework;
     using System;
 
@@ -23,9 +24,16 @@
 
         [Test]
         [ExpectedException(typeof(ArgumentException))]
-        public void ConstructorNull()
+        public void ConstructorConnectionStringNull()
         {
-            new AzureStorage(null);
+            new AzureStorage((string)null);
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void ConstructorAccountNull()
+        {
+            new AzureStorage((CloudStorageAccount)null);
         }
     }
 }
