@@ -42,6 +42,17 @@
         }
 
         [Test]
+        public async Task ConstructorAccount()
+        {
+            var name = 'a' + Guid.NewGuid().ToString().ToLowerInvariant().Replace('-', 'a');
+            var account = CloudStorageAccount.Parse(ConnectionString);
+            var storage = new Container(name, account);
+            var created = await storage.CreateIfNotExists();
+
+            Assert.IsTrue(created);
+        }
+
+        [Test]
         public async Task CreateIfNotExists()
         {
             var name = 'a' + Guid.NewGuid().ToString().ToLowerInvariant().Replace('-', 'a');

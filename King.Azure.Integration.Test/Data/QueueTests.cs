@@ -1,6 +1,7 @@
 ﻿namespace King.Service.Integration
 {
     using King.Azure.Data;
+    using Microsoft.WindowsAzure.Storage;
     using Microsoft.WindowsAzure.Storage.Queue;
     using Newtonsoft.Json;
     using NUnit.Framework;
@@ -33,6 +34,17 @@
         {
             var name = 'a' + Guid.NewGuid().ToString().ToLowerInvariant().Replace('-', 'a');
             var storage = new StorageQueue(name, ConnectionString);
+            var created = await storage.CreateIfNotExists();
+
+            Assert.IsTrue(created);
+        }
+
+        [Test]
+        public async Task ConstructorAccount()
+        {
+            var name = 'a' + Guid.NewGuid().ToString().ToLowerInvariant().Replace('-', 'a');
+            var account = CloudStorageAccount.Parse(ConnectionString);
+            var storage = new StorageQueue(name, account);
             var created = await storage.CreateIfNotExists();
 
             Assert.IsTrue(created);

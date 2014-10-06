@@ -1,5 +1,6 @@
 ﻿namespace King.Azure.Data
 {
+    using Microsoft.WindowsAzure.Storage;
     using Microsoft.WindowsAzure.Storage.Queue;
     using Newtonsoft.Json;
     using System;
@@ -25,11 +26,29 @@
 
         #region Constructors
         /// <summary>
-        /// Queue
+        /// Constructor
         /// </summary>
         /// <param name="name">Name</param>
+        /// <param name="connectionStringKey">Connection String</param>
         public StorageQueue(string name, string connectionString)
             : base(connectionString)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                throw new ArgumentException("name");
+            }
+
+            this.client = base.Account.CreateCloudQueueClient();
+            this.reference = client.GetQueueReference(name);
+        }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="name">Name</param>
+        /// <param name="account">Storage Account</param>
+        public StorageQueue(string name, CloudStorageAccount account)
+            : base(account)
         {
             if (string.IsNullOrWhiteSpace(name))
             {

@@ -1,5 +1,6 @@
 ﻿namespace King.Azure.Data
 {
+    using Microsoft.WindowsAzure.Storage;
     using Microsoft.WindowsAzure.Storage.Table;
     using System;
     using System.Collections.Generic;
@@ -53,8 +54,26 @@
         /// Table Storage
         /// </summary>
         /// <param name="tableName">Table Name</param>
+        /// <param name="connectionStringKey">Connection String</param>
         public TableStorage(string tableName, string connectionStringKey)
             : base(connectionStringKey)
+        {
+            if (string.IsNullOrWhiteSpace(tableName))
+            {
+                throw new ArgumentException("tableName");
+            }
+
+            this.client = base.Account.CreateCloudTableClient();
+            this.reference = client.GetTableReference(tableName);
+        }
+
+        /// <summary>
+        /// Table Storage
+        /// </summary>
+        /// <param name="tableName">Table Name</param>
+        /// <param name="account">Storage Account</param>
+        public TableStorage(string tableName, CloudStorageAccount account)
+            : base(account)
         {
             if (string.IsNullOrWhiteSpace(tableName))
             {

@@ -32,6 +32,19 @@
         }
 
         /// <summary>
+        /// List Tables
+        /// </summary>
+        /// <returns>Tables</returns>
+        public virtual IEnumerable<ITableStorage> Tables()
+        {
+            var names = this.TableNames();
+            foreach (var name in names)
+            {
+                yield return new TableStorage(name, base.Account);
+            }
+        }
+
+        /// <summary>
         /// List Container Names
         /// </summary>
         /// <returns>Container Names</returns>
@@ -43,6 +56,19 @@
         }
 
         /// <summary>
+        /// List Containers
+        /// </summary>
+        /// <returns>Containers</returns>
+        public virtual IEnumerable<IContainer> Containers()
+        {
+            var names = this.TableNames();
+            foreach (var name in names)
+            {
+                yield return new Container(name, base.Account);
+            }
+        }
+
+        /// <summary>
         /// List Queue Names
         /// </summary>
         /// <returns>Queue Names</returns>
@@ -51,6 +77,19 @@
             var client = base.Account.CreateCloudQueueClient();
             return from t in client.ListQueues()
                    select t.Name;
+        }
+
+        /// <summary>
+        /// List Queues
+        /// </summary>
+        /// <returns>Queues</returns>
+        public virtual IEnumerable<IStorageQueue> Queues()
+        {
+            var names = this.TableNames();
+            foreach (var name in names)
+            {
+                yield return new StorageQueue(name, base.Account);
+            }
         }
         #endregion
     }

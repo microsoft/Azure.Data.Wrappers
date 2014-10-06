@@ -1,5 +1,6 @@
 ﻿namespace King.Azure.Data
 {
+    using Microsoft.WindowsAzure.Storage;
     using Microsoft.WindowsAzure.Storage.Blob;
     using Newtonsoft.Json;
     using System;
@@ -34,8 +35,29 @@
         /// Queue
         /// </summary>
         /// <param name="name">Name</param>
+        /// <param name="connectionString">Connection String</param>
+        /// <param name="isPublic">Is Public</param>
         public Container(string name, string connectionString, bool isPublic = false)
             : base(connectionString)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                throw new ArgumentException("name");
+            }
+
+            this.client = this.Account.CreateCloudBlobClient();
+            this.reference = this.client.GetContainerReference(name);
+            this.isPublic = isPublic;
+        }
+
+        /// <summary>
+        /// Queue
+        /// </summary>
+        /// <param name="name">Name</param>
+        /// <param name="account">Storage Account</param>
+        /// <param name="isPublic">Is Public</param>
+        public Container(string name, CloudStorageAccount account, bool isPublic = false)
+            : base(account)
         {
             if (string.IsNullOrWhiteSpace(name))
             {

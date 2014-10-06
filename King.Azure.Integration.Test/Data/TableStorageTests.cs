@@ -1,6 +1,7 @@
 ﻿namespace King.Service.Integration
 {
     using King.Azure.Data;
+    using Microsoft.WindowsAzure.Storage;
     using Microsoft.WindowsAzure.Storage.Table;
     using NUnit.Framework;
     using System;
@@ -37,6 +38,17 @@
         public void Dispose()
         {
             storage.Delete().Wait();
+        }
+
+        [Test]
+        public async Task ConstructorAccount()
+        {
+            var name = 'a' + Guid.NewGuid().ToString().ToLowerInvariant().Replace('-', 'a');
+            var account = CloudStorageAccount.Parse(ConnectionString);
+            var storage = new TableStorage(name, account);
+            var created = await storage.CreateIfNotExists();
+
+            Assert.IsTrue(created);
         }
 
         [Test]
