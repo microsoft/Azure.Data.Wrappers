@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>King.Azure</id>
-    <version>1.1.1</version>
+    <version>1.1.2</version>
     <title>King.Azure</title>
     <authors>Jef King</authors>
     <owners>Jef King</owners>
@@ -12,7 +12,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Mockable classes for working with Azure Storage.</description>
     <summary>Simplified Windows Azure Library, mockable.</summary>
-    <releaseNotes>Full round trip of IDictionary for insertion and queries.</releaseNotes>
+    <releaseNotes>List out all storage resources, pull a list of tables/queues/container objects to use.</releaseNotes>
     <copyright>Jef King</copyright>
     <language>en-US</language>
     <tags>King.Azure Azure Storage Mock Mockable Simple Data Table Storage Queue Queuing Blob Query dependency injection Cloud Table-Storage</tags>
