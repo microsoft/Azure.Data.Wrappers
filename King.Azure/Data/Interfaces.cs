@@ -442,7 +442,6 @@
     /// </summary>
     public interface IAzureStorageResources
     {
-
         #region Methods
         /// <summary>
         /// List Table Names
@@ -451,16 +450,34 @@
         IEnumerable<string> TableNames();
 
         /// <summary>
+        /// List Tables
+        /// </summary>
+        /// <returns>Tables</returns>
+        IEnumerable<ITableStorage> Tables();
+
+        /// <summary>
         /// List Container Names
         /// </summary>
         /// <returns>Container Names</returns>
         IEnumerable<string> ContainerNames();
 
         /// <summary>
+        /// List Containers
+        /// </summary>
+        /// <returns>Containers</returns>
+        IEnumerable<IContainer> Containers();
+
+        /// <summary>
         /// List Queue Names
         /// </summary>
         /// <returns>Queue Names</returns>
         IEnumerable<string> QueueNames();
+
+        /// <summary>
+        /// List Queues
+        /// </summary>
+        /// <returns>Queues</returns>
+        IEnumerable<IStorageQueue> Queues();
         #endregion
     }
     #endregion
