@@ -1,6 +1,7 @@
 ﻿namespace King.Azure.Unit.Test.Data
 {
     using King.Azure.Data;
+    using Microsoft.WindowsAzure.Storage;
     using Microsoft.WindowsAzure.Storage.Table;
     using NUnit.Framework;
     using System;
@@ -57,9 +58,16 @@
 
         [Test]
         [ExpectedException(typeof(ArgumentException))]
-        public void ConstructorKeyNull()
+        public void ConstructorAccountTableNull()
         {
-            new TableStorage("TestTable", null);
+            new TableStorage(null, CloudStorageAccount.Parse(ConnectionString));
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentException))]
+        public void ConstructorConnectionStringNull()
+        {
+            new TableStorage("TestTable", (string)null);
         }
 
         [Test]
