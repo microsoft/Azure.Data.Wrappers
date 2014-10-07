@@ -15,7 +15,7 @@
     <releaseNotes>List out all storage resources, pull a list of tables/queues/container objects to use.</releaseNotes>
     <copyright>Jef King</copyright>
     <language>en-US</language>
-    <tags>King.Azure Azure Storage Mock Mockable Simple Data Table Storage Queue Queuing Blob Query dependency injection Cloud Table-Storage</tags>
+    <tags>King.Azure Azure Storage Mock Mockable Simple Data Table Storage Queue Queuing Blob Query dependency injection Cloud Table-Storage Windows-Azure Windows dotNet CSharp Mocking Data-Table Blob Json WindowsAzure.Storage</tags>
     <dependencies>
       <dependency id="WindowsAzure.Storage" />
     </dependencies>
