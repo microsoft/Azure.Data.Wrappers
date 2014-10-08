@@ -198,10 +198,31 @@
 
             var json = JsonConvert.SerializeObject(obj);
 
-            var blob = this.GetReference(blobName);
-            await blob.UploadTextAsync(json);
+            await this.Save(blobName, json, "application/json");
+        }
 
-            blob.Properties.ContentType = "application/json";
+        /// <summary>
+        /// Save Text
+        /// </summary>
+        /// <param name="blobName">Blob Name</param>
+        /// <param name="text">Text</param>
+        /// <param name="contentType">Content Type</param>
+        /// <returns>Task</returns>
+        public virtual async Task Save(string blobName, string text, string contentType = "text/plain")
+        {
+            if (string.IsNullOrWhiteSpace(blobName))
+            {
+                throw new ArgumentException("blobName");
+            }
+            if (string.IsNullOrWhiteSpace(text))
+            {
+                throw new ArgumentException("text");
+            }
+
+            var blob = this.GetReference(blobName);
+            await blob.UploadTextAsync(text);
+
+            blob.Properties.ContentType = contentType;
             await blob.SetPropertiesAsync();
         }
 
@@ -241,6 +262,22 @@
             await blob.DownloadToByteArrayAsync(bytes, 0);
 
             return bytes;
+        }
+
+        /// <summary>
+        /// Get Bytes
+        /// </summary>
+        /// <param name="blobName">Blob Name</param>
+        /// <returns>Text</returns>
+        public virtual async Task<string> GetText(string blobName)
+        {
+            if (string.IsNullOrWhiteSpace(blobName))
+            {
+                throw new ArgumentException("blobName");
+            }
+
+            var blob = this.GetReference(blobName);
+            return await blob.DownloadTextAsync();
         }
 
         /// <summary>

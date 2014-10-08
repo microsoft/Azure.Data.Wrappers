@@ -264,6 +264,13 @@
         Task<byte[]> Get(string blobName);
 
         /// <summary>
+        /// Get Bytes
+        /// </summary>
+        /// <param name="blobName">Blob Name</param>
+        /// <returns>Text</returns>
+        Task<string> GetText(string blobName);
+
+        /// <summary>
         /// Blob Properties
         /// </summary>
         /// <param name="blobName">Blob Name</param>

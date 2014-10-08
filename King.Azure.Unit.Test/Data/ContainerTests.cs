@@ -134,6 +134,14 @@
 
         [Test]
         [ExpectedException(typeof(ArgumentException))]
+        public async Task GetTextBlobNameNull()
+        {
+            var c = new Container("test", ConnectionString);
+            await c.GetText(null);
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentException))]
         public async Task SaveBytesBlobNameNull()
         {
             var random = new Random();

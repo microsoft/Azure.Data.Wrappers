@@ -122,6 +122,20 @@
         }
 
         [Test]
+        public async Task RoundTripText()
+        {
+            var data = Guid.NewGuid().ToString();
+            var blobName = Guid.NewGuid().ToString();
+            var storage = new Container(ContainerName, ConnectionString);
+
+            await storage.Save(blobName, data);
+            var returned = await storage.GetText(blobName);
+
+            Assert.IsNotNull(returned);
+            Assert.AreEqual(data, returned);
+        }
+
+        [Test]
         public async Task JsonContentType()
         {
             var helper = new Helper()
