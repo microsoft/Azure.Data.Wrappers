@@ -246,6 +246,15 @@
         /// <param name="contentType">Content Type</param>
         /// <returns>Task</returns>
         Task Save(string blobName, byte[] bytes, string contentType = "application/octet-stream");
+
+        /// <summary>
+        /// Save Text
+        /// </summary>
+        /// <param name="blobName">Blob Name</param>
+        /// <param name="text">Text</param>
+        /// <param name="contentType">Content Type</param>
+        /// <returns>Task</returns>
+        Task Save(string blobName, string text, string contentType = "text/plain");
         
         /// <summary>
         /// Get Binary Data

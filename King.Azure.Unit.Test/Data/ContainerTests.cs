@@ -121,7 +121,7 @@
         public async Task SaveObjectNull()
         {
             var c = new Container("test", ConnectionString);
-            await c.Save(Guid.NewGuid().ToString(), null);
+            await c.Save(Guid.NewGuid().ToString(), (object)null);
         }
 
         [Test]
@@ -143,12 +143,13 @@
             var c = new Container("test", ConnectionString);
             await c.Save(null, bytes);
         }
+
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public async Task SaveBytesNull()
         {
             var c = new Container("test", ConnectionString);
-            await c.Save(Guid.NewGuid().ToString(), null);
+            await c.Save(Guid.NewGuid().ToString(), (byte[])null);
         }
 
         [Test]
