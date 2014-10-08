@@ -104,7 +104,7 @@
         }
 
         [Test]
-        public async Task RoundTrip()
+        public async Task RoundTripObject()
         {
             var helper = new Helper()
             {
@@ -119,6 +119,10 @@
 
             Assert.IsNotNull(returned);
             Assert.AreEqual(helper.Id, returned.Id);
+
+            var properties = await storage.Properties(blobName);
+            Assert.IsNotNull(properties);
+            Assert.AreEqual("application/json", properties.ContentType);
         }
 
         [Test]
@@ -133,6 +137,10 @@
 
             Assert.IsNotNull(returned);
             Assert.AreEqual(data, returned);
+
+            var properties = await storage.Properties(blobName);
+            Assert.IsNotNull(properties);
+            Assert.AreEqual("text/plain", properties.ContentType);
         }
 
         [Test]
@@ -169,6 +177,10 @@
             Assert.IsNotNull(returned);
             Assert.AreEqual(bytes.Length, returned.Length);
             Assert.AreEqual(bytes, returned);
+
+            var properties = await storage.Properties(blobName);
+            Assert.IsNotNull(properties);
+            Assert.AreEqual("application/octet-stream", properties.ContentType);
         }
 
         [Test]
