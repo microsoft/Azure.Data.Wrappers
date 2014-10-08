@@ -145,11 +145,27 @@
         }
 
         [Test]
+        [ExpectedException(typeof(ArgumentException))]
+        public async Task SaveTextBlobNameNull()
+        {
+            var c = new Container("test", ConnectionString);
+            await c.Save(null, Guid.NewGuid().ToString());
+        }
+
+        [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public async Task SaveBytesNull()
         {
             var c = new Container("test", ConnectionString);
             await c.Save(Guid.NewGuid().ToString(), (byte[])null);
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentException))]
+        public async Task SaveTextNull()
+        {
+            var c = new Container("test", ConnectionString);
+            await c.Save(Guid.NewGuid().ToString(), (string)null);
         }
 
         [Test]
