@@ -164,7 +164,14 @@
                 throw new ArgumentNullException("obj");
             }
 
-            await this.Save(new CloudQueueMessage(JsonConvert.SerializeObject(obj)));
+            if (obj is CloudQueueMessage)
+            {
+                await this.Save(obj as CloudQueueMessage);
+            }
+            else
+            {
+                await this.Save(new CloudQueueMessage(JsonConvert.SerializeObject(obj)));
+            }
         }
 
         /// <summary>
