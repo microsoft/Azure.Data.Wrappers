@@ -72,8 +72,8 @@
         /// <summary>
         /// Insert or update the record in table
         /// </summary>
-        /// <param name="item">Scheduled Task Entry</param>
-        Task<TableResult> InsertOrReplace(ITableEntity entry);
+        /// <param name="entity">Entity</param>
+        Task<TableResult> InsertOrReplace(ITableEntity entity);
 
         /// <summary>
         /// Insert Batch

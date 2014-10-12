@@ -203,10 +203,10 @@
         /// <summary>
         /// Insert or update the record in table
         /// </summary>
-        /// <param name="item">Scheduled Task Entry</param>
-        public virtual async Task<TableResult> InsertOrReplace(ITableEntity entry)
+        /// <param name="entity">Entity</param>
+        public virtual async Task<TableResult> InsertOrReplace(ITableEntity entity)
         {
-            return await this.reference.ExecuteAsync(TableOperation.InsertOrReplace(entry));
+            return await this.reference.ExecuteAsync(TableOperation.InsertOrReplace(entity));
         }
 
         /// <summary>
