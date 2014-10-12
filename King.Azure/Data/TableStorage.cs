@@ -199,7 +199,7 @@
         }
         #endregion
 
-        #region Save
+        #region Save Data
         /// <summary>
         /// Insert or update the record in table
         /// </summary>
@@ -246,10 +246,7 @@
             }
             
             var properties = new Dictionary<string, EntityProperty>();
-            foreach (var key in entity.Keys.Where(k => k != PartitionKey && k != RowKey && k != ETag))
-            {
-                properties.Add(key, EntityProperty.CreateEntityPropertyFromObject(entity[key]));
-            }
+            entity.Keys.Where(k => k != PartitionKey && k != RowKey && k != ETag).ToList().ForEach(key => properties.Add(key, EntityProperty.CreateEntityPropertyFromObject(entity[key])));
 
             var partitionKey = entity.Keys.Contains(PartitionKey) ? entity[PartitionKey].ToString() : string.Empty;
             var rowKey = entity.Keys.Contains(RowKey) ? entity[RowKey].ToString() : string.Empty;
@@ -277,10 +274,7 @@
                 foreach (var entity in batch)
                 {
                     var properties = new Dictionary<string, EntityProperty>();
-                    foreach (var key in entity.Keys.Where(k => k != PartitionKey && k != RowKey && k != ETag))
-                    {
-                        properties.Add(key, EntityProperty.CreateEntityPropertyFromObject(entity[key]));
-                    }
+                    entity.Keys.Where(k => k != PartitionKey && k != RowKey && k != ETag).ToList().ForEach(key => properties.Add(key, EntityProperty.CreateEntityPropertyFromObject(entity[key])));
 
                     var partitionKey = entity.Keys.Contains(PartitionKey) ? entity[PartitionKey].ToString() : string.Empty;
                     var rowKey = entity.Keys.Contains(RowKey) ? entity[RowKey].ToString() : string.Empty;
