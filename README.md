@@ -1,9 +1,17 @@
 Azure Storage Simplified
 - Blob Storage
-  * Save object as Json in Blob
+  * Store and Retrieve object as Json in Blob
+  * Get stream
+  * Store byte[] or text; and specify mimetype
 - Table Storage
-..* Standard queries:
+  * Batch inserts
+  * Standard queries: Partition, Partition and Row, Row
+  * Store and Retrieve dynamic objects
 - Queues
+- Azure Storage Resources
+  * List Table Names
+  * List Container Names
+  * List Queue Names
 - Mockable for dependancy injection and testing
 - Plugs into the [King.Service](https://github.com/jefking/King.Service) task framework
 - Prefer async calls where appropriate
