@@ -1,6 +1,6 @@
 Azure Storage Simplified
 - Blob Storage
-..* Save object as Json in Blob
+  * Save object as Json in Blob
 - Table Storage
 ..* Standard queries:
 - Queues
