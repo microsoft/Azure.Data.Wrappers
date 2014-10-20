@@ -1,7 +1,5 @@
 ### Azure Storage Simplified
-- Blob Storage
-- Table Storage
-- Queues
+- Queues/Blobs/Table Storage
 - Azure Storage Resources
 - Mockable for dependancy injection and testing
 - Plugs into the [King.Service](https://github.com/jefking/King.Service) task framework
