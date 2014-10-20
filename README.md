@@ -1,4 +1,4 @@
-Azure Storage Simplified
+### Azure Storage Simplified
 - Blob Storage
   * Store and Retrieve object as Json in Blob
   * Get stream
@@ -16,7 +16,7 @@ Azure Storage Simplified
 - Plugs into the [King.Service](https://github.com/jefking/King.Service) task framework
 - Prefer async calls where appropriate
 
-## [NuGet](https://www.nuget.org/packages/King.Azure)
+### [NuGet](https://www.nuget.org/packages/King.Azure)
 ```
 PM> Install-Package King.Azure
 ```
