@@ -10,8 +10,8 @@
     <projectUrl>https://github.com/jefking/King.Azure</projectUrl>
     <iconUrl>https://raw.githubusercontent.com/jefking/King.Azure/master/icon.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Mockable classes for working with Azure Storage.</description>
-    <summary>Simplified Windows Azure Library, mockable.</summary>
+    <description>Azure Storage Simplified.</description>
+    <summary>Azure Storage Simplified.</summary>
     <releaseNotes>Save text to container.</releaseNotes>
     <copyright>Jef King</copyright>
     <language>en-US</language>
