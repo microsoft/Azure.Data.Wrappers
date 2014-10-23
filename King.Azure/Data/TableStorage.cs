@@ -203,14 +203,31 @@
         /// </summary>
         /// <param name="entity">Entity</param>
         /// <returns>Task</returns>
-        public virtual async Task Delete(ITableEntity entity)
+        public virtual async Task<TableResult> Delete(ITableEntity entity)
         {
             if (null == entity)
             {
                 throw new ArgumentNullException("entity");
             }
 
-            await this.reference.ExecuteAsync(TableOperation.Delete(entity));
+            return await this.reference.ExecuteAsync(TableOperation.Delete(entity));
+        }
+
+        /// <summary>
+        /// Delete Entities
+        /// </summary>
+        /// <param name="entities">Entities</param>
+        /// <returns>Table Results</returns>
+        public virtual async Task<IEnumerable<TableResult>> Delete(IEnumerable<ITableEntity> entities)
+        {
+            if (null == entities)
+            {
+                throw new ArgumentNullException("entities");
+            }
+
+            var batchOperation = new TableBatchOperation();
+            entities.ToList().ForEach(t => batchOperation.Delete(t));
+            return await this.reference.ExecuteBatchAsync(batchOperation);
         }
         #endregion
 

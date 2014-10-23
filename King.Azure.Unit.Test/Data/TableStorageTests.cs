@@ -118,7 +118,16 @@
         {
             var name = Guid.NewGuid().ToString();
             var t = new TableStorage(name, ConnectionString);
-            await t.Delete(null);
+            await t.Delete((ITableEntity)null);
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public async Task DeleteEntitiesNull()
+        {
+            var name = Guid.NewGuid().ToString();
+            var t = new TableStorage(name, ConnectionString);
+            await t.Delete((IEnumerable<ITableEntity>)null);
         }
     }
 }

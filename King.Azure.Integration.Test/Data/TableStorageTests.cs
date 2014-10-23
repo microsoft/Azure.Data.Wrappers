@@ -426,6 +426,34 @@
         }
 
         [Test]
+        public async Task DeleteEnities()
+        {
+            var random = new Random();
+            var count = random.Next(1, 25);
+            var entities = new List<ITableEntity>();
+            var partition = Guid.NewGuid().ToString();
+            for (var i = 0; i < count; i++)
+            {
+                entities.Add(new Helper()
+                {
+                    PartitionKey = partition,
+                    RowKey = Guid.NewGuid().ToString(),
+                    Id = Guid.NewGuid(),
+                }
+                );
+            }
+
+            await storage.Insert(entities);
+            await storage.Delete(entities);
+
+            foreach (var e in entities)
+            {
+                var returned = await storage.QueryByPartitionAndRow<Helper>(e.PartitionKey, e.RowKey);
+                Assert.IsNull(returned);
+            }
+        }
+
+        [Test]
         public async Task QueryByPartitionPartitionNull()
         {
             var returned = await storage.QueryByPartition<Helper>(null);

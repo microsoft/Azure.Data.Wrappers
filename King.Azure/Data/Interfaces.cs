@@ -195,7 +195,14 @@
         /// </summary>
         /// <param name="entity">Entity</param>
         /// <returns>Task</returns>
-        Task Delete(ITableEntity entity);
+        Task<TableResult> Delete(ITableEntity entity);
+
+        /// <summary>
+        /// Delete Entities
+        /// </summary>
+        /// <param name="entities">Entities</param>
+        /// <returns>Table Results</returns>
+        Task<IEnumerable<TableResult>> Delete(IEnumerable<ITableEntity> entities);
         #endregion
     }
     #endregion
