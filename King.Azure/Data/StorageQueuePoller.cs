@@ -61,10 +61,7 @@
         /// <returns>Queued Item</returns>
         public virtual async Task<IEnumerable<IQueued<T>>> PollMany(int messageCount = 5)
         {
-            if (0 > messageCount)
-            {
-                messageCount = 5;
-            }
+            messageCount = 0 >= messageCount ? 5 : messageCount;
 
             var msgs = await this.queue.GetMany(messageCount);
             if (null == msgs || !msgs.Any())
