@@ -111,5 +111,14 @@
             var t = new TableStorage(name, ConnectionString);
             await t.Query<TableEntity>(null);
         }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public async Task DeleteEntityNull()
+        {
+            var name = Guid.NewGuid().ToString();
+            var t = new TableStorage(name, ConnectionString);
+            await t.Delete(null);
+        }
     }
 }

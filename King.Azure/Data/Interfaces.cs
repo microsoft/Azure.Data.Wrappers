@@ -189,6 +189,13 @@
         /// <param name="rowKey"></param>
         /// <returns>Task</returns>
         Task DeleteByPartitionAndRow(string partitionKey, string row);
+
+        /// <summary>
+        /// Delete Entity
+        /// </summary>
+        /// <param name="entity">Entity</param>
+        /// <returns>Task</returns>
+        Task Delete(ITableEntity entity);
         #endregion
     }
     #endregion

@@ -197,6 +197,21 @@
                 await this.reference.ExecuteAsync(TableOperation.Delete(entity));
             }
         }
+
+        /// <summary>
+        /// Delete Entity
+        /// </summary>
+        /// <param name="entity">Entity</param>
+        /// <returns>Task</returns>
+        public virtual async Task Delete(ITableEntity entity)
+        {
+            if (null == entity)
+            {
+                throw new ArgumentNullException("entity");
+            }
+
+            await this.reference.ExecuteAsync(TableOperation.Delete(entity));
+        }
         #endregion
 
         #region Save Data

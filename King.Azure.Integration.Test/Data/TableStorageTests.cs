@@ -409,6 +409,23 @@
         }
 
         [Test]
+        public async Task DeleteEnity()
+        {
+            var h = new Helper()
+            {
+                PartitionKey = Guid.NewGuid().ToString(),
+                RowKey = Guid.NewGuid().ToString(),
+                Id = Guid.NewGuid(),
+            };
+
+            await storage.InsertOrReplace(h);
+            await storage.Delete(h);
+
+            var returned = await storage.QueryByPartitionAndRow<Helper>(h.PartitionKey, h.RowKey);
+            Assert.IsNull(returned);
+        }
+
+        [Test]
         public async Task QueryByPartitionPartitionNull()
         {
             var returned = await storage.QueryByPartition<Helper>(null);
