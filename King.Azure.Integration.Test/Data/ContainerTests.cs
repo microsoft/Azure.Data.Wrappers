@@ -14,7 +14,7 @@
     public class ContainerTests
     {
         private readonly string ConnectionString = "UseDevelopmentStorage=true;";
-        private const string ContainerName = "testing";
+        private readonly string ContainerName = 'a' + Guid.NewGuid().ToString().Replace("-", "");
 
         #region Helper
         private class Helper
