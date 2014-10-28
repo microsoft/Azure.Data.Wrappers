@@ -7,7 +7,6 @@
     using System;
     using System.IO;
     using System.Linq;
-    using System.Net;
     using System.Threading.Tasks;
 
     [TestFixture]
@@ -273,6 +272,45 @@
 
             var blobs = storage.List();
             Assert.AreEqual(count, blobs.Count());
+        }
+
+        [Test]
+        public async Task SnapShotPageBlob()
+        {
+            var random = new Random();
+            var bytes = new byte[1024];
+            random.NextBytes(bytes);
+
+            var name = string.Format("{0}.bin", Guid.NewGuid());
+            var storage = new Container(ContainerName, ConnectionString);
+            var blob = storage.Reference.GetPageBlobReference(name);
+            await blob.UploadFromByteArrayAsync(bytes, 0, bytes.Length);
+
+            var snapshot = await storage.Snapshot(name);
+            Assert.IsTrue(snapshot.IsSnapshot);
+
+            var returned = await storage.Client.GetBlobReferenceFromServerAsync(snapshot.SnapshotQualifiedUri);
+            Assert.IsNotNull(returned);
+            Assert.IsTrue(returned.IsSnapshot);
+        }
+
+        [Test]
+        public async Task SnapShotBlockBlob()
+        {
+            var random = new Random();
+            var bytes = new byte[16];
+            random.NextBytes(bytes);
+
+            var name = string.Format("{0}.bin", Guid.NewGuid());
+            var storage = new Container(ContainerName, ConnectionString);
+            await storage.Save(name, bytes);
+
+            var snapshot = await storage.Snapshot(name);
+            Assert.IsTrue(snapshot.IsSnapshot);
+
+            var returned = await storage.Client.GetBlobReferenceFromServerAsync(snapshot.SnapshotQualifiedUri);
+            Assert.IsNotNull(returned);
+            Assert.IsTrue(returned.IsSnapshot);
         }
     }
 }

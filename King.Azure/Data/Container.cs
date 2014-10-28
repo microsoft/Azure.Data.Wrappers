@@ -342,6 +342,11 @@
         /// <returns>Stream</returns>
         public virtual async Task<Stream> Stream(string blobName)
         {
+            if (string.IsNullOrWhiteSpace(blobName))
+            {
+                throw new ArgumentException("blobName");
+            }
+
             var properties = await this.Properties(blobName);
             var blob = this.GetReference(blobName);
             var stream = new MemoryStream();
@@ -359,6 +364,35 @@
         public IEnumerable<IListBlobItem> List(string prefix = null, bool useFlatBlobListing = false)
         {
             return this.reference.ListBlobs(prefix, useFlatBlobListing);
+        }
+
+        /// <summary>
+        /// Create Snapshot
+        /// </summary>
+        /// <param name="blobName">Blob Name</param>
+        /// <returns>Task</returns>
+        public async Task<ICloudBlob> Snapshot(string blobName)
+        {
+            if (string.IsNullOrWhiteSpace(blobName))
+            {
+                throw new ArgumentException("blobName");
+            }
+
+            var blob = await this.reference.GetBlobReferenceFromServerAsync(blobName);
+
+            var block = blob as CloudBlockBlob;
+            if (null != block)
+            {
+                return await block.CreateSnapshotAsync();
+            }
+
+            var page = blob as CloudPageBlob;
+            if (null != page)
+            {
+                return await page.CreateSnapshotAsync();
+            }
+
+            return null;
         }
         #endregion
     }

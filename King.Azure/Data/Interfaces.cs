@@ -298,6 +298,13 @@
         /// <param name="useFlatBlobListing">Use Flat Blob Listing</param>
         /// <returns>Blobs</returns>
         IEnumerable<IListBlobItem> List(string prefix = null, bool useFlatBlobListing = false);
+
+        /// <summary>
+        /// Create Snapshot
+        /// </summary>
+        /// <param name="blobName">Blob Name</param>
+        /// <returns>Task</returns>
+        Task<ICloudBlob> Snapshot(string blobName);
         #endregion
 
         #region Properties
