@@ -314,14 +314,44 @@
         }
 
         [Test]
-        public async Task SetCacheControl()
+        public async Task SetCacheControlDefault()
         {
-            var cache = "public; max-age=1000";
+            var cache = "public, max-age=31536000";
             var blobName = Guid.NewGuid().ToString();
             var storage = new Container(ContainerName, ConnectionString);
 
             await storage.Save(blobName, Guid.NewGuid().ToString());
-            await storage.SetCacheControl(blobName, cache);
+            await storage.SetCacheControl(blobName);
+            var returned = await storage.Properties(blobName);
+
+            Assert.IsNotNull(returned);
+            Assert.AreEqual(cache, returned.CacheControl);
+        }
+
+        [Test]
+        public async Task SetCacheControlNegative()
+        {
+            var cache = "public, max-age=31536000";
+            var blobName = Guid.NewGuid().ToString();
+            var storage = new Container(ContainerName, ConnectionString);
+
+            await storage.Save(blobName, Guid.NewGuid().ToString());
+            await storage.SetCacheControl(blobName, -5);
+            var returned = await storage.Properties(blobName);
+
+            Assert.IsNotNull(returned);
+            Assert.AreEqual(cache, returned.CacheControl);
+        }
+
+        [Test]
+        public async Task SetCacheControl()
+        {
+            var cache = "public, max-age=1000";
+            var blobName = Guid.NewGuid().ToString();
+            var storage = new Container(ContainerName, ConnectionString);
+
+            await storage.Save(blobName, Guid.NewGuid().ToString());
+            await storage.SetCacheControl(blobName, 1000);
             var returned = await storage.Properties(blobName);
 
             Assert.IsNotNull(returned);
