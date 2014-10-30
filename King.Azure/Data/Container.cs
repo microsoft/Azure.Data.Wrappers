@@ -74,7 +74,7 @@
         /// <summary>
         /// Table Name
         /// </summary>
-        public string Name
+        public virtual string Name
         {
             get
             {
@@ -85,7 +85,7 @@
         /// <summary>
         /// Is Public
         /// </summary>
-        public bool IsPublic
+        public virtual bool IsPublic
         {
             get
             {
@@ -96,7 +96,7 @@
         /// <summary>
         /// Client
         /// </summary>
-        public CloudBlobClient Client
+        public virtual CloudBlobClient Client
         {
             get
             {
@@ -107,7 +107,7 @@
         /// <summary>
         /// Reference
         /// </summary>
-        public CloudBlobContainer Reference
+        public virtual CloudBlobContainer Reference
         {
             get
             {
@@ -324,21 +324,19 @@
         /// Set Cache Control
         /// </summary>
         /// <param name="blobName">Blob Name</param>
-        /// <param name="cacheControl">Cache Control (Default 1 year)</param>
+        /// <param name="cacheDuration">Cache Duration (Default 1 year)</param>
         /// <returns>Task</returns>
-        public virtual async Task SetCacheControl(string blobName, string cacheControl = "public, max-age=31536000")
+        public virtual async Task SetCacheControl(string blobName, int cacheDuration = 31536000)
         {
             if (string.IsNullOrWhiteSpace(blobName))
             {
                 throw new ArgumentException("blobName");
             }
-            if (string.IsNullOrWhiteSpace(cacheControl))
-            {
-                throw new ArgumentException("cacheControl");
-            }
+
+            cacheDuration = cacheDuration < 1 ? 31536000 : cacheDuration;
 
             var blob = this.GetReference(blobName);
-            blob.Properties.CacheControl = cacheControl;
+            blob.Properties.CacheControl = string.Format("public, max-age={0}", cacheDuration);
             await blob.SetPropertiesAsync();
         }
 

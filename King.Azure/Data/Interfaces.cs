@@ -290,14 +290,14 @@
         /// <param name="blobName">Blob Name</param>
         /// <returns>Blob Container Properties</returns>
         Task<BlobProperties> Properties(string blobName);
-        
+
         /// <summary>
         /// Set Cache Control
         /// </summary>
         /// <param name="blobName">Blob Name</param>
-        /// <param name="cacheControl">Cache Control (Default 1 year)</param>
+        /// <param name="cacheDuration">Cache Duration (Default 1 year)</param>
         /// <returns>Task</returns>
-        Task SetCacheControl(string blobName, string cacheControl = "public, max-age=31536000");
+        Task SetCacheControl(string blobName, int cacheDuration = 31536000);
 
         /// <summary>
         /// List Blobs
