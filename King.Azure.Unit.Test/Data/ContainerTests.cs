@@ -199,5 +199,21 @@
             var c = new Container("test", ConnectionString);
             await c.Properties(null);
         }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentException))]
+        public async Task SetCacheControlBlobNameNull()
+        {
+            var c = new Container("test", ConnectionString);
+            await c.SetCacheControl(null);
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentException))]
+        public async Task SetCacheControlCacheControlNull()
+        {
+            var c = new Container("test", ConnectionString);
+            await c.SetCacheControl(Guid.NewGuid().ToString(), null);
+        }
     }
 }

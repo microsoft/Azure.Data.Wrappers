@@ -321,6 +321,28 @@
         }
 
         /// <summary>
+        /// Set Cache Control
+        /// </summary>
+        /// <param name="blobName">Blob Name</param>
+        /// <param name="cacheControl">Cache Control (Default 1 year)</param>
+        /// <returns>Task</returns>
+        public virtual async Task SetCacheControl(string blobName, string cacheControl = "public, max-age=31536000")
+        {
+            if (string.IsNullOrWhiteSpace(blobName))
+            {
+                throw new ArgumentException("blobName");
+            }
+            if (string.IsNullOrWhiteSpace(cacheControl))
+            {
+                throw new ArgumentException("cacheControl");
+            }
+
+            var blob = this.GetReference(blobName);
+            blob.Properties.CacheControl = cacheControl;
+            await blob.SetPropertiesAsync();
+        }
+
+        /// <summary>
         /// Get Reference
         /// </summary>
         /// <param name="blobName">Blob Name</param>

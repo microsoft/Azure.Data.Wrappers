@@ -312,5 +312,20 @@
             Assert.IsNotNull(returned);
             Assert.IsTrue(returned.IsSnapshot);
         }
+
+        [Test]
+        public async Task SetCacheControl()
+        {
+            var cache = "public; max-age=1000";
+            var blobName = Guid.NewGuid().ToString();
+            var storage = new Container(ContainerName, ConnectionString);
+
+            await storage.Save(blobName, Guid.NewGuid().ToString());
+            await storage.SetCacheControl(blobName, cache);
+            var returned = await storage.Properties(blobName);
+
+            Assert.IsNotNull(returned);
+            Assert.AreEqual(cache, returned.CacheControl);
+        }
     }
 }
