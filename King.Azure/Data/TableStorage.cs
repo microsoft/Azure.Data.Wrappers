@@ -225,7 +225,7 @@
             }
 
             var batchOperation = new TableBatchOperation();
-            entities.ToList().ForEach(t => batchOperation.Delete(new TableEntity() { PartitionKey = t.PartitionKey, RowKey = t.RowKey }));
+            entities.ToList().ForEach(t => batchOperation.Delete(t));
             return await this.reference.ExecuteBatchAsync(batchOperation);
         }
         #endregion
