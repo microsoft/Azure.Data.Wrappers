@@ -160,9 +160,7 @@
             var entities = await this.QueryByPartition<TableEntity>(partitionKey);
             if (null != entities && entities.Any())
             {
-                var batchOperation = new TableBatchOperation();
-                entities.ToList().ForEach(e => batchOperation.Delete(e));
-                await this.reference.ExecuteBatchAsync(batchOperation);
+                await this.Delete(entities);
             }
         }
 
@@ -178,7 +176,7 @@
             {
                 foreach (var entity in entities)
                 {
-                    await this.reference.ExecuteAsync(TableOperation.Delete(entity));
+                    await this.Delete(entity);
                 }
             }
         }
@@ -194,7 +192,7 @@
             var entity = await this.QueryByPartitionAndRow<TableEntity>(partitionKey, rowKey);
             if (null != entity)
             {
-                await this.reference.ExecuteAsync(TableOperation.Delete(entity));
+                await this.Delete(entity);
             }
         }
 
