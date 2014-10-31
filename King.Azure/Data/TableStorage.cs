@@ -223,6 +223,10 @@
             {
                 throw new ArgumentNullException("entities");
             }
+            if (!entities.Any())
+            {
+                return null;
+            }
 
             var batchOperation = new TableBatchOperation();
             entities.ToList().ForEach(t => batchOperation.Delete(t));

@@ -454,6 +454,13 @@
         }
 
         [Test]
+        public async Task DeleteEntitiesNone()
+        {
+            var result = await storage.Delete(new List<TableEntity>());
+            Assert.IsNull(result);
+        }
+
+        [Test]
         public async Task QueryByPartitionPartitionNull()
         {
             var returned = await storage.QueryByPartition<Helper>(null);
