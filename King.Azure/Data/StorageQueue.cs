@@ -124,6 +124,16 @@
         }
 
         /// <summary>
+        /// Approixmate Message Count
+        /// </summary>
+        /// <returns>Message Count</returns>
+        public virtual async Task<int?> ApproixmateMessageCount()
+        {
+            await this.reference.FetchAttributesAsync();
+            return this.reference.ApproximateMessageCount;
+        }
+
+        /// <summary>
         /// Get Many Cloud Queue Message
         /// </summary>
         /// <returns>Messages</returns>

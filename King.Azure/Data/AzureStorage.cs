@@ -49,7 +49,7 @@
         /// <summary>
         /// Cloud Storage Account
         /// </summary>
-        public CloudStorageAccount Account
+        public virtual CloudStorageAccount Account
         {
             get
             {

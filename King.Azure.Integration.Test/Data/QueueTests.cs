@@ -77,6 +77,29 @@
         }
 
         [Test]
+        public async Task ApproixmateMessageCount()
+        {
+            var random = new Random();
+            var count = random.Next(1, 1000);
+            var storage = new StorageQueue(QueueName, ConnectionString);
+            for (var i = 0; i < count; i++)
+            {
+                await storage.Save(Guid.NewGuid());
+            }
+
+            var result = await storage.ApproixmateMessageCount();
+            Assert.AreEqual(count, result);
+        }
+
+        [Test]
+        public async Task ApproixmateMessageCountNone()
+        {
+            var storage = new StorageQueue(QueueName, ConnectionString);
+            var result = await storage.ApproixmateMessageCount();
+            Assert.AreEqual(0, result);
+        }
+
+        [Test]
         public async Task Delete()
         {
             var storage = new StorageQueue(QueueName, ConnectionString);
