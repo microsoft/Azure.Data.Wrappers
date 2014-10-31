@@ -190,6 +190,7 @@
         public virtual async Task DeleteByPartitionAndRow(string partitionKey, string rowKey)
         {
             var entity = await this.QueryByPartitionAndRow<TableEntity>(partitionKey, rowKey);
+
             if (null != entity)
             {
                 await this.Delete(entity);
@@ -224,7 +225,7 @@
             }
 
             var batchOperation = new TableBatchOperation();
-            entities.ToList().ForEach(t => batchOperation.Delete(t));
+            entities.ToList().ForEach(t => batchOperation.Delete(new TableEntity() { PartitionKey = t.PartitionKey, RowKey = t.RowKey }));
             return await this.reference.ExecuteBatchAsync(batchOperation);
         }
         #endregion
