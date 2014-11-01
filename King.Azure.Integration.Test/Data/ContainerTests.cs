@@ -86,15 +86,21 @@
         {
             var blobName = Guid.NewGuid().ToString();
             var storage = new Container(ContainerName, ConnectionString);
+            await storage.Save(blobName, Guid.NewGuid());
+            var exists = await storage.Exists(blobName);
+
+            Assert.IsTrue(exists);
+        }
+
+        [Test]
+        public async Task ExistsNo()
+        {
+            var blobName = Guid.NewGuid().ToString();
+            var storage = new Container(ContainerName, ConnectionString);
 
             var exists = await storage.Exists(blobName);
 
             Assert.IsFalse(exists);
-
-            await storage.Save(blobName, Guid.NewGuid());
-            exists = await storage.Exists(blobName);
-
-            Assert.IsTrue(exists);
         }
 
         [Test]
