@@ -250,7 +250,14 @@
         /// </summary>
         /// <param name="blobName">Blob Name</param>
         /// <returns>Cloud Blob</returns>
-        CloudBlockBlob GetReference(string blobName);
+        CloudBlockBlob GetBlockReference(string blobName);
+
+        /// <summary>
+        /// Get Reference
+        /// </summary>
+        /// <param name="blobName">Blob Name</param>
+        /// <returns>Cloud Blob</returns>
+        CloudPageBlob GetPageReference(string blobName);
 
         /// <summary>
         /// Save Binary Data

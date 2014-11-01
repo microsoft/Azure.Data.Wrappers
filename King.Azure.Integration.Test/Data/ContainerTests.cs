@@ -98,6 +98,36 @@
         }
 
         [Test]
+        public async Task GetBlockReference()
+        {
+            var name = string.Format("{0}.bin", Guid.NewGuid());
+            var storage = new Container(ContainerName, ConnectionString);
+            await storage.Save(name, new Helper());
+
+            var block = storage.GetBlockReference(name);
+            Assert.IsNotNull(block);
+            Assert.IsTrue(block.Exists());
+        }
+
+        [Test]
+        public async Task GetPageReference()
+        {
+            var random = new Random();
+            var bytes = new byte[1024];
+            random.NextBytes(bytes);
+
+            var name = string.Format("{0}.bin", Guid.NewGuid());
+            var storage = new Container(ContainerName, ConnectionString);
+            var blob = storage.Reference.GetPageBlobReference(name);
+            await blob.CreateAsync(1024);
+            await blob.UploadFromByteArrayAsync(bytes, 0, bytes.Length);
+
+            var page = storage.GetPageReference(name);
+            Assert.IsNotNull(page);
+            Assert.IsTrue(page.Exists());
+        }
+
+        [Test]
         public async Task RoundTripObject()
         {
             var helper = new Helper()

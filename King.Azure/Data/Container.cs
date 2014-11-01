@@ -159,7 +159,7 @@
                 throw new ArgumentException("blobName");
             }
 
-            var blob = this.GetReference(blobName);
+            var blob = this.GetBlockReference(blobName);
             await blob.DeleteAsync();
         }
 
@@ -175,7 +175,7 @@
                 throw new ArgumentException("blobName");
             }
 
-            var blob = this.GetReference(blobName);
+            var blob = this.GetBlockReference(blobName);
             return await blob.ExistsAsync();
         }
 
@@ -220,7 +220,7 @@
                 throw new ArgumentException("text");
             }
 
-            var blob = this.GetReference(blobName);
+            var blob = this.GetBlockReference(blobName);
             await blob.UploadTextAsync(text);
 
             blob.Properties.ContentType = contentType;
@@ -256,7 +256,7 @@
                 throw new ArgumentException("blobName");
             }
 
-            var blob = this.GetReference(blobName);
+            var blob = this.GetBlockReference(blobName);
             await blob.FetchAttributesAsync();
             var bytes = new byte[blob.Properties.Length];
             await blob.DownloadToByteArrayAsync(bytes, 0);
@@ -276,7 +276,7 @@
                 throw new ArgumentException("blobName");
             }
 
-            var blob = this.GetReference(blobName);
+            var blob = this.GetBlockReference(blobName);
             return await blob.DownloadTextAsync();
         }
 
@@ -297,7 +297,7 @@
                 throw new ArgumentNullException("bytes");
             }
 
-            var blob = this.GetReference(blobName);
+            var blob = this.GetBlockReference(blobName);
             await blob.UploadFromByteArrayAsync(bytes, 0, bytes.Length);
             blob.Properties.ContentType = contentType;
             await blob.SetPropertiesAsync();
@@ -315,7 +315,7 @@
                 throw new ArgumentException("blobName");
             }
 
-            var blob = this.GetReference(blobName);
+            var blob = this.GetBlockReference(blobName);
             await blob.FetchAttributesAsync();
             return blob.Properties;
         }
@@ -335,7 +335,7 @@
 
             cacheDuration = cacheDuration < 1 ? 31536000 : cacheDuration;
 
-            var blob = this.GetReference(blobName);
+            var blob = this.GetBlockReference(blobName);
             blob.Properties.CacheControl = string.Format("public, max-age={0}", cacheDuration);
             await blob.SetPropertiesAsync();
         }
@@ -345,7 +345,7 @@
         /// </summary>
         /// <param name="blobName">Blob Name</param>
         /// <returns>Cloud Block Blob</returns>
-        public virtual CloudBlockBlob GetReference(string blobName)
+        public virtual CloudBlockBlob GetBlockReference(string blobName)
         {
             if (string.IsNullOrWhiteSpace(blobName))
             {
@@ -353,6 +353,21 @@
             }
 
             return this.reference.GetBlockBlobReference(blobName);
+        }
+
+        /// <summary>
+        /// Get Reference
+        /// </summary>
+        /// <param name="blobName">Blob Name</param>
+        /// <returns>Cloud Block Blob</returns>
+        public virtual CloudPageBlob GetPageReference(string blobName)
+        {
+            if (string.IsNullOrWhiteSpace(blobName))
+            {
+                throw new ArgumentException("blobName");
+            }
+
+            return this.reference.GetPageBlobReference(blobName);
         }
 
         /// <summary>
@@ -368,7 +383,7 @@
             }
 
             var properties = await this.Properties(blobName);
-            var blob = this.GetReference(blobName);
+            var blob = this.GetBlockReference(blobName);
             var stream = new MemoryStream();
             await blob.DownloadRangeToStreamAsync(stream, 0, properties.Length);
             stream.Position = 0;

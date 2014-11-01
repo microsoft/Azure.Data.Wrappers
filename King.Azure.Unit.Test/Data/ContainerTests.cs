@@ -186,10 +186,18 @@
 
         [Test]
         [ExpectedException(typeof(ArgumentException))]
-        public void GetReferenceBlobNameNull()
+        public void GetBlockReferenceBlobNameNull()
         {
             var c = new Container("test", ConnectionString);
-            c.GetReference(null);
+            c.GetBlockReference(null);
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentException))]
+        public void GetPageReferenceBlobNameNull()
+        {
+            var c = new Container("test", ConnectionString);
+            c.GetPageReference(null);
         }
 
         [Test]
