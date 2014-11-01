@@ -84,11 +84,6 @@
         [Test]
         public async Task Exists()
         {
-            var helper = new Helper()
-            {
-                Id = Guid.NewGuid(),
-            };
-
             var blobName = Guid.NewGuid().ToString();
             var storage = new Container(ContainerName, ConnectionString);
 
@@ -96,7 +91,7 @@
 
             Assert.IsFalse(exists);
 
-            await storage.Save(blobName, helper);
+            await storage.Save(blobName, Guid.NewGuid());
             exists = await storage.Exists(blobName);
 
             Assert.IsTrue(exists);
@@ -283,7 +278,8 @@
 
             var name = string.Format("{0}.bin", Guid.NewGuid());
             var storage = new Container(ContainerName, ConnectionString);
-            var blob = storage.Reference.GetPageBlobReference(name);
+            CloudPageBlob blob = storage.Reference.GetPageBlobReference(name);
+            await blob.CreateAsync(1024);
             await blob.UploadFromByteArrayAsync(bytes, 0, bytes.Length);
 
             var snapshot = await storage.Snapshot(name);
@@ -316,10 +312,9 @@
         [Test]
         public async Task SnapshotNonExistant()
         {
+            var blob = Guid.NewGuid().ToString();
             var storage = new Container(ContainerName, ConnectionString);
-
-            var snapshot = await storage.Snapshot(Guid.NewGuid().ToString());
-            Assert.IsNull(snapshot);
+            Assert.IsNull(await storage.Snapshot(blob));
         }
 
         [Test]

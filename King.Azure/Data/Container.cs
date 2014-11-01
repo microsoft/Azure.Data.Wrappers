@@ -4,6 +4,7 @@
     using Microsoft.WindowsAzure.Storage.Blob;
     using Newtonsoft.Json;
     using System;
+    using System.Linq;
     using System.Collections.Generic;
     using System.IO;
     using System.Threading.Tasks;
@@ -239,8 +240,7 @@
                 throw new ArgumentException("blobName");
             }
 
-            var blob = this.GetReference(blobName);
-            var json = await blob.DownloadTextAsync();
+            var json = await this.GetText(blobName);
             return JsonConvert.DeserializeObject<T>(json);
         }
 
@@ -398,26 +398,19 @@
                 throw new ArgumentException("blobName");
             }
 
-            var exists = await this.Exists(blobName);
-            if (exists)
+            var blob = this.List(blobName).FirstOrDefault();
+            var block = blob as CloudBlockBlob;
+            if (null != block)
             {
-                var blob = await this.reference.GetBlobReferenceFromServerAsync(blobName);
-
-                var block = blob as CloudBlockBlob;
-                if (null != block)
-                {
-                    return await block.CreateSnapshotAsync();
-                }
-
-                var page = blob as CloudPageBlob;
-                if (null != page)
-                {
-                    return await page.CreateSnapshotAsync();
-                }
-
+                return await block.CreateSnapshotAsync();
+            }
+            var page = blob as CloudPageBlob;
+            if (null != page)
+            {
+                return await page.CreateSnapshotAsync();
             }
 
-            return null;
+            return  null;
         }
         #endregion
     }
