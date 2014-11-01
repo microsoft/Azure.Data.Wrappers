@@ -314,6 +314,15 @@
         }
 
         [Test]
+        public async Task SnapshotNonExistant()
+        {
+            var storage = new Container(ContainerName, ConnectionString);
+
+            var snapshot = await storage.Snapshot(Guid.NewGuid().ToString());
+            Assert.IsNull(snapshot);
+        }
+
+        [Test]
         public async Task SetCacheControlDefault()
         {
             var cache = "public, max-age=31536000";

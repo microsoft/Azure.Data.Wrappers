@@ -398,18 +398,23 @@
                 throw new ArgumentException("blobName");
             }
 
-            var blob = await this.reference.GetBlobReferenceFromServerAsync(blobName);
-
-            var block = blob as CloudBlockBlob;
-            if (null != block)
+            var exists = await this.Exists(blobName);
+            if (exists)
             {
-                return await block.CreateSnapshotAsync();
-            }
+                var blob = await this.reference.GetBlobReferenceFromServerAsync(blobName);
 
-            var page = blob as CloudPageBlob;
-            if (null != page)
-            {
-                return await page.CreateSnapshotAsync();
+                var block = blob as CloudBlockBlob;
+                if (null != block)
+                {
+                    return await block.CreateSnapshotAsync();
+                }
+
+                var page = blob as CloudPageBlob;
+                if (null != page)
+                {
+                    return await page.CreateSnapshotAsync();
+                }
+
             }
 
             return null;
