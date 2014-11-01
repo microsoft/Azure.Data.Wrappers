@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>King.Azure</id>
-    <version>1.1.7</version>
+    <version>1.1.8</version>
     <title>King.Azure</title>
     <authors>Jef King</authors>
     <owners>Jef King</owners>
@@ -12,7 +12,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Azure Storage Simplified.</description>
     <summary>Azure Storage Simplified.</summary>
-    <releaseNotes>Queue Counts.</releaseNotes>
+    <releaseNotes>Lots of work on Containers, and snapshoting; more access to Page Blobs.</releaseNotes>
     <copyright>Jef King</copyright>
     <language>en-US</language>
     <tags>King.Azure Azure Storage Mock Mockable Simple Data Table Storage Queue Queuing Blob Query dependency injection dependency-injection Cloud Table-Storage Windows-Azure Windows dotNet CSharp Mocking Data-Table Blob Json WindowsAzure.Storage</tags>
