@@ -346,6 +346,37 @@
         }
 
         [Test]
+        public async Task SnapShoAndDelete()
+        {
+            var random = new Random();
+            var bytes = new byte[16];
+            random.NextBytes(bytes);
+
+            var name = string.Format("{0}.bin", Guid.NewGuid());
+            var storage = new Container(ContainerName, ConnectionString);
+            await storage.Save(name, bytes);
+
+            var snapshot = await storage.Snapshot(name);
+            await storage.Delete(name);
+        }
+
+        [Test]
+        [ExpectedException(typeof(StorageException))]
+        public async Task SnapShoAndDeleteSafe()
+        {
+            var random = new Random();
+            var bytes = new byte[16];
+            random.NextBytes(bytes);
+
+            var name = string.Format("{0}.bin", Guid.NewGuid());
+            var storage = new Container(ContainerName, ConnectionString);
+            await storage.Save(name, bytes);
+
+            var snapshot = await storage.Snapshot(name);
+            await storage.Delete(name, false);
+        }
+
+        [Test]
         public async Task SnapshotNonExistant()
         {
             var blob = Guid.NewGuid().ToString();

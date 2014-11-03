@@ -220,6 +220,15 @@
         /// <param name="blobName">Blob Name</param>
         /// <returns>bool</returns>
         Task<bool> Exists(string blobName);
+        
+
+        /// <summary>
+        /// Delete from Blob Storage
+        /// </summary>
+        /// <param name="blobName">Blob Name</param>
+        /// <param name="deleteHistory">Delete History (Snapshots)</param>
+        /// <returns>Object</returns>
+        Task Delete(string blobName, bool deleteHistory = true);
 
         /// <summary>
         /// Save Object as Json to Blob Storage

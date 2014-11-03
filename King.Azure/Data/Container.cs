@@ -151,16 +151,18 @@
         /// Delete from Blob Storage
         /// </summary>
         /// <param name="blobName">Blob Name</param>
+        /// <param name="deleteHistory">Delete History (Snapshots)</param>
         /// <returns>Object</returns>
-        public virtual async Task Delete(string blobName)
+        public virtual async Task Delete(string blobName, bool deleteHistory = true)
         {
             if (string.IsNullOrWhiteSpace(blobName))
             {
                 throw new ArgumentException("blobName");
             }
 
+            var delSnapshots = deleteHistory ? DeleteSnapshotsOption.IncludeSnapshots : DeleteSnapshotsOption.None;
             var blob = this.GetBlockReference(blobName);
-            await blob.DeleteAsync();
+            await blob.DeleteAsync(delSnapshots, AccessCondition.GenerateEmptyCondition(), new BlobRequestOptions(), new OperationContext());
         }
 
         /// <summary>
