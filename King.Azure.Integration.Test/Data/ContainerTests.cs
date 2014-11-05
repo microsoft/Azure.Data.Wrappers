@@ -385,6 +385,41 @@
         }
 
         [Test]
+        public async Task DontLoseContentType()
+        {
+            var cache = "public, max-age=31536000";
+            var contentType = "text/guid";
+            var blobName = Guid.NewGuid().ToString();
+            var storage = new Container(ContainerName, ConnectionString);
+
+            await storage.Save(blobName, Guid.NewGuid().ToString(), contentType);
+            await storage.SetCacheControl(blobName);
+            var returned = await storage.Properties(blobName);
+
+            Assert.IsNotNull(returned);
+            Assert.AreEqual(cache, returned.CacheControl);
+            Assert.AreEqual(contentType, returned.ContentType);
+        }
+
+        [Test]
+        public async Task DontLoseCacheControl()
+        {
+            var cache = "public, max-age=31536000";
+            var contentType = "text/guid";
+            var blobName = Guid.NewGuid().ToString();
+            var storage = new Container(ContainerName, ConnectionString);
+
+            await storage.Save(blobName, Guid.NewGuid().ToString(), contentType);
+            await storage.SetCacheControl(blobName);
+            await storage.Save(blobName, Guid.NewGuid().ToString(), contentType);
+            var returned = await storage.Properties(blobName);
+
+            Assert.IsNotNull(returned);
+            Assert.AreEqual(cache, returned.CacheControl);
+            Assert.AreEqual(contentType, returned.ContentType);
+        }
+
+        [Test]
         public async Task SetCacheControlDefault()
         {
             var cache = "public, max-age=31536000";

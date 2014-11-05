@@ -223,9 +223,33 @@
             }
 
             var blob = this.GetBlockReference(blobName);
+            var cacheProperties = await this.Properties(blobName);
+
             await blob.UploadTextAsync(text);
 
-            blob.Properties.ContentType = contentType;
+            await this.Set(blob, cacheProperties, contentType);
+        }
+
+        public virtual async Task Set(CloudBlockBlob blob, BlobProperties cached, string ContentType = null, string CacheControl = null, string ContentDisposition = null, string ContentEncoding = null
+            , string ContentLanguage = null)
+        {
+            await blob.FetchAttributesAsync();
+
+            if (null != cached)
+            {
+                blob.Properties.CacheControl = cached.CacheControl;
+                blob.Properties.ContentDisposition = cached.ContentDisposition;
+                blob.Properties.ContentEncoding = cached.ContentEncoding;
+                blob.Properties.ContentLanguage = cached.ContentLanguage;
+                blob.Properties.ContentType = cached.ContentType;
+            }
+
+            blob.Properties.CacheControl = string.IsNullOrWhiteSpace(CacheControl) ? blob.Properties.CacheControl : CacheControl;
+            blob.Properties.ContentDisposition = string.IsNullOrWhiteSpace(ContentDisposition) ? blob.Properties.ContentDisposition : ContentDisposition;
+            blob.Properties.ContentEncoding = string.IsNullOrWhiteSpace(ContentEncoding) ? blob.Properties.ContentEncoding : ContentEncoding;
+            blob.Properties.ContentLanguage = string.IsNullOrWhiteSpace(ContentLanguage) ? blob.Properties.ContentLanguage : ContentLanguage;
+            blob.Properties.ContentType = string.IsNullOrWhiteSpace(ContentType) ? blob.Properties.ContentType : ContentType;
+
             await blob.SetPropertiesAsync();
         }
 
@@ -300,9 +324,11 @@
             }
 
             var blob = this.GetBlockReference(blobName);
+            var cached = await this.Properties(blobName);
+
             await blob.UploadFromByteArrayAsync(bytes, 0, bytes.Length);
-            blob.Properties.ContentType = contentType;
-            await blob.SetPropertiesAsync();
+
+            await this.Set(blob, cached, contentType);
         }
 
         /// <summary>
@@ -317,9 +343,17 @@
                 throw new ArgumentException("blobName");
             }
 
-            var blob = this.GetBlockReference(blobName);
-            await blob.FetchAttributesAsync();
-            return blob.Properties;
+            var exists = await this.Exists(blobName);
+            if (exists)
+            {
+                var blob = this.GetBlockReference(blobName);
+                await blob.FetchAttributesAsync();
+                return blob.Properties;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         /// <summary>
@@ -338,8 +372,7 @@
             cacheDuration = cacheDuration < 1 ? 31536000 : cacheDuration;
 
             var blob = this.GetBlockReference(blobName);
-            blob.Properties.CacheControl = string.Format("public, max-age={0}", cacheDuration);
-            await blob.SetPropertiesAsync();
+            await this.Set(blob, null, null, string.Format("public, max-age={0}", cacheDuration));
         }
 
         /// <summary>
