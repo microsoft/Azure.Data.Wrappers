@@ -392,6 +392,12 @@
         /// <param name="obj">Object</param>
         /// <returns>Task</returns>
         Task Save(object obj);
+
+        /// <summary>
+        /// Approixmate Message Count
+        /// </summary>
+        /// <returns>Message Count</returns>
+        Task<int?> ApproixmateMessageCount();
         #endregion
     }
     #endregion
