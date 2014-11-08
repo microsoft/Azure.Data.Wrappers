@@ -9,7 +9,7 @@
     /// Queue Poller
     /// </summary>
     /// <typeparam name="T">Type</typeparam>
-    public class StorageQueuePoller<T> : IPoller<T>
+    public class StorageQueuePoller<T> : IStorageQueuePoller<T>
     {
         #region Members
         /// <summary>
@@ -41,6 +41,19 @@
             }
 
             this.queue = queue;
+        }
+        #endregion
+
+        #region Properties
+        /// <summary>
+        /// Storage Queue
+        /// </summary>
+        public virtual IStorageQueue Queue
+        {
+            get
+            {
+                return this.queue;
+            }
         }
         #endregion
 

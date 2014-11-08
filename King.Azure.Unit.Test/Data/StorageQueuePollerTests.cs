@@ -5,8 +5,8 @@
     using NSubstitute;
     using NUnit.Framework;
     using System;
-    using System.Linq;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
 
     [TestFixture]
@@ -25,6 +25,21 @@
         public void ConstructorStorageQueueNull()
         {
             new StorageQueuePoller<object>(null);
+        }
+
+        [Test]
+        public void IsIStorageQueuePoller()
+        {
+            Assert.IsNotNull(new StorageQueuePoller<object>("queue", ConnectionString) as IStorageQueuePoller<object>);
+        }
+
+        [Test]
+        public void Queue()
+        {
+            var queue = Substitute.For<IStorageQueue>();
+            var poller = new StorageQueuePoller<object>(queue);
+            var returned = poller.Queue;
+            Assert.AreEqual(queue, returned);
         }
 
         [Test]

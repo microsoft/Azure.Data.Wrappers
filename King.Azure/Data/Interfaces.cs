@@ -447,8 +447,9 @@
 
     #region IPoller
     /// <summary>
-    /// IPoller
+    /// Store Poller Interface
     /// </summary>
+    /// <typeparam name="T">Dequeue Type</typeparam>
     public interface IPoller<T>
     {
         #region Methods
@@ -463,6 +464,25 @@
         /// </summary>
         /// <returns>Queued Item</returns>
         Task<IEnumerable<IQueued<T>>> PollMany(int messageCount = 5);
+        #endregion
+    }
+    #endregion
+
+    #region IStorageQueuePoller
+    /// <summary>
+    /// Storage Queue Poller Interface
+    /// </summary>
+    /// <typeparam name="T">Dequeue Type</typeparam>
+    public interface IStorageQueuePoller<T> : IPoller<T>
+    {
+        #region Properties
+        /// <summary>
+        /// Storage Queue
+        /// </summary>
+        IStorageQueue Queue
+        {
+            get;
+        }
         #endregion
     }
     #endregion
