@@ -230,8 +230,18 @@
             await this.Set(blob, cacheProperties, contentType);
         }
 
-        public virtual async Task Set(CloudBlockBlob blob, BlobProperties cached, string ContentType = null, string CacheControl = null, string ContentDisposition = null, string ContentEncoding = null
-            , string ContentLanguage = null)
+        /// <summary>
+        /// Set Properties on Blob
+        /// </summary>
+        /// <param name="blob">Blob</param>
+        /// <param name="cached">Cached Properties</param>
+        /// <param name="type">Content Type</param>
+        /// <param name="cacheControl">Cache Control</param>
+        /// <param name="disposition">Content Disposition</param>
+        /// <param name="encoding">Content Encoding</param>
+        /// <param name="language">Content Language</param>
+        /// <returns></returns>
+        public virtual async Task Set(CloudBlockBlob blob, BlobProperties cached, string type = null, string cacheControl = null, string disposition = null, string encoding = null, string language = null)
         {
             await blob.FetchAttributesAsync();
 
@@ -243,12 +253,14 @@
                 blob.Properties.ContentLanguage = cached.ContentLanguage;
                 blob.Properties.ContentType = cached.ContentType;
             }
-
-            blob.Properties.CacheControl = string.IsNullOrWhiteSpace(CacheControl) ? blob.Properties.CacheControl : CacheControl;
-            blob.Properties.ContentDisposition = string.IsNullOrWhiteSpace(ContentDisposition) ? blob.Properties.ContentDisposition : ContentDisposition;
-            blob.Properties.ContentEncoding = string.IsNullOrWhiteSpace(ContentEncoding) ? blob.Properties.ContentEncoding : ContentEncoding;
-            blob.Properties.ContentLanguage = string.IsNullOrWhiteSpace(ContentLanguage) ? blob.Properties.ContentLanguage : ContentLanguage;
-            blob.Properties.ContentType = string.IsNullOrWhiteSpace(ContentType) ? blob.Properties.ContentType : ContentType;
+            else
+            {
+                blob.Properties.CacheControl = string.IsNullOrWhiteSpace(cacheControl) ? blob.Properties.CacheControl : cacheControl;
+                blob.Properties.ContentDisposition = string.IsNullOrWhiteSpace(disposition) ? blob.Properties.ContentDisposition : disposition;
+                blob.Properties.ContentEncoding = string.IsNullOrWhiteSpace(encoding) ? blob.Properties.ContentEncoding : encoding;
+                blob.Properties.ContentLanguage = string.IsNullOrWhiteSpace(language) ? blob.Properties.ContentLanguage : language;
+                blob.Properties.ContentType = string.IsNullOrWhiteSpace(type) ? blob.Properties.ContentType : type;
+            }
 
             await blob.SetPropertiesAsync();
         }

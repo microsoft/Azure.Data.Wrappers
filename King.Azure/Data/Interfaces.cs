@@ -221,7 +221,6 @@
         /// <returns>bool</returns>
         Task<bool> Exists(string blobName);
         
-
         /// <summary>
         /// Delete from Blob Storage
         /// </summary>
