@@ -253,14 +253,12 @@
                 blob.Properties.ContentLanguage = cached.ContentLanguage;
                 blob.Properties.ContentType = cached.ContentType;
             }
-            else
-            {
-                blob.Properties.CacheControl = string.IsNullOrWhiteSpace(cacheControl) ? blob.Properties.CacheControl : cacheControl;
-                blob.Properties.ContentDisposition = string.IsNullOrWhiteSpace(disposition) ? blob.Properties.ContentDisposition : disposition;
-                blob.Properties.ContentEncoding = string.IsNullOrWhiteSpace(encoding) ? blob.Properties.ContentEncoding : encoding;
-                blob.Properties.ContentLanguage = string.IsNullOrWhiteSpace(language) ? blob.Properties.ContentLanguage : language;
-                blob.Properties.ContentType = string.IsNullOrWhiteSpace(type) ? blob.Properties.ContentType : type;
-            }
+
+            blob.Properties.CacheControl = string.IsNullOrWhiteSpace(cacheControl) ? blob.Properties.CacheControl : cacheControl;
+            blob.Properties.ContentDisposition = string.IsNullOrWhiteSpace(disposition) ? blob.Properties.ContentDisposition : disposition;
+            blob.Properties.ContentEncoding = string.IsNullOrWhiteSpace(encoding) ? blob.Properties.ContentEncoding : encoding;
+            blob.Properties.ContentLanguage = string.IsNullOrWhiteSpace(language) ? blob.Properties.ContentLanguage : language;
+            blob.Properties.ContentType = string.IsNullOrWhiteSpace(type) ? blob.Properties.ContentType : type;
 
             await blob.SetPropertiesAsync();
         }
