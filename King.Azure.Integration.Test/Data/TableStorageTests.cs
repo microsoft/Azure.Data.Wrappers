@@ -170,6 +170,34 @@
         }
 
         [Test]
+        public async Task InsertBatchMultiplePartitions()
+        {
+            var random = new Random();
+            var count = random.Next(1, 25);
+            var partition = Guid.NewGuid().ToString();
+            var entities = new List<TableEntity>(count);
+            for (var i = 0; i < count; i++)
+            {
+                var entity = new TableEntity()
+                {
+                    PartitionKey = partition,
+                    RowKey = Guid.NewGuid().ToString(),
+                };
+                entities.Add(entity);
+
+                if (i % 2 == 0)
+                {
+                    partition = Guid.NewGuid().ToString();
+                }
+            }
+            await storage.Insert(entities);
+
+            var returned = await storage.Query<TableEntity>(new TableQuery<TableEntity>());
+            Assert.IsNotNull(returned);
+            Assert.AreEqual(count, returned.Count());
+        }
+
+        [Test]
         public async Task InsertDictionaryBatch()
         {
             var random = new Random();
@@ -189,6 +217,34 @@
             var query = new TableQuery();
             query.Where(TableQuery.GenerateFilterCondition(TableStorage.PartitionKey, QueryComparisons.Equal, partition));
             var returned = await storage.Query(query);
+
+            Assert.IsNotNull(returned);
+            Assert.AreEqual(count, returned.Count());
+        }
+
+        [Test]
+        public async Task InsertDictionaryBatchMultiplePartitions()
+        {
+            var random = new Random();
+            var count = random.Next(1, 25);
+            var partition = Guid.NewGuid().ToString();
+            var entities = new List<IDictionary<string, object>>(count);
+            for (var i = 0; i < count; i++)
+            {
+                var dic = new Dictionary<string, object>();
+                dic.Add(TableStorage.PartitionKey, partition);
+                dic.Add(TableStorage.RowKey, Guid.NewGuid());
+                dic.Add("Extraa", DateTime.UtcNow);
+                entities.Add(dic);
+
+                if (i % 2 == 0)
+                {
+                    partition = Guid.NewGuid().ToString();
+                }
+            }
+            await storage.Insert(entities);
+
+            var returned = await storage.Query(new TableQuery());
 
             Assert.IsNotNull(returned);
             Assert.AreEqual(count, returned.Count());
