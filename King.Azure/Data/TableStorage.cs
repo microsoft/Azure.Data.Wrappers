@@ -228,9 +228,24 @@
                 return null;
             }
 
-            var batchOperation = new TableBatchOperation();
-            entities.ToList().ForEach(t => batchOperation.Delete(t));
-            return await this.reference.ExecuteBatchAsync(batchOperation);
+            var result = new List<TableResult>();
+
+            foreach (var partition in entities.GroupBy(en => en.PartitionKey))
+            {
+                var batches = partition.Select((x, i) => new { Index = i, Value = x })
+                                .GroupBy(x => x.Index / TableStorage.MaimumxInsertBatch)
+                                .Select(x => x.Select(v => v.Value).ToList());
+
+                foreach (var batch in batches)
+                {
+                    var batchOperation = new TableBatchOperation();
+                    batch.ForEach(e => batchOperation.Delete(e));
+                    var r = await this.reference.ExecuteBatchAsync(batchOperation);
+                    result.AddRange(r);
+                }
+            }
+
+            return result;
         }
         #endregion
 
@@ -262,7 +277,8 @@
                 {
                     var batchOperation = new TableBatchOperation();
                     batch.ForEach(e => batchOperation.InsertOrMerge(e));
-                    await this.reference.ExecuteBatchAsync(batchOperation);
+                    var r = await this.reference.ExecuteBatchAsync(batchOperation);
+                    result.AddRange(r);
                 }
             }
 
@@ -325,7 +341,8 @@
                         batchOperation.InsertOrMerge(new DynamicTableEntity(partitionKey, rowKey, etag, properties));
                     }
 
-                    await this.reference.ExecuteBatchAsync(batchOperation);
+                    var r = await this.reference.ExecuteBatchAsync(batchOperation);
+                    result.AddRange(r);
                 }
             }
 

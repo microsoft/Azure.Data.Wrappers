@@ -475,7 +475,8 @@
             };
 
             await storage.InsertOrReplace(h);
-            await storage.Delete(h);
+            var result = await storage.Delete(h);
+            Assert.IsNotNull(result);
 
             var returned = await storage.QueryByPartitionAndRow<Helper>(h.PartitionKey, h.RowKey);
             Assert.IsNull(returned);
@@ -500,13 +501,48 @@
             }
 
             await storage.Insert(entities);
-            await storage.Delete(entities);
+
+            var result = await storage.Delete(entities);
+            Assert.AreEqual(count, result.Count());
 
             foreach (var e in entities)
             {
                 var returned = await storage.QueryByPartitionAndRow<Helper>(e.PartitionKey, e.RowKey);
                 Assert.IsNull(returned);
             }
+        }
+
+        [Test]
+        public async Task DeleteMultipleBatches()
+        {
+            var random = new Random();
+            var count = random.Next(1, 25);
+            var partition = Guid.NewGuid().ToString();
+            var entities = new List<TableEntity>(count);
+            for (var i = 0; i < count; i++)
+            {
+                var entity = new TableEntity()
+                {
+                    PartitionKey = partition,
+                    RowKey = Guid.NewGuid().ToString(),
+                };
+                entities.Add(entity);
+
+                if (i % 2 == 0)
+                {
+                    partition = Guid.NewGuid().ToString();
+                }
+            }
+
+            await storage.Insert(entities);
+
+            var result = await storage.Delete(entities);
+            Assert.AreEqual(count, result.Count());
+
+            var returned = await storage.Query(new TableQuery());
+
+            Assert.IsNotNull(returned);
+            Assert.AreEqual(0, returned.Count());
         }
 
         [Test]
