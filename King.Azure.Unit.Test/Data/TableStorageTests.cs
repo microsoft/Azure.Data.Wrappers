@@ -203,6 +203,58 @@
         }
 
         [Test]
+        public void ChunkThousands()
+        {
+            var random = new Random();
+            var count = random.Next(2001, 15000);
+            var partition = Guid.NewGuid().ToString();
+            var items = new List<ITableEntity>();
+
+            for (var i = 0; i < count; i++)
+            {
+                items.Add(new TableEntity() { PartitionKey = partition });
+            }
+
+            var name = Guid.NewGuid().ToString();
+            var t = new TableStorage(name, ConnectionString);
+
+            var batches = t.Chunk<ITableEntity>(items);
+            Assert.AreEqual(Math.Ceiling(((double)count / TableStorage.MaimumxInsertBatch)), batches.Count());
+            var resultCount = 0;
+            foreach (var b in batches)
+            {
+                resultCount += b.Count();
+            }
+            Assert.AreEqual(count, resultCount);
+        }
+
+        [Test]
+        public void ChunkOne()
+        {
+            var items = new List<ITableEntity>();
+            items.Add(new TableEntity());
+
+            var name = Guid.NewGuid().ToString();
+            var t = new TableStorage(name, ConnectionString);
+
+            var batches = t.Chunk<ITableEntity>(items);
+            Assert.AreEqual(1, batches.Count());
+            Assert.AreEqual(1, batches.First().Count());
+        }
+
+        [Test]
+        public void ChunkNone()
+        {
+            var items = new List<ITableEntity>();
+
+            var name = Guid.NewGuid().ToString();
+            var t = new TableStorage(name, ConnectionString);
+
+            var batches = t.Chunk<ITableEntity>(items);
+            Assert.AreEqual(0, batches.Count());
+        }
+
+        [Test]
         public void BatchDictionaryOne()
         {
             var items = new List<IDictionary<string, object>>();

@@ -233,7 +233,7 @@
             foreach (var batch in this.Batch(entities))
             {
                 var batchOperation = new TableBatchOperation();
-                batch.ForEach(e => batchOperation.Delete(e));
+                batch.ToList().ForEach(e => batchOperation.Delete(e));
                 var r = await this.reference.ExecuteBatchAsync(batchOperation);
                 result.AddRange(r);
             }
@@ -263,7 +263,7 @@
             foreach (var batch in this.Batch(entities))
             {
                 var batchOperation = new TableBatchOperation();
-                batch.ForEach(e => batchOperation.InsertOrReplace(e));
+                batch.ToList().ForEach(e => batchOperation.InsertOrReplace(e));
                 var r = await this.reference.ExecuteBatchAsync(batchOperation);
                 result.AddRange(r);
             }
@@ -498,17 +498,9 @@
         /// </summary>
         /// <param name="entities">Entities</param>
         /// <returns>Batches</returns>
-        public virtual IEnumerable<List<ITableEntity>> Batch(IEnumerable<ITableEntity> entities)
+        public virtual IEnumerable<IEnumerable<ITableEntity>> Batch(IEnumerable<ITableEntity> entities)
         {
-            var batches = new List<List<ITableEntity>>();
-            foreach (var partition in entities.GroupBy(en => en.PartitionKey))
-            {
-                batches.AddRange(partition.Select((x, i) => new { Index = i, Value = x })
-                                .GroupBy(x => x.Index / TableStorage.MaimumxInsertBatch)
-                                .Select(x => x.Select(v => v.Value).ToList()));
-            }
-
-            return batches;
+            return entities.GroupBy(en => en.PartitionKey).SelectMany(e => this.Chunk<ITableEntity>(e));
         }
 
         /// <summary>
@@ -516,17 +508,20 @@
         /// </summary>
         /// <param name="entities">Entities</param>
         /// <returns>Batches</returns>
-        public virtual IEnumerable<List<IDictionary<string, object>>> Batch(IEnumerable<IDictionary<string, object>> entities)
+        public virtual IEnumerable<IEnumerable<IDictionary<string, object>>> Batch(IEnumerable<IDictionary<string, object>> entities)
         {
-            var batches = new List<List<IDictionary<string, object>>>();
-            foreach (var partition in entities.GroupBy(en => en[PartitionKey]))
-            {
-                batches.AddRange(partition.Select((x, i) => new { Index = i, Value = x })
-                                .GroupBy(x => x.Index / TableStorage.MaimumxInsertBatch)
-                                .Select(x => x.Select(v => v.Value).ToList()));
-            }
+            return entities.GroupBy(en => en[PartitionKey]).SelectMany(e => this.Chunk<IDictionary<string, object>>(e));
+        }
 
-            return batches;
+        /// <summary>
+        /// Chunk data into smaller blocks
+        /// </summary>
+        /// <typeparam name="T">Type</typeparam>
+        /// <param name="entities">Entities</param>
+        /// <returns>Chunks</returns>
+        public virtual IEnumerable<IEnumerable<T>> Chunk<T>(IEnumerable<T> entities)
+        {
+            return entities.Select((x, i) => new { Index = i, Value = x }).GroupBy(x => x.Index / TableStorage.MaimumxInsertBatch).Select(x => x.Select(v => v.Value));
         }
         #endregion
     }
