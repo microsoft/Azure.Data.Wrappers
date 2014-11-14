@@ -230,19 +230,12 @@
 
             var result = new List<TableResult>();
 
-            foreach (var partition in entities.GroupBy(en => en.PartitionKey))
+            foreach (var batch in this.Batch(entities))
             {
-                var batches = partition.Select((x, i) => new { Index = i, Value = x })
-                                .GroupBy(x => x.Index / TableStorage.MaimumxInsertBatch)
-                                .Select(x => x.Select(v => v.Value).ToList());
-
-                foreach (var batch in batches)
-                {
-                    var batchOperation = new TableBatchOperation();
-                    batch.ForEach(e => batchOperation.Delete(e));
-                    var r = await this.reference.ExecuteBatchAsync(batchOperation);
-                    result.AddRange(r);
-                }
+                var batchOperation = new TableBatchOperation();
+                batch.ForEach(e => batchOperation.Delete(e));
+                var r = await this.reference.ExecuteBatchAsync(batchOperation);
+                result.AddRange(r);
             }
 
             return result;
@@ -267,19 +260,12 @@
         {
             var result = new List<TableResult>();
 
-            foreach (var partition in entities.GroupBy(en => en.PartitionKey))
+            foreach (var batch in this.Batch(entities))
             {
-                var batches = partition.Select((x, i) => new { Index = i, Value = x })
-                                .GroupBy(x => x.Index / TableStorage.MaimumxInsertBatch)
-                                .Select(x => x.Select(v => v.Value).ToList());
-
-                foreach (var batch in batches)
-                {
-                    var batchOperation = new TableBatchOperation();
-                    batch.ForEach(e => batchOperation.InsertOrMerge(e));
-                    var r = await this.reference.ExecuteBatchAsync(batchOperation);
-                    result.AddRange(r);
-                }
+                var batchOperation = new TableBatchOperation();
+                batch.ForEach(e => batchOperation.InsertOrReplace(e));
+                var r = await this.reference.ExecuteBatchAsync(batchOperation);
+                result.AddRange(r);
             }
 
             return result;
@@ -510,6 +496,26 @@
             }
 
             return results;
+        }
+        #endregion
+
+        #region Helper Methods
+        /// <summary>
+        /// Break Entities into batches
+        /// </summary>
+        /// <param name="entities">Entities</param>
+        /// <returns>Batches</returns>
+        public virtual IEnumerable<List<ITableEntity>> Batch(IEnumerable<ITableEntity> entities)
+        {
+            var batches = new List<List<ITableEntity>>();
+            foreach (var partition in entities.GroupBy(en => en.PartitionKey))
+            {
+                batches.AddRange(partition.Select((x, i) => new { Index = i, Value = x })
+                                .GroupBy(x => x.Index / TableStorage.MaimumxInsertBatch)
+                                .Select(x => x.Select(v => v.Value).ToList()));
+            }
+
+            return batches;
         }
         #endregion
     }

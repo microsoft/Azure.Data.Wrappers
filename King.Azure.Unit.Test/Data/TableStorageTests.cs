@@ -5,6 +5,7 @@
     using Microsoft.WindowsAzure.Storage.Table;
     using NUnit.Framework;
     using System;
+    using System.Linq;
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
@@ -128,6 +129,77 @@
             var name = Guid.NewGuid().ToString();
             var t = new TableStorage(name, ConnectionString);
             await t.Delete((IEnumerable<ITableEntity>)null);
+        }
+
+        [Test]
+        public void BatchOne()
+        {
+            var items = new List<ITableEntity>();
+            items.Add(new TableEntity());
+
+            var name = Guid.NewGuid().ToString();
+            var t = new TableStorage(name, ConnectionString);
+
+            var batches = t.Batch(items);
+            Assert.AreEqual(1, batches.Count());
+            Assert.AreEqual(1, batches.First().Count());
+        }
+
+        [Test]
+        public void BatchNone()
+        {
+            var items = new List<ITableEntity>();
+
+            var name = Guid.NewGuid().ToString();
+            var t = new TableStorage(name, ConnectionString);
+
+            var batches = t.Batch(items);
+            Assert.AreEqual(0, batches.Count());
+        }
+
+        [Test]
+        public void BatchThousandsDifferentPartitions()
+        {
+            var random = new Random();
+            var count = random.Next(2001, 10000);
+            var items = new List<ITableEntity>();
+
+            for (var i = 0; i < count; i++)
+            {
+                items.Add(new TableEntity() { PartitionKey = Guid.NewGuid().ToString() });
+            }
+
+            var name = Guid.NewGuid().ToString();
+            var t = new TableStorage(name, ConnectionString);
+
+            var batches = t.Batch(items);
+            Assert.AreEqual(count, batches.Count());
+        }
+
+        [Test]
+        public void BatchThousands()
+        {
+            var random = new Random();
+            var count = random.Next(2001, 10000);
+            var partition = Guid.NewGuid().ToString();
+            var items = new List<ITableEntity>();
+
+            for (var i = 0; i < count; i++)
+            {
+                items.Add(new TableEntity() { PartitionKey = partition });
+            }
+
+            var name = Guid.NewGuid().ToString();
+            var t = new TableStorage(name, ConnectionString);
+
+            var batches = t.Batch(items);
+            Assert.AreEqual(Math.Ceiling(((double)count / TableStorage.MaimumxInsertBatch)), batches.Count());
+            var resultCount = 0;
+            foreach (var b in batches)
+            {
+                resultCount += b.Count();
+            }
+            Assert.AreEqual(count, resultCount);
         }
     }
 }
