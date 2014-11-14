@@ -201,5 +201,82 @@
             }
             Assert.AreEqual(count, resultCount);
         }
+
+        [Test]
+        public void BatchDictionaryOne()
+        {
+            var items = new List<IDictionary<string, object>>();
+            var dic = new Dictionary<string, object>();
+            dic.Add(TableStorage.PartitionKey, Guid.NewGuid().ToString());
+            items.Add(dic);
+
+            var name = Guid.NewGuid().ToString();
+            var t = new TableStorage(name, ConnectionString);
+
+            var batches = t.Batch(items);
+            Assert.AreEqual(1, batches.Count());
+            Assert.AreEqual(1, batches.First().Count());
+        }
+
+        [Test]
+        public void BatchDictionaryNone()
+        {
+            var items = new List<IDictionary<string, object>>();
+
+            var name = Guid.NewGuid().ToString();
+            var t = new TableStorage(name, ConnectionString);
+
+            var batches = t.Batch(items);
+            Assert.AreEqual(0, batches.Count());
+        }
+
+        [Test]
+        public void BatchDictionaryThousandsDifferentPartitions()
+        {
+            var random = new Random();
+            var count = random.Next(2001, 10000);
+            var items = new List<IDictionary<string, object>>();
+
+            for (var i = 0; i < count; i++)
+            {
+                var dic = new Dictionary<string, object>();
+                dic.Add(TableStorage.PartitionKey, Guid.NewGuid().ToString());
+                items.Add(dic);
+            }
+
+            var name = Guid.NewGuid().ToString();
+            var t = new TableStorage(name, ConnectionString);
+
+            var batches = t.Batch(items);
+            Assert.AreEqual(count, batches.Count());
+        }
+
+        [Test]
+        public void BatchDictionaryThousands()
+        {
+            var random = new Random();
+            var count = random.Next(2001, 10000);
+            var partition = Guid.NewGuid().ToString();
+            var items = new List<IDictionary<string, object>>();
+
+            for (var i = 0; i < count; i++)
+            {
+                var dic = new Dictionary<string, object>();
+                dic.Add(TableStorage.PartitionKey, partition);
+                items.Add(dic);
+            }
+
+            var name = Guid.NewGuid().ToString();
+            var t = new TableStorage(name, ConnectionString);
+
+            var batches = t.Batch(items);
+            Assert.AreEqual(Math.Ceiling(((double)count / TableStorage.MaimumxInsertBatch)), batches.Count());
+            var resultCount = 0;
+            foreach (var b in batches)
+            {
+                resultCount += b.Count();
+            }
+            Assert.AreEqual(count, resultCount);
+        }
     }
 }

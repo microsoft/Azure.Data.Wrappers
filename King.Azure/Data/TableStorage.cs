@@ -305,31 +305,24 @@
         {
             var result = new List<TableResult>();
 
-            foreach (var partition in entities.GroupBy(en => en[PartitionKey]))
+            foreach (var batch in this.Batch(entities))
             {
-                var batches = partition.Select((x, i) => new { Index = i, Value = x })
-                                .GroupBy(x => x.Index / TableStorage.MaimumxInsertBatch)
-                                .Select(x => x.Select(v => v.Value).ToList());
+                var batchOperation = new TableBatchOperation();
 
-                foreach (var batch in batches)
+                foreach (var entity in batch)
                 {
-                    var batchOperation = new TableBatchOperation();
+                    var properties = new Dictionary<string, EntityProperty>();
+                    entity.Keys.Where(k => k != PartitionKey && k != RowKey && k != ETag).ToList().ForEach(key => properties.Add(key, EntityProperty.CreateEntityPropertyFromObject(entity[key])));
 
-                    foreach (var entity in batch)
-                    {
-                        var properties = new Dictionary<string, EntityProperty>();
-                        entity.Keys.Where(k => k != PartitionKey && k != RowKey && k != ETag).ToList().ForEach(key => properties.Add(key, EntityProperty.CreateEntityPropertyFromObject(entity[key])));
+                    var partitionKey = entity.Keys.Contains(PartitionKey) ? entity[PartitionKey].ToString() : string.Empty;
+                    var rowKey = entity.Keys.Contains(RowKey) ? entity[RowKey].ToString() : string.Empty;
+                    var etag = entity.Keys.Contains(ETag) ? entity[ETag].ToString() : null;
 
-                        var partitionKey = entity.Keys.Contains(PartitionKey) ? entity[PartitionKey].ToString() : string.Empty;
-                        var rowKey = entity.Keys.Contains(RowKey) ? entity[RowKey].ToString() : string.Empty;
-                        var etag = entity.Keys.Contains(ETag) ? entity[ETag].ToString() : null;
-
-                        batchOperation.InsertOrMerge(new DynamicTableEntity(partitionKey, rowKey, etag, properties));
-                    }
-
-                    var r = await this.reference.ExecuteBatchAsync(batchOperation);
-                    result.AddRange(r);
+                    batchOperation.InsertOrMerge(new DynamicTableEntity(partitionKey, rowKey, etag, properties));
                 }
+
+                var r = await this.reference.ExecuteBatchAsync(batchOperation);
+                result.AddRange(r);
             }
 
             return result;
@@ -509,6 +502,24 @@
         {
             var batches = new List<List<ITableEntity>>();
             foreach (var partition in entities.GroupBy(en => en.PartitionKey))
+            {
+                batches.AddRange(partition.Select((x, i) => new { Index = i, Value = x })
+                                .GroupBy(x => x.Index / TableStorage.MaimumxInsertBatch)
+                                .Select(x => x.Select(v => v.Value).ToList()));
+            }
+
+            return batches;
+        }
+
+        /// <summary>
+        /// Break Entities into batches
+        /// </summary>
+        /// <param name="entities">Entities</param>
+        /// <returns>Batches</returns>
+        public virtual IEnumerable<List<IDictionary<string, object>>> Batch(IEnumerable<IDictionary<string, object>> entities)
+        {
+            var batches = new List<List<IDictionary<string, object>>>();
+            foreach (var partition in entities.GroupBy(en => en[PartitionKey]))
             {
                 batches.AddRange(partition.Select((x, i) => new { Index = i, Value = x })
                                 .GroupBy(x => x.Index / TableStorage.MaimumxInsertBatch)
