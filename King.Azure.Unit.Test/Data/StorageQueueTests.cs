@@ -39,7 +39,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void ConstructorKeyNull()
         {
             new StorageQueue("test", (string)null);

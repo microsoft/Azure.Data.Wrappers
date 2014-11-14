@@ -65,7 +65,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void ConstructorConnectionStringNull()
         {
             new TableStorage("TestTable", (string)null);

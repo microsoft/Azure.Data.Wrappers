@@ -38,7 +38,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void ConstructorKeyNull()
         {
             new Container("test", (string)null);
