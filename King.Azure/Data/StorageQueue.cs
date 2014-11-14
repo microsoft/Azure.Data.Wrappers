@@ -64,7 +64,7 @@
         /// <summary>
         /// Table Name
         /// </summary>
-        public string Name
+        public virtual string Name
         {
             get
             {
@@ -75,7 +75,7 @@
         /// <summary>
         /// Cloud Queue Client
         /// </summary>
-        public CloudQueueClient Client
+        public virtual CloudQueueClient Client
         {
             get
             {
@@ -86,7 +86,7 @@
         /// <summary>
         /// Cloud Reference
         /// </summary>
-        public CloudQueue Reference
+        public virtual CloudQueue Reference
         {
             get
             {
@@ -109,7 +109,7 @@
         /// Delete Queue
         /// </summary>
         /// <returns></returns>
-        public async Task Delete()
+        public virtual async Task Delete()
         {
             await this.reference.DeleteAsync();
         }

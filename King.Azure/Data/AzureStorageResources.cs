@@ -27,8 +27,7 @@
         public virtual IEnumerable<string> TableNames()
         {
             var client = base.Account.CreateCloudTableClient();
-            return from t in client.ListTables()
-                   select t.Name;
+            return client.ListTables().Select(t => t.Name);
         }
 
         /// <summary>
@@ -51,8 +50,7 @@
         public virtual IEnumerable<string> ContainerNames()
         {
             var client = base.Account.CreateCloudBlobClient();
-            return from t in client.ListContainers()
-                   select t.Name;
+            return client.ListContainers().Select(c => c.Name);
         }
 
         /// <summary>
@@ -75,8 +73,7 @@
         public virtual IEnumerable<string> QueueNames()
         {
             var client = base.Account.CreateCloudQueueClient();
-            return from t in client.ListQueues()
-                   select t.Name;
+            return client.ListQueues().Select(q => q.Name);
         }
 
         /// <summary>

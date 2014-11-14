@@ -21,13 +21,8 @@
         /// </summary>
         /// <param name="connectionString">Storage Account</param>
         public AzureStorage(string connectionString)
+            : this(CloudStorageAccount.Parse(connectionString))
         {
-            if (string.IsNullOrWhiteSpace(connectionString))
-            {
-                throw new ArgumentException("connectionString");
-            }
-
-            this.account = CloudStorageAccount.Parse(connectionString);
         }
 
         /// <summary>
