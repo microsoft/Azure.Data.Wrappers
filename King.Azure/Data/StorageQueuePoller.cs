@@ -82,9 +82,7 @@
                 return null;
             }
 
-            return from m in msgs
-                   where msgs != null
-                   select new StorageQueuedMessage<T>(this.queue, m);
+            return msgs.Where(m => m != null).Select(m => new StorageQueuedMessage<T>(this.queue, m));
         }
         #endregion
     }

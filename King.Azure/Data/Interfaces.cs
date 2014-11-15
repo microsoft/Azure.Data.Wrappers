@@ -27,6 +27,10 @@
     #endregion
 
     #region IStorageClient
+    /// <summary>
+    /// Storage Client Interface
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public interface IStorageClient<T>
     {
         #region Properties
@@ -42,6 +46,10 @@
     #endregion
 
     #region IStorageReference
+    /// <summary>
+    /// Storage Reference Interface
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public interface IStorageReference<T>
     {
         #region Properties
