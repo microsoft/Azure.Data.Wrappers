@@ -163,7 +163,7 @@
         }
 
         /// <summary>
-        /// Save Object to queue, as json
+        /// Save Model to queue, as json
         /// </summary>
         /// <param name="obj">object</param>
         /// <returns>Task</returns>
