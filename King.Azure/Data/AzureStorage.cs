@@ -44,7 +44,7 @@
         /// <summary>
         /// Cloud Storage Account
         /// </summary>
-        public virtual CloudStorageAccount Account
+        public CloudStorageAccount Account
         {
             get
             {
