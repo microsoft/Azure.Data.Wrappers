@@ -381,11 +381,27 @@
     }
     #endregion
 
+    #region IQueueCount
+    /// <summary>
+    /// Queue Count
+    /// </summary>
+    public interface IQueueCount
+    {
+        #region Methods
+        /// <summary>
+        /// Approixmate Message Count
+        /// </summary>
+        /// <returns>Message Count</returns>
+        Task<long?> ApproixmateMessageCount();
+        #endregion
+    }
+    #endregion
+
     #region IStorageQueue
     /// <summary>
     /// IStorage Queue
     /// </summary>
-    public interface IStorageQueue : IQueue<CloudQueueMessage>, IAzureStorage, IStorageReference<CloudQueue>, IStorageClient<CloudQueueClient>
+    public interface IStorageQueue : IQueue<CloudQueueMessage>, IAzureStorage, IStorageReference<CloudQueue>, IStorageClient<CloudQueueClient>, IQueueCount
     {
         #region Methods
         /// <summary>
@@ -400,12 +416,6 @@
         /// <param name="obj">Object</param>
         /// <returns>Task</returns>
         Task Save(object obj);
-
-        /// <summary>
-        /// Approixmate Message Count
-        /// </summary>
-        /// <returns>Message Count</returns>
-        Task<int?> ApproixmateMessageCount();
         #endregion
     }
     #endregion

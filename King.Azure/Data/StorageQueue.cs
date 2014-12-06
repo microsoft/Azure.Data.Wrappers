@@ -127,7 +127,7 @@
         /// Approixmate Message Count
         /// </summary>
         /// <returns>Message Count</returns>
-        public virtual async Task<int?> ApproixmateMessageCount()
+        public virtual async Task<long?> ApproixmateMessageCount()
         {
             await this.reference.FetchAttributesAsync();
             return this.reference.ApproximateMessageCount;
