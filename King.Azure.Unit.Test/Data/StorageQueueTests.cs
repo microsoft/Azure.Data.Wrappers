@@ -15,7 +15,7 @@
         [Test]
         public void Constructor()
         {
-            new StorageQueue("test", ConnectionString);
+            new StorageQueue("test", ConnectionString, TimeSpan.FromSeconds(22));
         }
 
         [Test]

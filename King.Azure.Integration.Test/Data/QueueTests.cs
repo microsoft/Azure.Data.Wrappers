@@ -44,7 +44,7 @@
         {
             var name = 'a' + Guid.NewGuid().ToString().ToLowerInvariant().Replace('-', 'a');
             var account = CloudStorageAccount.Parse(ConnectionString);
-            var storage = new StorageQueue(name, account);
+            var storage = new StorageQueue(name, account, TimeSpan.FromSeconds(34));
             var created = await storage.CreateIfNotExists();
 
             Assert.IsTrue(created);

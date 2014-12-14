@@ -22,6 +22,11 @@
         /// Cloud Reference
         /// </summary>
         private readonly CloudQueue reference;
+
+        /// <summary>
+        /// Visibility Timeout
+        /// </summary>
+        protected readonly TimeSpan? visibilityTimeout = null;
         #endregion
 
         #region Constructors
@@ -30,7 +35,7 @@
         /// </summary>
         /// <param name="name">Name</param>
         /// <param name="connectionStringKey">Connection String</param>
-        public StorageQueue(string name, string connectionString)
+        public StorageQueue(string name, string connectionString, TimeSpan? visibilityTimeout = null)
             : base(connectionString)
         {
             if (string.IsNullOrWhiteSpace(name))
@@ -40,6 +45,7 @@
 
             this.client = base.Account.CreateCloudQueueClient();
             this.reference = client.GetQueueReference(name);
+            this.visibilityTimeout = visibilityTimeout;
         }
 
         /// <summary>
@@ -47,7 +53,7 @@
         /// </summary>
         /// <param name="name">Name</param>
         /// <param name="account">Storage Account</param>
-        public StorageQueue(string name, CloudStorageAccount account)
+        public StorageQueue(string name, CloudStorageAccount account, TimeSpan? visibilityTimeout = null)
             : base(account)
         {
             if (string.IsNullOrWhiteSpace(name))
@@ -57,6 +63,7 @@
 
             this.client = base.Account.CreateCloudQueueClient();
             this.reference = client.GetQueueReference(name);
+            this.visibilityTimeout = visibilityTimeout;
         }
         #endregion
 
@@ -120,7 +127,7 @@
         /// <returns>Message</returns>
         public virtual async Task<CloudQueueMessage> Get()
         {
-            return await this.reference.GetMessageAsync();
+            return await this.reference.GetMessageAsync(this.visibilityTimeout, null, null);
         }
 
         /// <summary>
@@ -145,7 +152,7 @@
                 messageCount = 1;
             }
 
-            return await this.reference.GetMessagesAsync(messageCount);
+            return await this.reference.GetMessagesAsync(messageCount, this.visibilityTimeout, null, null);
         }
 
         /// <summary>
