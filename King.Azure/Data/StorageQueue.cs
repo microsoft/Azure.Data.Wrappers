@@ -136,12 +136,13 @@
         /// <summary>
         /// Get Many Cloud Queue Message
         /// </summary>
+        /// <param name="messageCount">Message Count</param>
         /// <returns>Messages</returns>
         public virtual async Task<IEnumerable<CloudQueueMessage>> GetMany(int messageCount = 5)
         {
-            if (0 > messageCount)
+            if (0 >= messageCount)
             {
-                throw new ArgumentException("Message count must be greater than 0.");
+                messageCount = 1;
             }
 
             return await this.reference.GetMessagesAsync(messageCount);

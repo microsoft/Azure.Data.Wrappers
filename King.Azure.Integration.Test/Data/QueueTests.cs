@@ -128,5 +128,24 @@
 
             Assert.AreEqual(count, returned.Count());
         }
+
+        [Test]
+        public async Task GetManyNegative()
+        {
+            var random = new Random();
+            var count = random.Next(1, 25);
+
+            var storage = new StorageQueue(QueueName, ConnectionString);
+
+            for (var i = 0; i < count; i++)
+            {
+                var msg = new CloudQueueMessage(Guid.NewGuid().ToByteArray());
+                await storage.Save(msg);
+            }
+
+            var returned = await storage.GetMany(-1);
+
+            Assert.AreEqual(1, returned.Count());
+        }
     }
 }
