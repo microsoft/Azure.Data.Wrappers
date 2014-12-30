@@ -435,14 +435,14 @@
         }
 
         [Test]
-        public async Task SetCacheControlNegative()
+        public async Task SetCacheControlZero()
         {
             var cache = "public, max-age=31536000";
             var blobName = Guid.NewGuid().ToString();
             var storage = new Container(ContainerName, ConnectionString);
 
             await storage.Save(blobName, Guid.NewGuid().ToString());
-            await storage.SetCacheControl(blobName, -5);
+            await storage.SetCacheControl(blobName, 0);
             var returned = await storage.Properties(blobName);
 
             Assert.IsNotNull(returned);
