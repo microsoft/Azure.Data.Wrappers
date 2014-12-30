@@ -415,8 +415,7 @@
         /// <returns>Entities</returns>
         public virtual async Task<IEnumerable<IDictionary<string, object>>> QueryByPartition(string partitionKey)
         {
-            var query = new TableQuery().Where(TableQuery.GenerateFilterCondition(TableStorage.PartitionKey, QueryComparisons.Equal, partitionKey));
-            return await this.Query(query);
+            return await this.Query(new TableQuery().Where(TableQuery.GenerateFilterCondition(TableStorage.PartitionKey, QueryComparisons.Equal, partitionKey)));
         }
 
         /// <summary>
@@ -429,8 +428,7 @@
         /// <returns>Entities</returns>
         public virtual async Task<IEnumerable<IDictionary<string, object>>> QueryByRow(string rowKey)
         {
-            var query = new TableQuery().Where(TableQuery.GenerateFilterCondition(TableStorage.RowKey, QueryComparisons.Equal, rowKey));
-            return await this.Query(query);
+            return await this.Query(new TableQuery().Where(TableQuery.GenerateFilterCondition(TableStorage.RowKey, QueryComparisons.Equal, rowKey)));
         }
 
         /// <summary>
