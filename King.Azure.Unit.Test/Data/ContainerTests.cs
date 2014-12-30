@@ -45,6 +45,13 @@
         }
 
         [Test]
+        public void DefaultCacheDuration()
+        {
+            Assert.AreEqual(31536000, Container.DefaultCacheDuration);
+        }
+
+
+        [Test]
         public void Name()
         {
             var name = Guid.NewGuid().ToString();

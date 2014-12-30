@@ -320,7 +320,7 @@
         /// <param name="blobName">Blob Name</param>
         /// <param name="cacheDuration">Cache Duration (Default 1 year)</param>
         /// <returns>Task</returns>
-        Task SetCacheControl(string blobName, int cacheDuration = 31536000);
+        Task SetCacheControl(string blobName, uint cacheDuration = Container.DefaultCacheDuration);
 
         /// <summary>
         /// List Blobs

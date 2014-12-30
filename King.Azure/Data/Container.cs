@@ -16,6 +16,11 @@
     {
         #region Members
         /// <summary>
+        /// Default Cache Duration
+        /// </summary>
+        public const uint DefaultCacheDuration = 31536000;
+
+        /// <summary>
         /// Client
         /// </summary>
         private readonly CloudBlobClient client;
@@ -294,6 +299,7 @@
 
             var blob = this.GetBlockReference(blobName);
             await blob.FetchAttributesAsync();
+
             var bytes = new byte[blob.Properties.Length];
             await blob.DownloadToByteArrayAsync(bytes, 0);
 
@@ -372,14 +378,14 @@
         /// <param name="blobName">Blob Name</param>
         /// <param name="cacheDuration">Cache Duration (Default 1 year)</param>
         /// <returns>Task</returns>
-        public virtual async Task SetCacheControl(string blobName, int cacheDuration = 31536000)
+        public virtual async Task SetCacheControl(string blobName, uint cacheDuration = DefaultCacheDuration)
         {
             if (string.IsNullOrWhiteSpace(blobName))
             {
                 throw new ArgumentException("blobName");
             }
 
-            cacheDuration = cacheDuration < 1 ? 31536000 : cacheDuration;
+            cacheDuration = cacheDuration < 1 ? DefaultCacheDuration : cacheDuration;
 
             var blob = this.GetBlockReference(blobName);
             await this.Set(blob, null, null, string.Format("public, max-age={0}", cacheDuration));
