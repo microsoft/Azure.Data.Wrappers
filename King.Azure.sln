@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "King.Azure", "King.Azure\King.Azure.csproj", "{878A0CE3-D0CF-4678-82AF-E1B48948FEDB}"
 EndProject
@@ -17,6 +17,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "King.Azure.Unit.Test", "King.Azure.Unit.Test\King.Azure.Unit.Test.csproj", "{2B927887-8F8A-4169-89CC-2BF955D77D3C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "King.Azure.Integration.Test", "King.Azure.Integration.Test\King.Azure.Integration.Test.csproj", "{1315AE68-967F-40EC-A697-042280E9A011}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B65D0744-3BE9-4B13-A7D4-1D30E2587DD9}"
+	ProjectSection(SolutionItems) = preProject
+		King.Azure.nuspec = King.Azure.nuspec
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
