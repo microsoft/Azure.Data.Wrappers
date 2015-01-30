@@ -124,8 +124,6 @@ publish/
 
 # NuGet Packages Directory
 packages/
-## TODO: If the tool you use requires repositories.config uncomment the next line
-#!packages/repositories.config
 
 # Enable "build/" folder in the NuGet Packages folder since NuGet packages use it for MSBuild targets
 # This line needs to be after the ignore of the build folder (and the packages folder if the line above has been uncommented)
@@ -158,6 +156,7 @@ Generated_Code/
 # Visual Studio version. Backup files are not needed, because we have git ;-)
 _UpgradeReport_Files/
 Backup*/
+*.ide/
 UpgradeLog*.XML
 UpgradeLog*.htm
 
@@ -173,42 +172,5 @@ UpgradeLog*.htm
 # Microsoft Fakes
 FakesAssemblies/
 
-# =========================
-# Operating System Files
-# =========================
-
-# OSX
-# =========================
-
-.DS_Store
-.AppleDouble
-.LSOverride
-
-# Icon must ends with two \r.
-Icon
-
-# Thumbnails
-._*
-
-# Files that might appear on external disk
-.Spotlight-V100
-.Trashes
-
-# Windows
-# =========================
-
-# Windows image file caches
-Thumbs.db
-ehthumbs.db
-
-# Folder config file
-Desktop.ini
-
-# Recycle Bin used on file shares
-$RECYCLE.BIN/
-
-# Windows Installer files
-*.cab
-*.msi
-*.msm
-*.msp
+NuGet Packages
+*.nupkg
