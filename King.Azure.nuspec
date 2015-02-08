@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>King.Azure</id>
-    <version>1.1.16</version>
+    <version>1.1.17</version>
     <title>King.Azure</title>
     <authors>Jef King</authors>
     <owners>Jef King</owners>
@@ -12,7 +12,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Azure Storage Simplified.</description>
     <summary>Azure Storage Simplified.</summary>
-    <releaseNotes>Set dequeue message visibility duration.</releaseNotes>
+    <releaseNotes>Enabling compatability for .NET 4.5</releaseNotes>
     <copyright>Jef King</copyright>
     <language>en-US</language>
     <tags>King.Azure Azure Storage Mock Mockable Simple Data Table Storage Queue Queuing Blob Query dependency injection dependency-injection Cloud Table-Storage Windows-Azure Windows dotNet CSharp Mocking Data-Table Blob Json WindowsAzure.Storage</tags>
@@ -20,11 +20,11 @@
       <dependency id="WindowsAzure.Storage" />
     </dependencies>
     <frameworkAssemblies>
-      <frameworkAssembly assemblyName="System" targetFramework="net451" />
-      <frameworkAssembly assemblyName="System.Xml" targetFramework="net451" />
+      <frameworkAssembly assemblyName="System" targetFramework="net45" />
+      <frameworkAssembly assemblyName="System.Xml" targetFramework="net45" />
     </frameworkAssemblies>
   </metadata>
   <files>
-    <file src="King.Azure\bin\Release\King.Azure.dll" target="lib\net451\King.Azure.dll" />
+    <file src="King.Azure\bin\Release\King.Azure.dll" target="lib\net45\King.Azure.dll" />
   </files>
 </package>
