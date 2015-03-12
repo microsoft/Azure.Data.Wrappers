@@ -60,7 +60,7 @@
 
         #region Properties
         /// <summary>
-        /// Table Name
+        /// Name
         /// </summary>
         public virtual string Name
         {

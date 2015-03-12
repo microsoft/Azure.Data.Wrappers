@@ -19,7 +19,7 @@
         [Test]
         public void ConstructorAccount()
         {
-            new Container("test", CloudStorageAccount.Parse(ConnectionString));
+            new FileShare("test", CloudStorageAccount.Parse(ConnectionString));
         }
 
         [Test]
