@@ -91,6 +91,7 @@
   <ItemGroup>
     <Compile Include="Data\AzureStorageResourcesTests.cs" />
     <Compile Include="Data\ContainerTests.cs" />
+    <Compile Include="Data\FileShareTests.cs" />
     <Compile Include="Data\QueueTests.cs" />
     <Compile Include="Data\TableStorageTests.cs" />
     <Compile Include="Initialization.cs" />

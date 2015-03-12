@@ -2,6 +2,7 @@
 {
     using Microsoft.WindowsAzure.Storage;
     using Microsoft.WindowsAzure.Storage.Blob;
+    using Microsoft.WindowsAzure.Storage.File;
     using Microsoft.WindowsAzure.Storage.Queue;
     using Microsoft.WindowsAzure.Storage.Table;
     using System.Collections.Generic;
@@ -583,6 +584,15 @@
         /// <returns>Queues</returns>
         IEnumerable<IStorageQueue> Queues();
         #endregion
+    }
+    #endregion
+
+    #region IFileShare
+    /// <summary>
+    /// File Share Interface
+    /// </summary>
+    public interface IFileShare : IStorageReference<CloudFileShare>, IStorageClient<CloudFileClient>
+    {
     }
     #endregion
 }

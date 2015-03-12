@@ -91,6 +91,7 @@
     <Compile Include="Data\AzureStorageResourcesTests.cs" />
     <Compile Include="Data\AzureStorageTests.cs" />
     <Compile Include="Data\ContainerTests.cs" />
+    <Compile Include="Data\FileShareTests.cs" />
     <Compile Include="Data\StorageQueuedMessageTests.cs" />
     <Compile Include="Data\StorageQueuePollerTests.cs" />
     <Compile Include="Data\StorageQueueTests.cs" />

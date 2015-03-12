@@ -5,8 +5,8 @@
     using Microsoft.WindowsAzure.Storage.Table;
     using NUnit.Framework;
     using System;
-    using System.Linq;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
 
     [TestFixture]

@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>King.Azure</id>
-    <version>1.1.17</version>
+    <version>1.1.18</version>
     <title>King.Azure</title>
     <authors>Jef King</authors>
     <owners>Jef King</owners>
@@ -12,10 +12,10 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Azure Storage Simplified.</description>
     <summary>Azure Storage Simplified.</summary>
-    <releaseNotes>Enabling compatability for .NET 4.5</releaseNotes>
+    <releaseNotes>File Share creation available.</releaseNotes>
     <copyright>Jef King</copyright>
     <language>en-US</language>
-    <tags>King.Azure Azure Storage Mock Mockable Simple Data Table Storage Queue Queuing Blob Query dependency injection dependency-injection Cloud Table-Storage Windows-Azure Windows dotNet CSharp Mocking Data-Table Blob Json WindowsAzure.Storage</tags>
+    <tags>King.Azure Azure Storage Mock Mockable Simple Data Table Storage File Share File-Share Queue Queuing Blob Query dependency injection dependency-injection Cloud Table-Storage Windows-Azure Windows dotNet CSharp Mocking Data-Table Blob Json WindowsAzure.Storage</tags>
     <dependencies>
       <dependency id="WindowsAzure.Storage" />
     </dependencies>

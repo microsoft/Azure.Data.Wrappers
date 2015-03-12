@@ -24,15 +24,21 @@
         }
 
         [Test]
+        public void IsAzureStorage()
+        {
+            Assert.IsNotNull(new Container("test", ConnectionString) as AzureStorage);
+        }
+
+        [Test]
         [ExpectedException(typeof(ArgumentException))]
-        public void ConstructorTableNull()
+        public void ConstructorNameNull()
         {
             new Container(null, ConnectionString);
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentException))]
-        public void ConstructorAccountTableNull()
+        public void ConstructorAccountNameNull()
         {
             new Container(null, CloudStorageAccount.Parse(ConnectionString));
         }
@@ -49,7 +55,6 @@
         {
             Assert.AreEqual(31536000, Container.DefaultCacheDuration);
         }
-
 
         [Test]
         public void Name()

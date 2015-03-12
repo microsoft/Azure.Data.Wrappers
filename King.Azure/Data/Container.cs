@@ -10,7 +10,7 @@
     using System.Threading.Tasks;
 
     /// <summary>
-    /// Container
+    /// Blob Container
     /// </summary>
     public class Container : AzureStorage, IContainer
     {
@@ -38,7 +38,7 @@
 
         #region Constructors
         /// <summary>
-        /// Queue
+        /// Container Constructor
         /// </summary>
         /// <param name="name">Name</param>
         /// <param name="connectionString">Connection String</param>
@@ -57,7 +57,7 @@
         }
 
         /// <summary>
-        /// Queue
+        /// Container Constructor
         /// </summary>
         /// <param name="name">Name</param>
         /// <param name="account">Storage Account</param>
