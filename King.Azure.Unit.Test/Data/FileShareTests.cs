@@ -17,6 +17,12 @@
         }
 
         [Test]
+        public void ConstructorAccount()
+        {
+            new Container("test", CloudStorageAccount.Parse(ConnectionString));
+        }
+
+        [Test]
         public void IsAzureStorage()
         {
             Assert.IsNotNull(new FileShare("test", ConnectionString) as AzureStorage);
