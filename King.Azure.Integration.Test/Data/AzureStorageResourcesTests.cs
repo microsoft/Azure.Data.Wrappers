@@ -1,10 +1,10 @@
 ﻿namespace King.Azure.Integration.Test.Data
 {
-    using King.Azure.Data;
-    using NUnit.Framework;
     using System;
     using System.Linq;
     using System.Threading.Tasks;
+    using King.Azure.Data;
+    using NUnit.Framework;
 
     [TestFixture]
     public class AzureStorageResourcesTests
