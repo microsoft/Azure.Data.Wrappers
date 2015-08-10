@@ -8,7 +8,7 @@
     [TestFixture]
     public class FileShareTests
     {
-        private const string ConnectionString = "DefaultEndpointsProtocol=https;AccountName=kingazure;AccountKey=LQFXI8kFSh0TR0dk2bvukQZRxymByGn1amCiR8chpIZ+NkLHqx6IFMcApHGWQutKpWfPloJfNv3ySM+uOJ3f9g==;";
+        private const string ConnectionString = "DefaultEndpointsProtocol=https;AccountName=kingazure;AccountKey=nCJim8J7DwyAsk1ULffZLCjKZ/iVvULDG3dlbTi8XoXUcztB1jQss3VbEHdVIUlkl3866JA0hg/01BTkFKklWQ==;";
 
         [Test]
         public async Task CreateIfNotExists()
