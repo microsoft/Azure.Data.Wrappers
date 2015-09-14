@@ -1,7 +1,7 @@
 ﻿namespace King.Azure.Data
 {
-    using Microsoft.WindowsAzure.Storage;
     using System;
+    using Microsoft.WindowsAzure.Storage;
 
     /// <summary>
     /// Azure Storage

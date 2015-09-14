@@ -1,13 +1,13 @@
 ﻿namespace King.Azure.Data
 {
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Threading.Tasks;
     using Microsoft.WindowsAzure.Storage;
     using Microsoft.WindowsAzure.Storage.Blob;
     using Microsoft.WindowsAzure.Storage.File;
     using Microsoft.WindowsAzure.Storage.Queue;
     using Microsoft.WindowsAzure.Storage.Table;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Threading.Tasks;
 
     #region IAccount
     /// <summary>
