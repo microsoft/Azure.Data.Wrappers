@@ -2,7 +2,6 @@
 {
     using King.Azure.Data;
     using NUnit.Framework;
-    using System;
 
     [TestFixture]
     public class AzureStorageResourcesTests

@@ -1,9 +1,9 @@
 ﻿namespace King.Azure.Unit.Test.Data
 {
+    using System;
     using King.Azure.Data;
     using Microsoft.WindowsAzure.Storage;
     using NUnit.Framework;
-    using System;
 
     [TestFixture]
     public class FileShareTests
