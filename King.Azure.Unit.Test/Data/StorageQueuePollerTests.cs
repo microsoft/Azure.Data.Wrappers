@@ -77,7 +77,7 @@
         {
             var msg = new CloudQueueMessage("data");
             var queue = Substitute.For<IStorageQueue>();
-            queue.Get().Returns(x => { throw new ApplicationException(); });
+            queue.Get().ReturnsForAnyArgs<object>(x => { throw new ApplicationException(); });
 
             var poller = new StorageQueuePoller<object>(queue);
             await poller.Poll();
@@ -124,7 +124,7 @@
         {
             var msg = new CloudQueueMessage("data");
             var queue = Substitute.For<IStorageQueue>();
-            queue.GetMany().Returns(x => { throw new ApplicationException(); });
+            queue.GetMany().ReturnsForAnyArgs<object>(x => { throw new ApplicationException(); });
 
             var poller = new StorageQueuePoller<object>(queue);
             await poller.PollMany();
