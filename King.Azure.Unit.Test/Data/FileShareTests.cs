@@ -35,17 +35,15 @@
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void ConstructorNameNull()
         {
-            new FileShare(null, ConnectionString);
+            Assert.That(new FileShare(null, ConnectionString), Throws.TypeOf<ArgumentException>());
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void ConstructorAccountNameNull()
         {
-            new FileShare(null, CloudStorageAccount.Parse(ConnectionString));
+            Assert.That(new FileShare(null, CloudStorageAccount.Parse(ConnectionString)), Throws.TypeOf<ArgumentException>());
         }
 
         [Test]

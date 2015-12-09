@@ -23,17 +23,15 @@
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void ConstructorConnectionStringNull()
         {
-            new AzureStorage((string)null);
+            Assert.That(new AzureStorage((string)null), Throws.TypeOf<ArgumentNullException>());
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void ConstructorAccountNull()
         {
-            new AzureStorage((CloudStorageAccount)null);
+            Assert.That(new AzureStorage((CloudStorageAccount)null), Throws.TypeOf<ArgumentNullException>());
         }
     }
 }

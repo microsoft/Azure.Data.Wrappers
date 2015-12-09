@@ -51,24 +51,21 @@
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void ConstructorTableNull()
         {
-            new TableStorage(null, ConnectionString);
+            Assert.That(new TableStorage(null, ConnectionString), Throws.TypeOf<ArgumentException>());
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void ConstructorAccountTableNull()
         {
-            new TableStorage(null, CloudStorageAccount.Parse(ConnectionString));
+            Assert.That(new TableStorage(null, CloudStorageAccount.Parse(ConnectionString)), Throws.TypeOf<ArgumentException>());
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void ConstructorConnectionStringNull()
         {
-            new TableStorage("TestTable", (string)null);
+            Assert.That(new TableStorage("TestTable", (string)null), Throws.TypeOf<ArgumentNullException>());
         }
 
         [Test]
@@ -96,39 +93,39 @@
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public async Task InsertDictionaryNull()
+        public void InsertDictionaryNull()
         {
             var name = Guid.NewGuid().ToString();
             var t = new TableStorage(name, ConnectionString);
-            await t.InsertOrReplace((IDictionary<string, object>)null);
+
+            Assert.That(t.InsertOrReplace((IDictionary<string, object>)null), Throws.TypeOf<ArgumentNullException>());
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public async Task QueryTableQueryNull()
+        public void QueryTableQueryNull()
         {
             var name = Guid.NewGuid().ToString();
             var t = new TableStorage(name, ConnectionString);
-            await t.Query<TableEntity>(null);
+
+            Assert.That(t.Query<TableEntity>(null), Throws.TypeOf<ArgumentNullException>());
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public async Task DeleteEntityNull()
+        public void DeleteEntityNull()
         {
             var name = Guid.NewGuid().ToString();
             var t = new TableStorage(name, ConnectionString);
-            await t.Delete((ITableEntity)null);
+
+            Assert.That(t.Delete((ITableEntity)null), Throws.TypeOf<ArgumentNullException>());
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public async Task DeleteEntitiesNull()
+        public void DeleteEntitiesNull()
         {
             var name = Guid.NewGuid().ToString();
             var t = new TableStorage(name, ConnectionString);
-            await t.Delete((IEnumerable<ITableEntity>)null);
+
+            Assert.That(t.Delete((IEnumerable<ITableEntity>)null), Throws.TypeOf<ArgumentNullException>());
         }
 
         [Test]

@@ -21,10 +21,9 @@
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void ConstructorStorageQueueNull()
         {
-            new StorageQueuePoller<object>(null);
+            Assert.That(new StorageQueuePoller<object>(null), Throws.TypeOf<ArgumentNullException>());
         }
 
         [Test]
@@ -54,7 +53,7 @@
 
             Assert.IsNotNull(returned);
 
-            queue.Received().Get();
+            await queue.Received().Get();
         }
 
         [Test]
@@ -68,19 +67,19 @@
 
             Assert.IsNull(returned);
 
-            queue.Received().Get();
+            await queue.Received().Get();
         }
 
         [Test]
-        [ExpectedException(typeof(ApplicationException))]
-        public async Task PollGetThrows()
+        public void PollGetThrows()
         {
             var msg = new CloudQueueMessage("data");
             var queue = Substitute.For<IStorageQueue>();
             queue.Get().ReturnsForAnyArgs<object>(x => { throw new ApplicationException(); });
 
             var poller = new StorageQueuePoller<object>(queue);
-            await poller.Poll();
+
+            Assert.That(poller.Poll(), Throws.TypeOf<ApplicationException>());
         }
 
         [Test]
@@ -101,7 +100,7 @@
             Assert.IsNotNull(returned);
             Assert.AreEqual(3, returned.Count());
 
-            queue.Received().GetMany(3);
+            await queue.Received().GetMany(3);
         }
 
         [Test]
@@ -115,19 +114,19 @@
 
             Assert.IsNull(returned);
 
-            queue.Received().GetMany(3);
+            await queue.Received().GetMany(3);
         }
 
         [Test]
-        [ExpectedException(typeof(ApplicationException))]
-        public async Task PollGetManyThrows()
+        public void PollGetManyThrows()
         {
             var msg = new CloudQueueMessage("data");
             var queue = Substitute.For<IStorageQueue>();
             queue.GetMany().ReturnsForAnyArgs<object>(x => { throw new ApplicationException(); });
 
             var poller = new StorageQueuePoller<object>(queue);
-            await poller.PollMany();
+
+            Assert.That(poller.PollMany(), Throws.TypeOf<ApplicationException>());
         }
     }
 }

@@ -30,24 +30,21 @@
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void ConstructorNameNull()
         {
-            new Container(null, ConnectionString);
+            Assert.That(new Container(null, ConnectionString), Throws.TypeOf<ArgumentException>());
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void ConstructorAccountNameNull()
         {
-            new Container(null, CloudStorageAccount.Parse(ConnectionString));
+            Assert.That(new Container(null, CloudStorageAccount.Parse(ConnectionString)), Throws.TypeOf<ArgumentException>());
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void ConstructorKeyNull()
         {
-            new Container("test", (string)null);
+            Assert.That(new Container("test", (string)null), Throws.TypeOf<ArgumentNullException>());
         }
 
         [Test]
@@ -89,143 +86,141 @@
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
-        public async Task DeleteBlobNameNull()
+        public void DeleteBlobNameNull()
         {
             var c = new Container("test", ConnectionString);
-            await c.Delete(null);
+            Assert.That(c.Delete(null), Throws.TypeOf<ArgumentException>());
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
-        public async Task ExistsBlobNameNull()
+        public void ExistsBlobNameNull()
         {
             var c = new Container("test", ConnectionString);
-            await c.Exists(null);
+            Assert.That(c.Exists(null), Throws.TypeOf<ArgumentException>());
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
-        public async Task GetBlobNameNull()
+        public void GetBlobNameNull()
         {
             var c = new Container("test", ConnectionString);
-            await c.Get<object>(null);
+
+            Assert.That(c.Get<object>(null), Throws.TypeOf<ArgumentException>());
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
-        public async Task StreamBlobNameNull()
+        public void StreamBlobNameNull()
         {
             var c = new Container("test", ConnectionString);
-            await c.Stream(null);
+
+            Assert.That(c.Stream(null), Throws.TypeOf<ArgumentException>());
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
-        public async Task SaveBlobNameNull()
+        public void SaveBlobNameNull()
         {
             var c = new Container("test", ConnectionString);
-            await c.Save(null, new object());
+
+            Assert.That(c.Save(null, new object()), Throws.TypeOf<ArgumentException>());
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public async Task SaveObjectNull()
+        public void SaveObjectNull()
         {
             var c = new Container("test", ConnectionString);
-            await c.Save(Guid.NewGuid().ToString(), (object)null);
+
+            Assert.That(c.Save(Guid.NewGuid().ToString(), (object)null), Throws.TypeOf<ArgumentException>());
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
-        public async Task GetBytesBlobNameNull()
+        public void GetBytesBlobNameNull()
         {
             var c = new Container("test", ConnectionString);
-            await c.Get(null);
+
+            Assert.That(c.Get(null), Throws.TypeOf<ArgumentException>());
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
-        public async Task GetTextBlobNameNull()
+        public void GetTextBlobNameNull()
         {
             var c = new Container("test", ConnectionString);
-            await c.GetText(null);
+
+            Assert.That(c.GetText(null), Throws.TypeOf<ArgumentException>());
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
-        public async Task SnapShotBlobNameNull()
+        public void SnapShotBlobNameNull()
         {
             var c = new Container("test", ConnectionString);
-            await c.Snapshot(null);
+
+            Assert.That(c.Snapshot(null), Throws.TypeOf<ArgumentException>());
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
-        public async Task SaveBytesBlobNameNull()
+        public void SaveBytesBlobNameNull()
         {
             var random = new Random();
             var bytes = new byte[1024];
             random.NextBytes(bytes);
 
             var c = new Container("test", ConnectionString);
-            await c.Save(null, bytes);
+
+            Assert.That(c.Save(null, bytes), Throws.TypeOf<ArgumentException>());
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
-        public async Task SaveTextBlobNameNull()
+        public void SaveTextBlobNameNull()
         {
             var c = new Container("test", ConnectionString);
-            await c.Save(null, Guid.NewGuid().ToString());
+
+            Assert.That(c.Save(null, Guid.NewGuid().ToString()), Throws.TypeOf<ArgumentException>());
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public async Task SaveBytesNull()
+        public void SaveBytesNull()
         {
             var c = new Container("test", ConnectionString);
-            await c.Save(Guid.NewGuid().ToString(), (byte[])null);
+
+            Assert.That(c.Save(Guid.NewGuid().ToString(), (byte[])null), Throws.TypeOf<ArgumentNullException>());
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
-        public async Task SaveTextNull()
+        public void SaveTextNull()
         {
             var c = new Container("test", ConnectionString);
-            await c.Save(Guid.NewGuid().ToString(), (string)null);
+
+            Assert.That(c.Save(Guid.NewGuid().ToString(), (string)null), Throws.TypeOf<ArgumentException>());
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void GetBlockReferenceBlobNameNull()
         {
             var c = new Container("test", ConnectionString);
-            c.GetBlockReference(null);
+
+            Assert.That(c.GetBlockReference(null), Throws.TypeOf<ArgumentException>());
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void GetPageReferenceBlobNameNull()
         {
             var c = new Container("test", ConnectionString);
-            c.GetPageReference(null);
+
+            Assert.That(c.GetPageReference(null), Throws.TypeOf<ArgumentException>());
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
-        public async Task PropertiesBlobNameNull()
+        public void PropertiesBlobNameNull()
         {
             var c = new Container("test", ConnectionString);
-            await c.Properties(null);
+
+            Assert.That(c.Properties(null), Throws.TypeOf<ArgumentException>());
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
-        public async Task SetCacheControlBlobNameNull()
+        public void SetCacheControlBlobNameNull()
         {
             var c = new Container("test", ConnectionString);
-            await c.SetCacheControl(null);
+
+            Assert.That(c.SetCacheControl(null), Throws.TypeOf<ArgumentException>());
         }
     }
 }

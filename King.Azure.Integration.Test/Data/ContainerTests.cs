@@ -8,7 +8,7 @@
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
-
+    using NUnit.Framework.Constraints;
     [TestFixture]
     public class ContainerTests
     {
@@ -271,7 +271,6 @@
         }
 
         [Test]
-        [ExpectedException(typeof(StorageException))]
         public async Task Delete()
         {
             var helper = new Helper()
@@ -284,7 +283,8 @@
 
             await storage.Save(blobName, helper);
             await storage.Delete(blobName);
-            await storage.Get<Helper>(blobName);
+            
+            Assert.That(storage.Get<Helper>(blobName), Throws.TypeOf<StorageException>());
         }
 
         [Test]
@@ -361,7 +361,6 @@
         }
 
         [Test]
-        [ExpectedException(typeof(StorageException))]
         public async Task SnapShoAndDeleteSafe()
         {
             var random = new Random();
@@ -373,7 +372,8 @@
             await storage.Save(name, bytes);
 
             var snapshot = await storage.Snapshot(name);
-            await storage.Delete(name, false);
+
+            Assert.That(storage.Delete(name, false), Throws.TypeOf<StorageException>());
         }
 
         [Test]

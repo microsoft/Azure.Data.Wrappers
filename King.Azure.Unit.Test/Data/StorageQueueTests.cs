@@ -25,24 +25,21 @@
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void ConstructorTableNull()
         {
-            new StorageQueue(null, ConnectionString);
+            Assert.That(new StorageQueue(null, ConnectionString), Throws.TypeOf<ArgumentException>());
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void ConstructorAccountTableNull()
         {
-            new StorageQueue(null, CloudStorageAccount.Parse(ConnectionString));
+            Assert.That(new StorageQueue(null, CloudStorageAccount.Parse(ConnectionString)), Throws.TypeOf<ArgumentException>());
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void ConstructorKeyNull()
         {
-            new StorageQueue("test", (string)null);
+            Assert.That(new StorageQueue("test", (string)null), Throws.TypeOf<ArgumentNullException>());
         }
 
         [Test]
@@ -70,30 +67,30 @@
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public async Task DeleteNull()
+        public void DeleteNull()
         {
             var name = Guid.NewGuid().ToString();
             var t = new StorageQueue(name, ConnectionString);
-            await t.Delete(null);
+
+            Assert.That(t.Delete(null), Throws.TypeOf<ArgumentNullException>());
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public async Task SaveMessageNull()
+        public void SaveMessageNull()
         {
             var name = Guid.NewGuid().ToString();
             var t = new StorageQueue(name, ConnectionString);
-            await t.Save((CloudQueueMessage)null);
+
+            Assert.That(t.Save((CloudQueueMessage)null), Throws.TypeOf<ArgumentNullException>());
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public async Task SaveNull()
+        public void SaveNull()
         {
             var name = Guid.NewGuid().ToString();
             var t = new StorageQueue(name, ConnectionString);
-            await t.Save((object)null);
+
+            Assert.That(t.Save((object)null), Throws.TypeOf<ArgumentNullException>());
         }
     }
 }

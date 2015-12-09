@@ -28,19 +28,19 @@
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void ConstructorQueueNull()
         {
             var message = new CloudQueueMessage("ship");
-            new StorageQueuedMessage<object>(null, message);
+
+            Assert.That(new StorageQueuedMessage<object>(null, message), Throws.TypeOf<ArgumentNullException>());
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void ConstructorMessageNull()
         {
             var queue = Substitute.For<IStorageQueue>();
-            new StorageQueuedMessage<object>(queue, null);
+
+            Assert.That(new StorageQueuedMessage<object>(queue, null), Throws.TypeOf<ArgumentNullException>());
         }
 
         [Test]
@@ -48,12 +48,12 @@
         {
             var queue = Substitute.For<IStorageQueue>();
             var message = new CloudQueueMessage("ship");
-            queue.Delete(message);
+            await queue.Delete(message);
             
             var sqm = new StorageQueuedMessage<object>(queue, message);
             await sqm.Complete();
 
-            queue.Received().Delete(message);
+            await queue.Received().Delete(message);
         }
 
         [Test]
@@ -73,7 +73,7 @@
             {
                 Test = Guid.NewGuid(),
             };
-            var json = await JsonConvert.SerializeObjectAsync(expected);
+            var json = JsonConvert.SerializeObject(expected);
             var queue = Substitute.For<IStorageQueue>();
             var message = new CloudQueueMessage(json);
 
