@@ -15,14 +15,14 @@
         private const string ConnectionString = "UseDevelopmentStorage=true;";
         private const string QueueName = "testing";
 
-        [OneTimeSetUp]
+        [SetUp]
         public void SetUp()
         {
             var storage = new StorageQueue(QueueName, ConnectionString);
             storage.CreateIfNotExists().Wait();
         }
 
-        [OneTimeTearDown]
+        [TearDown]
         public void TearDown()
         {
             var storage = new StorageQueue(QueueName, ConnectionString);
