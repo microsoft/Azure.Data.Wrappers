@@ -26,14 +26,14 @@
         }
         #endregion
 
-        [OneTimeSetUp]
+        [SetUp]
         public void SetUp()
         {
             var storage = new Container(ContainerName, ConnectionString);
             storage.CreateIfNotExists().Wait();
         }
 
-        [OneTimeTearDown]
+        [TearDown]
         public void TearDown()
         {
             var storage = new Container(ContainerName, ConnectionString);
