@@ -7,7 +7,7 @@
     [SetUpFixture]
     public class Initialization
     {
-        [SetUp]
+        [OneTimeSetUp]
         public static void SetUp()
         {
             var emulator = ConfigurationManager.AppSettings["AzureEmulator"];

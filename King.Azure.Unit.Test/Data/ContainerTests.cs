@@ -32,19 +32,19 @@
         [Test]
         public void ConstructorNameNull()
         {
-            Assert.That(new Container(null, ConnectionString), Throws.TypeOf<ArgumentException>());
+            Assert.That(() => new Container(null, ConnectionString), Throws.TypeOf<ArgumentException>());
         }
 
         [Test]
         public void ConstructorAccountNameNull()
         {
-            Assert.That(new Container(null, CloudStorageAccount.Parse(ConnectionString)), Throws.TypeOf<ArgumentException>());
+            Assert.That(() => new Container(null, CloudStorageAccount.Parse(ConnectionString)), Throws.TypeOf<ArgumentException>());
         }
 
         [Test]
         public void ConstructorKeyNull()
         {
-            Assert.That(new Container("test", (string)null), Throws.TypeOf<ArgumentNullException>());
+            Assert.That(() => new Container("test", (string)null), Throws.TypeOf<ArgumentNullException>());
         }
 
         [Test]
@@ -89,14 +89,14 @@
         public void DeleteBlobNameNull()
         {
             var c = new Container("test", ConnectionString);
-            Assert.That(c.Delete(null), Throws.TypeOf<ArgumentException>());
+            Assert.That(() => c.Delete(null), Throws.TypeOf<ArgumentException>());
         }
 
         [Test]
         public void ExistsBlobNameNull()
         {
             var c = new Container("test", ConnectionString);
-            Assert.That(c.Exists(null), Throws.TypeOf<ArgumentException>());
+            Assert.That(() => c.Exists(null), Throws.TypeOf<ArgumentException>());
         }
 
         [Test]
@@ -104,7 +104,7 @@
         {
             var c = new Container("test", ConnectionString);
 
-            Assert.That(c.Get<object>(null), Throws.TypeOf<ArgumentException>());
+            Assert.That(() => c.Get<object>(null), Throws.TypeOf<ArgumentException>());
         }
 
         [Test]
@@ -112,7 +112,7 @@
         {
             var c = new Container("test", ConnectionString);
 
-            Assert.That(c.Stream(null), Throws.TypeOf<ArgumentException>());
+            Assert.That(() => c.Stream(null), Throws.TypeOf<ArgumentException>());
         }
 
         [Test]
@@ -120,7 +120,7 @@
         {
             var c = new Container("test", ConnectionString);
 
-            Assert.That(c.Save(null, new object()), Throws.TypeOf<ArgumentException>());
+            Assert.That(() => c.Save(null, new object()), Throws.TypeOf<ArgumentException>());
         }
 
         [Test]
@@ -128,7 +128,7 @@
         {
             var c = new Container("test", ConnectionString);
 
-            Assert.That(c.Save(Guid.NewGuid().ToString(), (object)null), Throws.TypeOf<ArgumentException>());
+            Assert.That(() => c.Save(Guid.NewGuid().ToString(), (object)null), Throws.TypeOf<ArgumentNullException>());
         }
 
         [Test]
@@ -136,7 +136,7 @@
         {
             var c = new Container("test", ConnectionString);
 
-            Assert.That(c.Get(null), Throws.TypeOf<ArgumentException>());
+            Assert.That(() => c.Get(null), Throws.TypeOf<ArgumentException>());
         }
 
         [Test]
@@ -144,7 +144,7 @@
         {
             var c = new Container("test", ConnectionString);
 
-            Assert.That(c.GetText(null), Throws.TypeOf<ArgumentException>());
+            Assert.That(() => c.GetText(null), Throws.TypeOf<ArgumentException>());
         }
 
         [Test]
@@ -152,7 +152,7 @@
         {
             var c = new Container("test", ConnectionString);
 
-            Assert.That(c.Snapshot(null), Throws.TypeOf<ArgumentException>());
+            Assert.That(() => c.Snapshot(null), Throws.TypeOf<ArgumentException>());
         }
 
         [Test]
@@ -164,7 +164,7 @@
 
             var c = new Container("test", ConnectionString);
 
-            Assert.That(c.Save(null, bytes), Throws.TypeOf<ArgumentException>());
+            Assert.That(() => c.Save(null, bytes), Throws.TypeOf<ArgumentException>());
         }
 
         [Test]
@@ -172,7 +172,7 @@
         {
             var c = new Container("test", ConnectionString);
 
-            Assert.That(c.Save(null, Guid.NewGuid().ToString()), Throws.TypeOf<ArgumentException>());
+            Assert.That(() => c.Save(null, Guid.NewGuid().ToString()), Throws.TypeOf<ArgumentException>());
         }
 
         [Test]
@@ -180,7 +180,7 @@
         {
             var c = new Container("test", ConnectionString);
 
-            Assert.That(c.Save(Guid.NewGuid().ToString(), (byte[])null), Throws.TypeOf<ArgumentNullException>());
+            Assert.That(() => c.Save(Guid.NewGuid().ToString(), (byte[])null), Throws.TypeOf<ArgumentNullException>());
         }
 
         [Test]
@@ -188,7 +188,7 @@
         {
             var c = new Container("test", ConnectionString);
 
-            Assert.That(c.Save(Guid.NewGuid().ToString(), (string)null), Throws.TypeOf<ArgumentException>());
+            Assert.That(() => c.Save(Guid.NewGuid().ToString(), (string)null), Throws.TypeOf<ArgumentException>());
         }
 
         [Test]
@@ -196,7 +196,7 @@
         {
             var c = new Container("test", ConnectionString);
 
-            Assert.That(c.GetBlockReference(null), Throws.TypeOf<ArgumentException>());
+            Assert.That(() => c.GetBlockReference(null), Throws.TypeOf<ArgumentException>());
         }
 
         [Test]
@@ -204,7 +204,7 @@
         {
             var c = new Container("test", ConnectionString);
 
-            Assert.That(c.GetPageReference(null), Throws.TypeOf<ArgumentException>());
+            Assert.That(() => c.GetPageReference(null), Throws.TypeOf<ArgumentException>());
         }
 
         [Test]
@@ -212,7 +212,7 @@
         {
             var c = new Container("test", ConnectionString);
 
-            Assert.That(c.Properties(null), Throws.TypeOf<ArgumentException>());
+            Assert.That(() => c.Properties(null), Throws.TypeOf<ArgumentException>());
         }
 
         [Test]
@@ -220,7 +220,7 @@
         {
             var c = new Container("test", ConnectionString);
 
-            Assert.That(c.SetCacheControl(null), Throws.TypeOf<ArgumentException>());
+            Assert.That(() => c.SetCacheControl(null), Throws.TypeOf<ArgumentException>());
         }
     }
 }

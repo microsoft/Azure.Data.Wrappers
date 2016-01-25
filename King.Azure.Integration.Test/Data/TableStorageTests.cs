@@ -26,7 +26,7 @@
             }
         }
 
-        [SetUp]
+        [OneTimeSetUp]
         public void Init()
         {
             var table = "testing";
@@ -34,7 +34,7 @@
             storage.CreateIfNotExists().Wait();
         }
         
-        [TearDown]
+        [OneTimeTearDown]
         public void Dispose()
         {
             storage.Delete().Wait();

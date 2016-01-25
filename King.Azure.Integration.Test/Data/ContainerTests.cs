@@ -1,14 +1,14 @@
 ﻿namespace King.Service.Integration
 {
-    using King.Azure.Data;
-    using Microsoft.WindowsAzure.Storage;
-    using Microsoft.WindowsAzure.Storage.Blob;
-    using NUnit.Framework;
     using System;
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
-    using NUnit.Framework.Constraints;
+    using King.Azure.Data;
+    using Microsoft.WindowsAzure.Storage;
+    using Microsoft.WindowsAzure.Storage.Blob;
+    using NUnit.Framework;
+
     [TestFixture]
     public class ContainerTests
     {
@@ -26,14 +26,14 @@
         }
         #endregion
 
-        [SetUp]
+        [OneTimeSetUp]
         public void SetUp()
         {
             var storage = new Container(ContainerName, ConnectionString);
             storage.CreateIfNotExists().Wait();
         }
 
-        [TearDown]
+        [OneTimeTearDown]
         public void TearDown()
         {
             var storage = new Container(ContainerName, ConnectionString);
@@ -284,7 +284,7 @@
             await storage.Save(blobName, helper);
             await storage.Delete(blobName);
             
-            Assert.That(storage.Get<Helper>(blobName), Throws.TypeOf<StorageException>());
+            Assert.That(() => storage.Get<Helper>(blobName), Throws.TypeOf<StorageException>());
         }
 
         [Test]
@@ -373,7 +373,7 @@
 
             var snapshot = await storage.Snapshot(name);
 
-            Assert.That(storage.Delete(name, false), Throws.TypeOf<StorageException>());
+            Assert.That(() => storage.Delete(name, false), Throws.TypeOf<StorageException>());
         }
 
         [Test]

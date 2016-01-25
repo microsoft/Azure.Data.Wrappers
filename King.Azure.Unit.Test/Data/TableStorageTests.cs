@@ -53,19 +53,19 @@
         [Test]
         public void ConstructorTableNull()
         {
-            Assert.That(new TableStorage(null, ConnectionString), Throws.TypeOf<ArgumentException>());
+            Assert.That(() => new TableStorage(null, ConnectionString), Throws.TypeOf<ArgumentException>());
         }
 
         [Test]
         public void ConstructorAccountTableNull()
         {
-            Assert.That(new TableStorage(null, CloudStorageAccount.Parse(ConnectionString)), Throws.TypeOf<ArgumentException>());
+            Assert.That(() => new TableStorage(null, CloudStorageAccount.Parse(ConnectionString)), Throws.TypeOf<ArgumentException>());
         }
 
         [Test]
         public void ConstructorConnectionStringNull()
         {
-            Assert.That(new TableStorage("TestTable", (string)null), Throws.TypeOf<ArgumentNullException>());
+            Assert.That(() => new TableStorage("TestTable", (string)null), Throws.TypeOf<ArgumentNullException>());
         }
 
         [Test]
@@ -98,7 +98,7 @@
             var name = Guid.NewGuid().ToString();
             var t = new TableStorage(name, ConnectionString);
 
-            Assert.That(t.InsertOrReplace((IDictionary<string, object>)null), Throws.TypeOf<ArgumentNullException>());
+            Assert.That(() => t.InsertOrReplace((IDictionary<string, object>)null), Throws.TypeOf<ArgumentNullException>());
         }
 
         [Test]
@@ -107,7 +107,7 @@
             var name = Guid.NewGuid().ToString();
             var t = new TableStorage(name, ConnectionString);
 
-            Assert.That(t.Query<TableEntity>(null), Throws.TypeOf<ArgumentNullException>());
+            Assert.That(() => t.Query<TableEntity>(null), Throws.TypeOf<ArgumentNullException>());
         }
 
         [Test]
@@ -116,7 +116,7 @@
             var name = Guid.NewGuid().ToString();
             var t = new TableStorage(name, ConnectionString);
 
-            Assert.That(t.Delete((ITableEntity)null), Throws.TypeOf<ArgumentNullException>());
+            Assert.That(() => t.Delete((ITableEntity)null), Throws.TypeOf<ArgumentNullException>());
         }
 
         [Test]
@@ -125,7 +125,7 @@
             var name = Guid.NewGuid().ToString();
             var t = new TableStorage(name, ConnectionString);
 
-            Assert.That(t.Delete((IEnumerable<ITableEntity>)null), Throws.TypeOf<ArgumentNullException>());
+            Assert.That(() => t.Delete((IEnumerable<ITableEntity>)null), Throws.TypeOf<ArgumentNullException>());
         }
 
         [Test]

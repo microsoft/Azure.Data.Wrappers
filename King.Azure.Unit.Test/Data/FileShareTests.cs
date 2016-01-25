@@ -37,13 +37,13 @@
         [Test]
         public void ConstructorNameNull()
         {
-            Assert.That(new FileShare(null, ConnectionString), Throws.TypeOf<ArgumentException>());
+            Assert.That(() => new FileShare(null, ConnectionString), Throws.TypeOf<ArgumentException>());
         }
 
         [Test]
         public void ConstructorAccountNameNull()
         {
-            Assert.That(new FileShare(null, CloudStorageAccount.Parse(ConnectionString)), Throws.TypeOf<ArgumentException>());
+            Assert.That(() => new FileShare(null, CloudStorageAccount.Parse(ConnectionString)), Throws.TypeOf<ArgumentException>());
         }
 
         [Test]

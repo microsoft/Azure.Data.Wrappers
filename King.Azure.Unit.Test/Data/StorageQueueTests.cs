@@ -27,19 +27,19 @@
         [Test]
         public void ConstructorTableNull()
         {
-            Assert.That(new StorageQueue(null, ConnectionString), Throws.TypeOf<ArgumentException>());
+            Assert.That(() => new StorageQueue(null, ConnectionString), Throws.TypeOf<ArgumentException>());
         }
 
         [Test]
         public void ConstructorAccountTableNull()
         {
-            Assert.That(new StorageQueue(null, CloudStorageAccount.Parse(ConnectionString)), Throws.TypeOf<ArgumentException>());
+            Assert.That(() => new StorageQueue(null, CloudStorageAccount.Parse(ConnectionString)), Throws.TypeOf<ArgumentException>());
         }
 
         [Test]
         public void ConstructorKeyNull()
         {
-            Assert.That(new StorageQueue("test", (string)null), Throws.TypeOf<ArgumentNullException>());
+            Assert.That(() => new StorageQueue("test", (string)null), Throws.TypeOf<ArgumentNullException>());
         }
 
         [Test]
@@ -72,7 +72,7 @@
             var name = Guid.NewGuid().ToString();
             var t = new StorageQueue(name, ConnectionString);
 
-            Assert.That(t.Delete(null), Throws.TypeOf<ArgumentNullException>());
+            Assert.That(() => t.Delete(null), Throws.TypeOf<ArgumentNullException>());
         }
 
         [Test]
@@ -81,7 +81,7 @@
             var name = Guid.NewGuid().ToString();
             var t = new StorageQueue(name, ConnectionString);
 
-            Assert.That(t.Save((CloudQueueMessage)null), Throws.TypeOf<ArgumentNullException>());
+            Assert.That(() => t.Save((CloudQueueMessage)null), Throws.TypeOf<ArgumentNullException>());
         }
 
         [Test]
@@ -90,7 +90,7 @@
             var name = Guid.NewGuid().ToString();
             var t = new StorageQueue(name, ConnectionString);
 
-            Assert.That(t.Save((object)null), Throws.TypeOf<ArgumentNullException>());
+            Assert.That(() => t.Save((object)null), Throws.TypeOf<ArgumentNullException>());
         }
     }
 }

@@ -32,7 +32,7 @@
         {
             var message = new CloudQueueMessage("ship");
 
-            Assert.That(new StorageQueuedMessage<object>(null, message), Throws.TypeOf<ArgumentNullException>());
+            Assert.That(() => new StorageQueuedMessage<object>(null, message), Throws.TypeOf<ArgumentNullException>());
         }
 
         [Test]
@@ -40,7 +40,7 @@
         {
             var queue = Substitute.For<IStorageQueue>();
 
-            Assert.That(new StorageQueuedMessage<object>(queue, null), Throws.TypeOf<ArgumentNullException>());
+            Assert.That(() => new StorageQueuedMessage<object>(queue, null), Throws.TypeOf<ArgumentNullException>());
         }
 
         [Test]

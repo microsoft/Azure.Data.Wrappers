@@ -23,7 +23,7 @@
         [Test]
         public void ConstructorStorageQueueNull()
         {
-            Assert.That(new StorageQueuePoller<object>(null), Throws.TypeOf<ArgumentNullException>());
+            Assert.That(() => new StorageQueuePoller<object>(null), Throws.TypeOf<ArgumentNullException>());
         }
 
         [Test]
@@ -79,7 +79,7 @@
 
             var poller = new StorageQueuePoller<object>(queue);
 
-            Assert.That(poller.Poll(), Throws.TypeOf<ApplicationException>());
+            Assert.That(() => poller.Poll(), Throws.TypeOf<ApplicationException>());
         }
 
         [Test]
@@ -126,7 +126,7 @@
 
             var poller = new StorageQueuePoller<object>(queue);
 
-            Assert.That(poller.PollMany(), Throws.TypeOf<ApplicationException>());
+            Assert.That(() => poller.PollMany(), Throws.TypeOf<ApplicationException>());
         }
     }
 }
