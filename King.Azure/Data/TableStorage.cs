@@ -490,7 +490,7 @@
         }
         #endregion
 
-        #region Helper Methods
+        #region Additional Methods
         /// <summary>
         /// Break Entities into batches
         /// </summary>

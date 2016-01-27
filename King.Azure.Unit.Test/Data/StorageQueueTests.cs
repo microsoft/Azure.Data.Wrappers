@@ -1,7 +1,6 @@
 ﻿namespace King.Azure.Unit.Test.Data
 {
     using System;
-    using System.Threading.Tasks;
     using King.Azure.Data;
     using Microsoft.WindowsAzure.Storage;
     using Microsoft.WindowsAzure.Storage.Queue;

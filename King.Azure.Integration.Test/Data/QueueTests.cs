@@ -1,13 +1,13 @@
 ﻿namespace King.Service.Integration
 {
+    using System;
+    using System.Linq;
+    using System.Threading.Tasks;
     using King.Azure.Data;
     using Microsoft.WindowsAzure.Storage;
     using Microsoft.WindowsAzure.Storage.Queue;
     using Newtonsoft.Json;
     using NUnit.Framework;
-    using System;
-    using System.Linq;
-    using System.Threading.Tasks;
 
     [TestFixture]
     public class QueueTests

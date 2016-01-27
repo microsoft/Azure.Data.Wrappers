@@ -1,13 +1,13 @@
 ﻿namespace King.Service.Integration
 {
-    using King.Azure.Data;
-    using Microsoft.WindowsAzure.Storage;
-    using Microsoft.WindowsAzure.Storage.Table;
-    using NUnit.Framework;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using King.Azure.Data;
+    using Microsoft.WindowsAzure.Storage;
+    using Microsoft.WindowsAzure.Storage.Table;
+    using NUnit.Framework;
 
     [TestFixture]
     public class TableStorageTests
