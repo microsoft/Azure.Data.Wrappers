@@ -1,13 +1,13 @@
 ﻿namespace King.Azure.Data
 {
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Threading.Tasks;
     using Microsoft.WindowsAzure.Storage;
     using Microsoft.WindowsAzure.Storage.Blob;
     using Microsoft.WindowsAzure.Storage.File;
     using Microsoft.WindowsAzure.Storage.Queue;
     using Microsoft.WindowsAzure.Storage.Table;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Threading.Tasks;
 
     #region IAccount
     /// <summary>
@@ -135,7 +135,7 @@
         /// <returns></returns>
         Task<T> QueryByPartitionAndRow<T>(string partitionKey, string rowKey)
             where T : ITableEntity, new();
-        
+
         /// <summary>
         /// Query
         /// </summary>
@@ -144,7 +144,7 @@
         /// <returns>Results</returns>
         Task<IEnumerable<T>> Query<T>(TableQuery<T> query)
             where T : ITableEntity, new();
-        
+
         /// <summary>
         /// Query By Partition
         /// </summary>
@@ -229,7 +229,7 @@
         /// <param name="blobName">Blob Name</param>
         /// <returns>bool</returns>
         Task<bool> Exists(string blobName);
-        
+
         /// <summary>
         /// Delete from Blob Storage
         /// </summary>
@@ -293,7 +293,7 @@
         /// <param name="contentType">Content Type</param>
         /// <returns>Task</returns>
         Task Save(string blobName, string text, string contentType = "text/plain");
-        
+
         /// <summary>
         /// Get Binary Data
         /// </summary>
@@ -483,7 +483,7 @@
         /// </summary>
         /// <returns>Queued Item</returns>
         Task<IQueued<T>> Poll();
-        
+
         /// <summary>
         /// Poll for Queued Message
         /// </summary>
@@ -593,6 +593,32 @@
     /// </summary>
     public interface IFileShare : IStorageReference<CloudFileShare>, IStorageClient<CloudFileClient>
     {
+    }
+    #endregion
+
+    #region QueueShardSender
+    /// <summary>
+    /// Queue Shard Sender
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public interface IQueueShardSender<T> : IAzureStorage
+    {
+        #region Properties
+        IStorageQueue[] Queues
+        {
+            get;
+        }
+        #endregion
+
+        #region Methods
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <param name="shardTarget"></param>
+        /// <returns></returns>
+        Task Save(object obj, byte shardTarget = 0);
+        #endregion
     }
     #endregion
 }
