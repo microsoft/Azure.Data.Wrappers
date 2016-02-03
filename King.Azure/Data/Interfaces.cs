@@ -604,7 +604,7 @@
     public interface IQueueShardSender<T> : IAzureStorage
     {
         #region Properties
-        IStorageQueue[] Queues
+        T[] Queues
         {
             get;
         }

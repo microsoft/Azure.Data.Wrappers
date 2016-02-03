@@ -3,7 +3,7 @@
     using System;
     using System.Threading.Tasks;
 
-    public class QueueShardSender<T> : IQueueShardSender<T>
+    public class QueueShardSender : IQueueShardSender<IStorageQueue>
     {
         private readonly IStorageQueue[] queues;
 
@@ -34,8 +34,7 @@
                 this.queues[i] = new StorageQueue(name, connection);
             }
         }
-
-
+        
         public async Task<bool> CreateIfNotExists()
         {
             var success = true;
@@ -54,7 +53,7 @@
             }
         }
 
-        public async Task Save(T obj, byte shardTarget = 0)
+        public async Task Save(object obj, byte shardTarget = 0)
         {
             var random = new Random();
             var index = shardTarget == 0 ? random.Next(0, this.Queues.Length) : shardTarget;
