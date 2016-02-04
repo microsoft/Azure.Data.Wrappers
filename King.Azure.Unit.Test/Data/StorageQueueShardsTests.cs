@@ -9,5 +9,12 @@
     [TestFixture]
     public class StorageQueueShardsTests
     {
+        private const string ConnectionString = "UseDevelopmentStorage=true;";
+
+        [Test]
+        public void Constructor()
+        {
+            new StorageQueueShards("test", ConnectionString, 2);
+        }
     }
 }

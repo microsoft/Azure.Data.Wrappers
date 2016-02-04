@@ -14,25 +14,25 @@
         /// <summary>
         /// Queues
         /// </summary>
-        private readonly IStorageQueue[] queues;
+        protected readonly IStorageQueue[] queues;
         #endregion
 
         #region Constructors
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="connection">Connection</param>
         /// <param name="name">Name</param>
+        /// <param name="connection">Connection</param>
         /// <param name="shardCount">Shard Count</param>
-        public StorageQueueShards(string connection, string name, byte shardCount = 0)
+        public StorageQueueShards(string name, string connection, byte shardCount = 0)
         {
-            shardCount = shardCount > 0 ? shardCount : (byte)1;
+            shardCount = shardCount > 0 ? shardCount : (byte)5;
 
             this.queues = new IStorageQueue[shardCount];
             for (var  i = 0; i < shardCount; i++)
             {
                 var n = string.Format("{0}{1}", name, i);
-                this.queues[i] = new StorageQueue(name, connection);
+                this.queues[i] = new StorageQueue(n, connection);
             }
         }
         #endregion
@@ -41,7 +41,7 @@
         /// <summary>
         /// Queues
         /// </summary>
-        public IReadOnlyCollection<IStorageQueue> Queues
+        public virtual IReadOnlyCollection<IStorageQueue> Queues
         {
             get
             {
@@ -57,7 +57,7 @@
         /// <param name="obj">message</param>
         /// <param name="shardTarget">Shard Target</param>
         /// <returns>Task</returns>
-        public async Task<bool> CreateIfNotExists()
+        public virtual async Task<bool> CreateIfNotExists()
         {
             var success = true;
             foreach (var q in this.queues)
@@ -71,7 +71,7 @@
         /// Delete all queues
         /// </summary>
         /// <returns>Task</returns>
-        public async Task Delete()
+        public virtual async Task Delete()
         {
             foreach (var q in this.queues)
             {
@@ -85,7 +85,7 @@
         /// <param name="obj">message</param>
         /// <param name="shardTarget">Shard Target</param>
         /// <returns>Task</returns>
-        public async Task Save(object obj, byte shardTarget = 0)
+        public virtual async Task Save(object obj, byte shardTarget = 0)
         {
             var random = new Random();
             var index = shardTarget == 0 ? random.Next(0, this.queues.Count()) : shardTarget;
