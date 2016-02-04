@@ -55,15 +55,15 @@
         [Test]
         public void IsIQueueShardSender()
         {
-            Assert.IsNotNull(new StorageQueueShards("test", ConnectionString) as IQueueShardSender<IStorageAccount>);
+            Assert.IsNotNull(new StorageQueueShards("test", ConnectionString) as IQueueShardSender<IStorageQueue>);
         }
 
         [Test]
         public void Queues()
         {
             var random = new Random();
-            var i = random.Next(1, byte.MaxValue);
-            var sqs = new StorageQueueShards("test", ConnectionString, 2);
+            var i = (byte)random.Next(1, byte.MaxValue);
+            var sqs = new StorageQueueShards("test", ConnectionString, i);
             Assert.IsNotNull(sqs.Queues);
             Assert.AreEqual(i, sqs.Queues.Count());
         }
