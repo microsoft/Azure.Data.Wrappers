@@ -15,7 +15,7 @@
         /// <summary>
         /// Queues
         /// </summary>
-        protected readonly IReadOnlyCollection<IStorageQueue> queues;
+        protected readonly IStorageQueue[] queues;
         #endregion
 
         #region Constructors
@@ -38,21 +38,19 @@
 
             shardCount = shardCount > 0 ? shardCount : (byte)2;
 
-            var qs = new IStorageQueue[shardCount];
+            this.queues = new IStorageQueue[shardCount];
             for (var i = 0; i < shardCount; i++)
             {
                 var n = string.Format("{0}{1}", name, i);
-                qs[i] = new StorageQueue(n, connection);
+                this.queues[i] = new StorageQueue(n, connection);
             }
-
-            this.queues = new ReadOnlyCollection<IStorageQueue>(qs.ToList());
         }
 
         /// <summary>
         /// Constructor for mocking
         /// </summary>
         /// <param name="queues">Queues</param>
-        public StorageQueueShards(IReadOnlyCollection<IStorageQueue> queues)
+        public StorageQueueShards(IStorageQueue[] queues)
         {
             if (null == queues)
             {

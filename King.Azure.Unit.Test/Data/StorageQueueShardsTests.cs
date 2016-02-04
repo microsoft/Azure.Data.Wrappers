@@ -42,7 +42,7 @@
         [Test]
         public void ConstructorQueuesEmpty()
         {
-            Assert.That(() => new StorageQueueShards(new List<IStorageQueue>()), Throws.TypeOf<ArgumentException>());
+            Assert.That(() => new StorageQueueShards(new IStorageQueue[0]), Throws.TypeOf<ArgumentException>());
         }
 
         [Test]
@@ -80,7 +80,7 @@
                 q.CreateIfNotExists().Returns(Task.FromResult(true));
                 qs.Add(q);
             }
-            var sqs = new StorageQueueShards(qs);
+            var sqs = new StorageQueueShards(qs.ToArray());
 
             var success = await sqs.CreateIfNotExists();
             Assert.IsTrue(success);
@@ -103,7 +103,7 @@
                 q.Delete().Returns(Task.FromResult(true));
                 qs.Add(q);
             }
-            var sqs = new StorageQueueShards(qs);
+            var sqs = new StorageQueueShards(qs.ToArray());
 
             await sqs.Delete();
 
@@ -122,7 +122,7 @@
             var msg = new object();
             var q = Substitute.For<IStorageQueue>();
             q.Save(msg).Returns(Task.CompletedTask);
-            var qs = Substitute.For<IReadOnlyCollection<IStorageQueue>>();
+            var qs = Substitute.For<IStorageQueue[]>();
             qs.ElementAt(i).Returns(q);
             qs.Count().Returns(i);
 
@@ -143,7 +143,7 @@
             var msg = new object();
             var q = Substitute.For<IStorageQueue>();
             q.Save(msg).Returns(Task.CompletedTask);
-            var qs = Substitute.For<IReadOnlyCollection<IStorageQueue>>();
+            var qs = Substitute.For<IStorageQueue[]>();
             qs.ElementAt(Arg.Any<int>()).Returns(q);
             qs.Count().Returns(i);
 
