@@ -615,21 +615,21 @@
 
         #region Methods
         /// <summary>
-        /// 
+        /// Queue Message
         /// </summary>
-        /// <param name="obj"></param>
-        /// <param name="shardTarget"></param>
-        /// <returns></returns>
+        /// <param name="obj">message</param>
+        /// <param name="shardTarget">Shard Target</param>
+        /// <returns>Task</returns>
         Task Save(object obj, byte shardTarget = 0);
 
         /// <summary>
-        /// Create If Not Exists
+        /// Create all queues
         /// </summary>
         /// <returns></returns>
         Task<bool> CreateIfNotExists();
 
         /// <summary>
-        /// Delete Item
+        /// Delete all queues
         /// </summary>
         /// <returns>Task</returns>
         Task Delete();

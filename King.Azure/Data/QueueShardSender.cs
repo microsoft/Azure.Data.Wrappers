@@ -2,8 +2,8 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Threading.Tasks;
     using System.Linq;
+    using System.Threading.Tasks;
 
     /// <summary>
     /// Queue Shard Sender
@@ -19,11 +19,11 @@
 
         #region Constructors
         /// <summary>
-        /// 
+        /// Constructor
         /// </summary>
-        /// <param name="connection"></param>
-        /// <param name="name"></param>
-        /// <param name="shardCount"></param>
+        /// <param name="connection">Connection</param>
+        /// <param name="name">Name</param>
+        /// <param name="shardCount">Shard Count</param>
         public QueueShardSender(string connection, string name, byte shardCount = 0)
         {
             shardCount = shardCount > 0 ? shardCount : (byte)1;
@@ -51,6 +51,12 @@
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Queue Message
+        /// </summary>
+        /// <param name="obj">message</param>
+        /// <param name="shardTarget">Shard Target</param>
+        /// <returns>Task</returns>
         public async Task<bool> CreateIfNotExists()
         {
             var success = true;
@@ -61,6 +67,10 @@
             return success;
         }
 
+        /// <summary>
+        /// Delete all queues
+        /// </summary>
+        /// <returns>Task</returns>
         public async Task Delete()
         {
             foreach (var q in this.queues)
