@@ -118,42 +118,54 @@
         {
             var random = new Random();
             var i = (byte)random.Next(1, byte.MaxValue);
+            var index = random.Next(0, i);
 
             var msg = new object();
-            var q = Substitute.For<IStorageQueue>();
-            q.Save(msg).Returns(Task.CompletedTask);
-            var qs = Substitute.For<IStorageQueue[]>();
-            qs.ElementAt(i).Returns(q);
-            qs.Count().Returns(i);
+            var qs = new List<IStorageQueue>();
+
+            for (var j = 0; j < i; j++)
+            {
+                var q = Substitute.For<IStorageQueue>();
+                q.Save(msg).Returns(Task.CompletedTask);
+                qs.Add(q);
+            }
 
             var sqs = new StorageQueueShards(qs);
 
-            await sqs.Save(msg, i);
+            await sqs.Save(msg, (byte)index);
 
-            qs.Received().Count();
-            qs.Received().ElementAt(i);
-            await q.Received().Save(msg);
+            for (var j = 0; j < i; j++)
+            {
+                if (j == index)
+                {
+                    await qs[j].Received().Save(msg);
+                }
+                else
+                {
+                    await qs[j].DidNotReceive().Save(msg);
+                }
+            }
         }
 
-        [Test]
-        public async Task SaveShardZero()
-        {
-            var random = new Random();
-            var i = (byte)random.Next(1, byte.MaxValue);
-            var msg = new object();
-            var q = Substitute.For<IStorageQueue>();
-            q.Save(msg).Returns(Task.CompletedTask);
-            var qs = Substitute.For<IStorageQueue[]>();
-            qs.ElementAt(Arg.Any<int>()).Returns(q);
-            qs.Count().Returns(i);
+        //[Test]
+        //public async Task SaveShardZero()
+        //{
+        //    var random = new Random();
+        //    var i = (byte)random.Next(1, byte.MaxValue);
+        //    var msg = new object();
+        //    var q = Substitute.For<IStorageQueue>();
+        //    q.Save(msg).Returns(Task.CompletedTask);
+        //    var qs = Substitute.For<IStorageQueue[]>();
+        //    qs.ElementAt(Arg.Any<int>()).Returns(q);
+        //    qs.Count().Returns(i);
 
-            var sqs = new StorageQueueShards(qs);
+        //    var sqs = new StorageQueueShards(qs);
 
-            await sqs.Save(msg, 0);
+        //    await sqs.Save(msg, 0);
 
-            qs.Received().Count();
-            qs.Received().ElementAt(i);
-            await q.Received().Save(msg);
-        }
+        //    qs.Received().Count();
+        //    qs.Received().ElementAt(i);
+        //    await q.Received().Save(msg);
+        //}
     }
 }
