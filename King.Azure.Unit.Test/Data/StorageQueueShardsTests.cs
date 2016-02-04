@@ -122,7 +122,7 @@
             var msg = new object();
             var q = Substitute.For<IStorageQueue>();
             q.Save(msg).Returns(Task.CompletedTask);
-            var qs = Substitute.For<IEnumerable<IStorageQueue>>();
+            var qs = Substitute.For<IReadOnlyCollection<IStorageQueue>>();
             qs.Count().Returns(i);
             qs.ElementAt(i).Returns(q);
 
@@ -143,7 +143,7 @@
             var msg = new object();
             var q = Substitute.For<IStorageQueue>();
             q.Save(msg).Returns(Task.CompletedTask);
-            var qs = Substitute.For<IList<IStorageQueue>>();
+            var qs = Substitute.For<IReadOnlyCollection<IStorageQueue>>();
             qs.ElementAt(Arg.Any<int>()).Returns(q);
             qs.Count().Returns(i);
 

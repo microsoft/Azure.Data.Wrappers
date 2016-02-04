@@ -52,7 +52,7 @@
         /// Constructor for mocking
         /// </summary>
         /// <param name="queues">Queues</param>
-        public StorageQueueShards(IEnumerable<IStorageQueue> queues)
+        public StorageQueueShards(IReadOnlyCollection<IStorageQueue> queues)
         {
             if (null == queues)
             {
@@ -64,7 +64,7 @@
                 throw new ArgumentException("Queues length is 0.");
             }
 
-            this.queues = new ReadOnlyCollection<IStorageQueue>(queues.ToList());
+            this.queues = queues;
         }
         #endregion
 
