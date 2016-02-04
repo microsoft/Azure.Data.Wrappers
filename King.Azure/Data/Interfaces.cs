@@ -601,10 +601,13 @@
     /// Queue Shard Sender
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public interface IQueueShardSender<T> : IAzureStorage
+    public interface IQueueShardSender<T>
     {
         #region Properties
-        T[] Queues
+        /// <summary>
+        /// Queues
+        /// </summary>
+        IReadOnlyCollection<T> Queues
         {
             get;
         }
@@ -618,6 +621,18 @@
         /// <param name="shardTarget"></param>
         /// <returns></returns>
         Task Save(object obj, byte shardTarget = 0);
+
+        /// <summary>
+        /// Create If Not Exists
+        /// </summary>
+        /// <returns></returns>
+        Task<bool> CreateIfNotExists();
+
+        /// <summary>
+        /// Delete Item
+        /// </summary>
+        /// <returns>Task</returns>
+        Task Delete();
         #endregion
     }
     #endregion

@@ -1,28 +1,29 @@
 ﻿namespace King.Azure.Data
 {
     using System;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
+    using System.Linq;
 
+    /// <summary>
+    /// Queue Shard Sender
+    /// </summary>
     public class QueueShardSender : IQueueShardSender<IStorageQueue>
     {
+        #region Members
+        /// <summary>
+        /// Queues
+        /// </summary>
         private readonly IStorageQueue[] queues;
+        #endregion
 
-        public IStorageQueue[] Queues
-        {
-            get
-            {
-                return this.queues;
-            }
-        }
-
-        public string Name
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
-
+        #region Constructors
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="connection"></param>
+        /// <param name="name"></param>
+        /// <param name="shardCount"></param>
         public QueueShardSender(string connection, string name, byte shardCount = 0)
         {
             shardCount = shardCount > 0 ? shardCount : (byte)1;
@@ -34,7 +35,22 @@
                 this.queues[i] = new StorageQueue(name, connection);
             }
         }
-        
+        #endregion
+
+        #region Properties
+        /// <summary>
+        /// Queues
+        /// </summary>
+        public IReadOnlyCollection<IStorageQueue> Queues
+        {
+            get
+            {
+                return this.queues;
+            }
+        }
+        #endregion
+
+        #region Methods
         public async Task<bool> CreateIfNotExists()
         {
             var success = true;
@@ -56,9 +72,10 @@
         public async Task Save(object obj, byte shardTarget = 0)
         {
             var random = new Random();
-            var index = shardTarget == 0 ? random.Next(0, this.Queues.Length) : shardTarget;
+            var index = shardTarget == 0 ? random.Next(0, this.queues.Count()) : shardTarget;
 
             await this.queues[index].Save(obj);
         }
+        #endregion
     }
 }
