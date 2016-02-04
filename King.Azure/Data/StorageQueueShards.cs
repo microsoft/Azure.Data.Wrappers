@@ -8,7 +8,7 @@
     /// <summary>
     /// Queue Shard Sender
     /// </summary>
-    public class QueueShardSender : IQueueShardSender<IStorageQueue>
+    public class StorageQueueShards : IQueueShardSender<IStorageQueue>
     {
         #region Members
         /// <summary>
@@ -24,7 +24,7 @@
         /// <param name="connection">Connection</param>
         /// <param name="name">Name</param>
         /// <param name="shardCount">Shard Count</param>
-        public QueueShardSender(string connection, string name, byte shardCount = 0)
+        public StorageQueueShards(string connection, string name, byte shardCount = 0)
         {
             shardCount = shardCount > 0 ? shardCount : (byte)1;
 
@@ -79,6 +79,12 @@
             }
         }
 
+        /// <summary>
+        /// Queue Message to shard, 0 means at random
+        /// </summary>
+        /// <param name="obj">message</param>
+        /// <param name="shardTarget">Shard Target</param>
+        /// <returns>Task</returns>
         public async Task Save(object obj, byte shardTarget = 0)
         {
             var random = new Random();

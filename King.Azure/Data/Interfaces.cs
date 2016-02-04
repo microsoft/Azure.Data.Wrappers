@@ -615,7 +615,7 @@
 
         #region Methods
         /// <summary>
-        /// Queue Message
+        /// Queue Message to shard, 0 means at random
         /// </summary>
         /// <param name="obj">message</param>
         /// <param name="shardTarget">Shard Target</param>

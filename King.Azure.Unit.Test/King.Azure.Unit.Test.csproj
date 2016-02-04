@@ -115,6 +115,7 @@
     <Compile Include="Data\FileShareTests.cs" />
     <Compile Include="Data\StorageQueuedMessageTests.cs" />
     <Compile Include="Data\StorageQueuePollerTests.cs" />
+    <Compile Include="Data\StorageQueueShardsTests.cs" />
     <Compile Include="Data\StorageQueueTests.cs" />
     <Compile Include="Data\TableStorageTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
