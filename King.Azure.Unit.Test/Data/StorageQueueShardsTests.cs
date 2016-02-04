@@ -123,8 +123,8 @@
             var q = Substitute.For<IStorageQueue>();
             q.Save(msg).Returns(Task.CompletedTask);
             var qs = Substitute.For<IReadOnlyCollection<IStorageQueue>>();
-            qs.Count().Returns(i);
             qs.ElementAt(i).Returns(q);
+            qs.Count().Returns(i);
 
             var sqs = new StorageQueueShards(qs);
 
