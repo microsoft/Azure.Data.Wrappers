@@ -112,5 +112,46 @@
                 await q.Received().Delete();
             }
         }
+
+        [Test]
+        public async Task Save()
+        {
+            var random = new Random();
+            var i = (byte)random.Next(1, byte.MaxValue);
+            var qs = new List<IStorageQueue>();
+            var q = Substitute.For<IStorageQueue>();
+            qs.Count().Returns(i);
+            qs.ElementAt(i).Returns(q);
+
+            var msg = new object();
+
+            var sqs = new StorageQueueShards(qs);
+
+            await sqs.Save(msg, i);
+
+            qs.Received().Count();
+            qs.Received().ElementAt(i);
+            await q.Received().Save(msg);
+        }
+
+        [Test]
+        public async Task SaveShardZero()
+        {
+            var random = new Random();
+            var i = (byte)random.Next(1, byte.MaxValue);
+            var qs = new List<IStorageQueue>();
+            var q = Substitute.For<IStorageQueue>();
+            qs.ElementAt(Arg.Any<int>()).Returns(q);
+            qs.Count().Returns(i);
+            var msg = new object();
+
+            var sqs = new StorageQueueShards(qs);
+
+            await sqs.Save(msg, 0);
+
+            qs.Received().Count();
+            qs.Received().ElementAt(i);
+            await q.Received().Save(msg);
+        }
     }
 }
