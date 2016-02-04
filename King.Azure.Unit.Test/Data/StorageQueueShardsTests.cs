@@ -118,12 +118,13 @@
         {
             var random = new Random();
             var i = (byte)random.Next(1, byte.MaxValue);
-            var qs = new List<IStorageQueue>();
-            var q = Substitute.For<IStorageQueue>();
-            qs.Count().Returns(i);
-            qs.ElementAt(i).Returns(q);
 
             var msg = new object();
+            var q = Substitute.For<IStorageQueue>();
+            q.Save(msg).Returns(Task.CompletedTask);
+            var qs = Substitute.For<IEnumerable<IStorageQueue>>();
+            qs.Count().Returns(i);
+            qs.ElementAt(i).Returns(q);
 
             var sqs = new StorageQueueShards(qs);
 
@@ -139,11 +140,12 @@
         {
             var random = new Random();
             var i = (byte)random.Next(1, byte.MaxValue);
-            var qs = new List<IStorageQueue>();
+            var msg = new object();
             var q = Substitute.For<IStorageQueue>();
+            q.Save(msg).Returns(Task.CompletedTask);
+            var qs = Substitute.For<IList<IStorageQueue>>();
             qs.ElementAt(Arg.Any<int>()).Returns(q);
             qs.Count().Returns(i);
-            var msg = new object();
 
             var sqs = new StorageQueueShards(qs);
 
