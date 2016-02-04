@@ -7,7 +7,8 @@
     using NUnit.Framework;
     using System.Linq;
     using System.Collections.Generic;
-
+    using NSubstitute;
+    using System.Threading.Tasks;
     [TestFixture]
     public class StorageQueueShardsTests
     {
@@ -65,6 +66,51 @@
             var sqs = new StorageQueueShards("test", ConnectionString, 2);
             Assert.IsNotNull(sqs.Queues);
             Assert.AreEqual(i, sqs.Queues.Count());
+        }
+
+        [Test]
+        public async Task CreateIfNotExists()
+        {
+            var random = new Random();
+            var i = random.Next(1, byte.MaxValue);
+            var qs = new List<IStorageQueue>();
+            for (var j = 0; j < i; j++)
+            {
+                var q = Substitute.For<IStorageQueue>();
+                q.CreateIfNotExists().Returns(Task.FromResult(true));
+                qs.Add(q);
+            }
+            var sqs = new StorageQueueShards(qs);
+
+            var success = await sqs.CreateIfNotExists();
+            Assert.IsTrue(success);
+
+            foreach (var q in qs)
+            {
+                await q.Received().CreateIfNotExists();
+            }
+        }
+
+        [Test]
+        public async Task Delete()
+        {
+            var random = new Random();
+            var i = random.Next(1, byte.MaxValue);
+            var qs = new List<IStorageQueue>();
+            for (var j = 0; j < i; j++)
+            {
+                var q = Substitute.For<IStorageQueue>();
+                q.Delete().Returns(Task.FromResult(true));
+                qs.Add(q);
+            }
+            var sqs = new StorageQueueShards(qs);
+
+            await sqs.Delete();
+
+            foreach (var q in qs)
+            {
+                await q.Received().Delete();
+            }
         }
     }
 }

@@ -1,13 +1,13 @@
 ﻿namespace King.Azure.Unit.Test.Data
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
     using King.Azure.Data;
     using Microsoft.WindowsAzure.Storage.Queue;
     using NSubstitute;
     using NUnit.Framework;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
 
     [TestFixture]
     public class StorageQueuePollerTests

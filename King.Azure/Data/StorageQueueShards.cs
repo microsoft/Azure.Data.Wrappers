@@ -121,7 +121,8 @@
             var random = new Random();
             var index = shardTarget == 0 ? random.Next(0, this.queues.Count()) : shardTarget;
 
-            await this.queues[index].Save(obj);
+            var q = this.queues.ElementAt(index);
+            await q.Save(obj);
         }
         #endregion
     }
