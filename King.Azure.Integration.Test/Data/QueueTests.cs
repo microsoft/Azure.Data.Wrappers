@@ -1,13 +1,13 @@
 ﻿namespace King.Service.Integration
 {
-    using System;
-    using System.Linq;
-    using System.Threading.Tasks;
     using King.Azure.Data;
     using Microsoft.WindowsAzure.Storage;
     using Microsoft.WindowsAzure.Storage.Queue;
     using Newtonsoft.Json;
     using NUnit.Framework;
+    using System;
+    using System.Linq;
+    using System.Threading.Tasks;
 
     [TestFixture]
     public class QueueTests
@@ -62,6 +62,20 @@
             Assert.AreEqual(msg.AsBytes, returned.AsBytes);
         }
 
+
+        [Test]
+        public async Task RoundTripMsgAsObj()
+        {
+            var storage = new StorageQueue(QueueName, ConnectionString);
+
+            var msg = new CloudQueueMessage(Guid.NewGuid().ToByteArray());
+            await storage.Save((object)msg);
+            var returned = await storage.Get();
+
+            Assert.AreEqual(msg.AsBytes, returned.AsBytes);
+        }
+
+
         [Test]
         public async Task RoundTripObject()
         {
@@ -75,7 +89,7 @@
 
             Assert.AreEqual(expected, guid);
         }
-
+        
         [Test]
         public async Task ApproixmateMessageCount()
         {
