@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -14,7 +15,7 @@
         /// <summary>
         /// Queues
         /// </summary>
-        protected readonly IStorageQueue[] queues;
+        protected readonly IReadOnlyCollection<IStorageQueue> queues;
         #endregion
 
         #region Constructors
@@ -26,14 +27,44 @@
         /// <param name="shardCount">Shard Count</param>
         public StorageQueueShards(string name, string connection, byte shardCount = 0)
         {
-            shardCount = shardCount > 0 ? shardCount : (byte)5;
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                throw new ArgumentException("name");
+            }
+            if (string.IsNullOrWhiteSpace(connection))
+            {
+                throw new ArgumentException("connection");
+            }
 
-            this.queues = new IStorageQueue[shardCount];
-            for (var  i = 0; i < shardCount; i++)
+            shardCount = shardCount > 0 ? shardCount : (byte)2;
+
+            var qs = new IStorageQueue[shardCount];
+            for (var i = 0; i < shardCount; i++)
             {
                 var n = string.Format("{0}{1}", name, i);
-                this.queues[i] = new StorageQueue(n, connection);
+                qs[i] = new StorageQueue(n, connection);
             }
+
+            this.queues = new ReadOnlyCollection<IStorageQueue>(qs.ToList());
+        }
+
+        /// <summary>
+        /// Constructor for mocking
+        /// </summary>
+        /// <param name="queues">Queues</param>
+        public StorageQueueShards(IEnumerable<IStorageQueue> queues)
+        {
+            if (null == queues)
+            {
+                throw new ArgumentNullException("queue");
+            }
+
+            if (0 == queues.Count())
+            {
+                throw new ArgumentException("Queues length is 0.");
+            }
+
+            this.queues = new ReadOnlyCollection<IStorageQueue>(queues.ToList());
         }
         #endregion
 
