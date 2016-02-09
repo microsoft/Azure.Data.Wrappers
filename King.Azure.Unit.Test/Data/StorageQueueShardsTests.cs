@@ -160,25 +160,38 @@
             }
         }
 
-        //[Test]
-        //public async Task SaveShardZero()
-        //{
-        //    var random = new Random();
-        //    var i = (byte)random.Next(1, byte.MaxValue);
-        //    var msg = new object();
-        //    var q = Substitute.For<IStorageQueue>();
-        //    q.Save(msg).Returns(Task.CompletedTask);
-        //    var qs = Substitute.For<IStorageQueue[]>();
-        //    qs.ElementAt(Arg.Any<int>()).Returns(q);
-        //    qs.Count().Returns(i);
+        [Test]
+        public void Index()
+        {
+            var msg = new object();
+            var q = Substitute.For<IStorageQueue>();
 
-        //    var sqs = new StorageQueueShards(qs);
+            var qs = new List<IStorageQueue>();
+            qs.Add(q);
+            qs.Add(q);
+            qs.Add(q);
 
-        //    await sqs.Save(msg, 0);
+            var sqs = new StorageQueueShards(qs);
 
-        //    qs.Received().Count();
-        //    qs.Received().ElementAt(i);
-        //    await q.Received().Save(msg);
-        //}
+            var index = sqs.Index(0);
+
+            Assert.IsTrue(0 <= index && 3 > index);
+        }
+        
+        [Test]
+        public void IndexBad([Values(0,255)] int val, [Values(0,0)] int expected)
+        {
+            var msg = new object();
+            var q = Substitute.For<IStorageQueue>();
+
+            var qs = new List<IStorageQueue>();
+            qs.Add(q);
+
+            var sqs = new StorageQueueShards(qs);
+
+            var index = sqs.Index((byte)val);
+
+            Assert.AreEqual(expected, index);
+        }
     }
 }

@@ -64,7 +64,6 @@
             {
                 throw new ArgumentNullException("queue");
             }
-
             if (0 == queues.Count())
             {
                 throw new ArgumentException("Queues length is 0.");
@@ -136,11 +135,24 @@
         /// <returns>Task</returns>
         public virtual async Task Save(object obj, byte shardTarget = 0)
         {
-            var random = new Random();
-            var index = shardTarget == 0 ? random.Next(0, this.queues.Count()) : shardTarget;
-
+            var index = this.Index(shardTarget);
             var q = this.queues.ElementAt(index);
             await q.Save(obj);
+        }
+
+        /// <summary>
+        /// Determine index of queues to interact with
+        /// </summary>
+        /// <remarks>
+        /// Specifically broken out for testing safety
+        /// </remarks>
+        /// <param name="shardTarget">Shard Target</param>
+        /// <returns>Index</returns>
+        public virtual byte Index(byte shardTarget)
+        {
+            var random = new Random();
+            var count = this.queues.Count();
+            return shardTarget == 0 || shardTarget > count ? (byte)random.Next(0, count) : shardTarget;
         }
         #endregion
     }
