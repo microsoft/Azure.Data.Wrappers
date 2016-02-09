@@ -25,7 +25,7 @@
         /// <param name="name">Name</param>
         /// <param name="connection">Connection</param>
         /// <param name="shardCount">Shard Count</param>
-        public StorageQueueShards(string name, string connection, byte shardCount = 0)
+        public StorageQueueShards(string name, string connection, byte shardCount = 2)
         {
             if (string.IsNullOrWhiteSpace(name))
             {
@@ -95,6 +95,7 @@
             {
                 success &= await q.CreateIfNotExists();
             }
+
             return success;
         }
 
