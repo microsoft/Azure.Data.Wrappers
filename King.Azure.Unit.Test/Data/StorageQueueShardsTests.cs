@@ -1,14 +1,13 @@
 ﻿namespace King.Azure.Unit.Test.Data
 {
-    using System;
     using King.Azure.Data;
-    using Microsoft.WindowsAzure.Storage;
-    using Microsoft.WindowsAzure.Storage.Queue;
-    using NUnit.Framework;
-    using System.Linq;
-    using System.Collections.Generic;
     using NSubstitute;
+    using NUnit.Framework;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
+
     [TestFixture]
     public class StorageQueueShardsTests
     {
@@ -56,6 +55,20 @@
         public void IsIQueueShardSender()
         {
             Assert.IsNotNull(new StorageQueueShards("test", ConnectionString) as IQueueShardSender<IStorageQueue>);
+        }
+
+        [Test]
+        public void IsIAzureStorage()
+        {
+            Assert.IsNotNull(new StorageQueueShards("test", ConnectionString) as IAzureStorage);
+        }
+
+        [Test]
+        public void Name()
+        {
+            var name = Guid.NewGuid().ToString();
+            var sqs = new StorageQueueShards(name, ConnectionString, 2);
+            Assert.AreEqual(name, sqs.Name);
         }
 
         [Test]

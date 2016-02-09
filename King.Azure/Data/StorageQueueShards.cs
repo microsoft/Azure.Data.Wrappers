@@ -9,13 +9,18 @@
     /// <summary>
     /// Queue Shard Sender
     /// </summary>
-    public class StorageQueueShards : IQueueShardSender<IStorageQueue>
+    public class StorageQueueShards : IQueueShardSender<IStorageQueue>, IAzureStorage
     {
         #region Members
         /// <summary>
         /// Queues
         /// </summary>
         protected readonly IEnumerable<IStorageQueue> queues;
+
+        /// <summary>
+        /// Base of the Name
+        /// </summary>
+        protected readonly string baseName;
         #endregion
 
         #region Constructors
@@ -36,12 +41,13 @@
                 throw new ArgumentException("connection");
             }
 
+            this.baseName = name;
             shardCount = shardCount > 0 ? shardCount : (byte)2;
 
             var qs = new IStorageQueue[shardCount];
             for (var i = 0; i < shardCount; i++)
             {
-                var n = string.Format("{0}{1}", name, i);
+                var n = string.Format("{0}{1}", this.baseName, i);
                 qs[i] = new StorageQueue(n, connection);
             }
 
@@ -77,6 +83,17 @@
             get
             {
                 return new ReadOnlyCollection<IStorageQueue>(this.queues.ToList());
+            }
+        }
+
+        /// <summary>
+        /// Name
+        /// </summary>
+        public string Name
+        {
+            get
+            {
+                return this.baseName;
             }
         }
         #endregion
