@@ -1,13 +1,13 @@
 ﻿namespace King.Service.Integration
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
     using King.Azure.Data;
     using Microsoft.WindowsAzure.Storage;
     using Microsoft.WindowsAzure.Storage.Table;
     using NUnit.Framework;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
 
     [TestFixture]
     public class TableStorageTests
@@ -710,6 +710,63 @@
                               select true).FirstOrDefault();
                 Assert.IsTrue(exists);
             }
+        }
+
+        [Test]
+        public async Task QueryFunction()
+        {
+            var random = new Random();
+            var count = random.Next(1, 25);
+            var entities = new List<IDictionary<string, object>>();
+            var partition = Guid.NewGuid().ToString();
+            for (var i = 0; i < count; i++)
+            {
+                var dic = new Dictionary<string, object>();
+                dic.Add(TableStorage.PartitionKey, partition);
+                dic.Add(TableStorage.RowKey, Guid.NewGuid().ToString());
+                dic.Add("Id", Guid.NewGuid());
+                entities.Add(dic);
+            }
+
+            await storage.Insert(entities);
+            
+            var returned = await storage.Query<Helper>(i => i.PartitionKey == partition);
+
+            Assert.IsNotNull(returned);
+            Assert.AreEqual(count, returned.Count());
+            foreach (var r in returned)
+            {
+                var exists = (from e in entities
+                              where r.RowKey == (string)e[TableStorage.RowKey]
+                                && r.PartitionKey == (string)e[TableStorage.PartitionKey]
+                              select true).FirstOrDefault();
+
+                Assert.IsTrue(exists);
+            }
+        }
+
+        [Test]
+        public async Task QueryFunctionNone()
+        {
+            var random = new Random();
+            var count = random.Next(1, 25);
+            var entities = new List<IDictionary<string, object>>();
+            var partition = Guid.NewGuid().ToString();
+            for (var i = 0; i < count; i++)
+            {
+                var dic = new Dictionary<string, object>();
+                dic.Add(TableStorage.PartitionKey, partition);
+                dic.Add(TableStorage.RowKey, Guid.NewGuid().ToString());
+                dic.Add("Id", Guid.NewGuid());
+                entities.Add(dic);
+            }
+
+            await storage.Insert(entities);
+
+            var returned = await storage.Query<Helper>(i => i.PartitionKey != partition);
+
+            Assert.IsNotNull(returned);
+            Assert.AreEqual(0, returned.Count());
         }
 
         [Test]

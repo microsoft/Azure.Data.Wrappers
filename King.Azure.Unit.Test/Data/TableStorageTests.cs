@@ -101,6 +101,25 @@
         }
 
         [Test]
+        public void QueryFunctionNull()
+        {
+            var name = Guid.NewGuid().ToString();
+            var t = new TableStorage(name, ConnectionString);
+
+            Assert.That(() => t.Query<TableEntity>(null, 1000), Throws.TypeOf<ArgumentNullException>());
+        }
+
+
+        [Test]
+        public void QueryFunctionResultsNegative()
+        {
+            var name = Guid.NewGuid().ToString();
+            var t = new TableStorage(name, ConnectionString);
+
+            Assert.That(() => t.Query<TableEntity>(i => i.PartitionKey == "hi", -100), Throws.TypeOf<InvalidOperationException>());
+        }
+
+        [Test]
         public void QueryTableQueryNull()
         {
             var name = Guid.NewGuid().ToString();

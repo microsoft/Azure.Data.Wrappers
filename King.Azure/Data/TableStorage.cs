@@ -6,6 +6,8 @@
     using System.Threading.Tasks;
     using Microsoft.WindowsAzure.Storage;
     using Microsoft.WindowsAzure.Storage.Table;
+    using System.Linq.Expressions;
+    using Microsoft.WindowsAzure.Storage.Table.Queryable;
 
     /// <summary>
     /// Table Storage
@@ -285,7 +287,7 @@
             {
                 throw new ArgumentNullException("data");
             }
-            
+
             var properties = new Dictionary<string, EntityProperty>();
             entity.Keys.Where(k => k != PartitionKey && k != RowKey && k != ETag).ToList().ForEach(key => properties.Add(key, EntityProperty.CreateEntityPropertyFromObject(entity[key])));
 
@@ -333,7 +335,7 @@
         /// <summary>
         /// Query By Partition
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T">Return Type</typeparam>
         /// <param name="partitionKey"></param>
         /// <returns>Entities</returns>
         public virtual async Task<IEnumerable<T>> QueryByPartition<T>(string partitionKey)
@@ -349,7 +351,7 @@
         /// <remarks>
         /// Without providing the partion this query may not perform well.
         /// </remarks>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T">Return Type</typeparam>
         /// <param name="rowKey">Row Key</param>
         /// <returns>Entities</returns>
         public virtual async Task<IEnumerable<T>> QueryByRow<T>(string rowKey)
@@ -362,7 +364,7 @@
         /// <summary>
         /// Query By Partition and Row
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T">Return Type</typeparam>
         /// <param name="partitionKey">Partition Key</param>
         /// <param name="rowKey">Row</param>
         /// <returns></returns>
@@ -379,9 +381,36 @@
         }
 
         /// <summary>
+        /// Query by Expression
+        /// </summary>
+        /// <typeparam name="T">Return Type</typeparam>
+        /// <param name="predicate">Predicate</param>
+        /// <param name="maxResults">Max Result</param>
+        /// <returns></returns>
+        public async Task<IEnumerable<T>> Query<T>(Expression<Func<T, bool>> predicate, int maxResults = int.MaxValue)
+            where T : ITableEntity, new()
+        {
+            if (null == predicate)
+            {
+                throw new ArgumentNullException("predicate");
+            }
+            if (0 >= maxResults)
+            {
+                throw new InvalidOperationException("maxResults: must be above 0.");
+            }
+
+            var query = this.reference.CreateQuery<T>()
+                .Where(predicate)
+                .Take(maxResults)
+                .AsTableQuery<T>();
+
+            return await this.Query<T>(query);
+        }
+
+        /// <summary>
         /// Query
         /// </summary>
-        /// <typeparam name="T">Type</typeparam>
+        /// <typeparam name="T">Return Type</typeparam>
         /// <param name="query">Table Query</param>
         /// <returns>Results</returns>
         public virtual async Task<IEnumerable<T>> Query<T>(TableQuery<T> query)
@@ -391,7 +420,7 @@
             {
                 throw new ArgumentNullException("query");
             }
-            
+
             var entities = new List<T>();
             TableContinuationToken token = null;
 
@@ -462,7 +491,7 @@
 
             var entities = new List<DynamicTableEntity>();
             TableContinuationToken token = null;
-            
+
             do
             {
                 var queryResult = await this.reference.ExecuteQuerySegmentedAsync(query, token);

@@ -5,8 +5,10 @@
     using Microsoft.WindowsAzure.Storage.File;
     using Microsoft.WindowsAzure.Storage.Queue;
     using Microsoft.WindowsAzure.Storage.Table;
+    using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Linq.Expressions;
     using System.Threading.Tasks;
 
     #region IAccount
@@ -143,6 +145,16 @@
         /// <param name="query">Table Query</param>
         /// <returns>Results</returns>
         Task<IEnumerable<T>> Query<T>(TableQuery<T> query)
+            where T : ITableEntity, new();
+
+        /// <summary>
+        /// Query by Expression
+        /// </summary>
+        /// <typeparam name="T">Table Entity</typeparam>
+        /// <param name="predicate">Predicate</param>
+        /// <param name="maxResults">Max Result</param>
+        /// <returns></returns>
+        Task<IEnumerable<T>> Query<T>(Expression<Func<T, bool>> predicate, int maxResults = int.MaxValue)
             where T : ITableEntity, new();
 
         /// <summary>
