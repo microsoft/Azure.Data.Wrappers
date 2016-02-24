@@ -129,6 +129,15 @@
         }
 
         [Test]
+        public void QueryDictionaryQueryNull()
+        {
+            var name = Guid.NewGuid().ToString();
+            var t = new TableStorage(name, ConnectionString);
+
+            Assert.That(() => t.Query((TableQuery)null), Throws.TypeOf<ArgumentNullException>());
+        }
+
+        [Test]
         public void DeleteEntityNull()
         {
             var name = Guid.NewGuid().ToString();
