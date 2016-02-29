@@ -1,9 +1,9 @@
 ﻿namespace King.Azure.Unit.Test.Data
 {
-    using System;
     using King.Azure.Data;
     using Microsoft.WindowsAzure.Storage;
     using NUnit.Framework;
+    using System;
 
     [TestFixture]
     public class ContainerTests
@@ -220,6 +220,46 @@
             var c = new Container("test", ConnectionString);
 
             Assert.That(() => c.SetCacheControl(null), Throws.TypeOf<ArgumentException>());
+        }
+
+        [Test]
+        public void CopyFromToFromNull()
+        {
+            var c = new Container("test", ConnectionString);
+
+            Assert.That(() => c.Copy(null, Guid.NewGuid().ToString()), Throws.TypeOf<ArgumentException>());
+        }
+
+        [Test]
+        public void CopyFromToToNull()
+        {
+            var c = new Container("test", ConnectionString);
+
+            Assert.That(() => c.Copy(Guid.NewGuid().ToString(), null), Throws.TypeOf<ArgumentException>());
+        }
+
+        [Test]
+        public void CopyFromNull()
+        {
+            var c = new Container("test", ConnectionString);
+
+            Assert.That(() => c.Copy(null, c, Guid.NewGuid().ToString()), Throws.TypeOf<ArgumentException>());
+        }
+
+        [Test]
+        public void CopyToNull()
+        {
+            var c = new Container("test", ConnectionString);
+
+            Assert.That(() => c.Copy(Guid.NewGuid().ToString(), c, null), Throws.TypeOf<ArgumentException>());
+        }
+
+        [Test]
+        public void CopyTargetNull()
+        {
+            var c = new Container("test", ConnectionString);
+
+            Assert.That(() => c.Copy(Guid.NewGuid().ToString(), (IContainer)null, Guid.NewGuid().ToString()), Throws.TypeOf<ArgumentException>());
         }
     }
 }

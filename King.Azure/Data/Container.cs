@@ -1,13 +1,13 @@
 ﻿namespace King.Azure.Data
 {
+    using Microsoft.WindowsAzure.Storage;
+    using Microsoft.WindowsAzure.Storage.Blob;
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
-    using Microsoft.WindowsAzure.Storage;
-    using Microsoft.WindowsAzure.Storage.Blob;
-    using Newtonsoft.Json;
 
     /// <summary>
     /// Blob Container
@@ -476,7 +476,68 @@
                 return await page.CreateSnapshotAsync();
             }
 
-            return  null;
+            return null;
+        }
+
+        /// <summary>
+        /// Copy From Blob to Blob
+        /// </summary>
+        /// <param name="from">From</param>
+        /// <param name="to">To</param>
+        /// <returns>Blob Uri</returns>
+        public async Task<string> Copy(string from, string to)
+        {
+            if (string.IsNullOrWhiteSpace(from))
+            {
+                throw new ArgumentException("Source blob address");
+            }
+            if (string.IsNullOrWhiteSpace(to))
+            {
+                throw new ArgumentException("Target blob address");
+            }
+
+            var source = this.GetBlockReference(from);
+            var target = this.GetBlockReference(to);
+            return await target.StartCopyAsync(source);
+        }
+
+        /// <summary>
+        /// Copy from, to seperate container/blob
+        /// </summary>
+        /// <param name="from">From</param>
+        /// <param name="target">Target</param>
+        /// <param name="to">To</param>
+        /// <returns>Blob Uri</returns>
+        public async Task<string> Copy(string from, string target, string to)
+        {
+            return await this.Copy(from, new Container(target, this.Account), to);
+        }
+
+        /// <summary>
+        /// Copy from, to seperate container/blob
+        /// </summary>
+        /// <param name="from">From</param>
+        /// <param name="target">Target</param>
+        /// <param name="to">To</param>
+        /// <returns>Blob Uri</returns>
+        public async Task<string> Copy(string from, IContainer target, string to)
+        {
+            if (string.IsNullOrWhiteSpace(from))
+            {
+                throw new ArgumentException("from");
+            }
+            if (null == target)
+            {
+                throw new ArgumentNullException("target");
+            }
+            if (string.IsNullOrWhiteSpace(to))
+            {
+                throw new ArgumentException("to");
+            }
+
+            var source = this.GetBlockReference(from);
+            var targetBlockBlob = target.GetBlockReference(to);
+            return await targetBlockBlob.StartCopyAsync(source);
         }
         #endregion
     }

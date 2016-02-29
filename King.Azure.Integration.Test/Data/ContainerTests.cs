@@ -1,13 +1,13 @@
 ﻿namespace King.Service.Integration
 {
-    using System;
-    using System.IO;
-    using System.Linq;
-    using System.Threading.Tasks;
     using King.Azure.Data;
     using Microsoft.WindowsAzure.Storage;
     using Microsoft.WindowsAzure.Storage.Blob;
     using NUnit.Framework;
+    using System;
+    using System.IO;
+    using System.Linq;
+    using System.Threading.Tasks;
 
     [TestFixture]
     public class ContainerTests
@@ -283,7 +283,7 @@
 
             await storage.Save(blobName, helper);
             await storage.Delete(blobName);
-            
+
             Assert.That(() => storage.Get<Helper>(blobName), Throws.TypeOf<StorageException>());
         }
 
@@ -462,6 +462,88 @@
 
             Assert.IsNotNull(returned);
             Assert.AreEqual(cache, returned.CacheControl);
+        }
+
+        [Test]
+        public async Task CopyToFrom()
+        {
+            var random = new Random();
+            var bytes = new byte[16];
+            random.NextBytes(bytes);
+
+            var from = string.Format("{0}.bin", Guid.NewGuid());
+            var to = string.Format("{0}.bin", Guid.NewGuid());
+            var storage = new Container(ContainerName, ConnectionString);
+            await storage.Save(from, bytes);
+
+            var uri = await storage.Copy(from, to);
+
+            Assert.IsNotNull(uri);
+
+            var exists = await storage.Exists(to);
+            var data = await storage.Get(to);
+            Assert.AreEqual(bytes, data);
+
+            await storage.Delete(from);
+            await storage.Delete(to);
+        }
+
+        [Test]
+        public async Task Copy()
+        {
+            var random = new Random();
+            var bytes = new byte[16];
+            random.NextBytes(bytes);
+
+            var toContainerName = 'a' + Guid.NewGuid().ToString().Replace("-", string.Empty);
+            var toContainer = new Container(toContainerName, ConnectionString);
+            await toContainer.CreateIfNotExists();
+
+            var from = string.Format("{0}.bin", Guid.NewGuid());
+            var to = string.Format("{0}.bin", Guid.NewGuid());
+            var storage = new Container(ContainerName, ConnectionString);
+            await storage.Save(from, bytes);
+
+            var uri = await storage.Copy(from, toContainer, to);
+
+            Assert.IsNotNull(uri);
+
+            var exists = await toContainer.Exists(to);
+            var data = await toContainer.Get(to);
+            Assert.AreEqual(bytes, data);
+
+            await storage.Delete(from);
+            await toContainer.Delete(to);
+            await toContainer.Delete();
+        }
+
+        [Test]
+        public async Task CopyContainerName()
+        {
+            var random = new Random();
+            var bytes = new byte[16];
+            random.NextBytes(bytes);
+
+            var toContainerName = 'a' + Guid.NewGuid().ToString().Replace("-", string.Empty);
+            var toContainer = new Container(toContainerName, ConnectionString);
+            await toContainer.CreateIfNotExists();
+
+            var from = string.Format("{0}.bin", Guid.NewGuid());
+            var to = string.Format("{0}.bin", Guid.NewGuid());
+            var storage = new Container(ContainerName, ConnectionString);
+            await storage.Save(from, bytes);
+
+            var uri = await storage.Copy(from, toContainerName, to);
+
+            Assert.IsNotNull(uri);
+
+            var exists = await toContainer.Exists(to);
+            var data = await toContainer.Get(to);
+            Assert.AreEqual(bytes, data);
+
+            await storage.Delete(from);
+            await toContainer.Delete(to);
+            await toContainer.Delete();
         }
     }
 }

@@ -349,6 +349,32 @@
         /// <param name="blobName">Blob Name</param>
         /// <returns>Task</returns>
         Task<ICloudBlob> Snapshot(string blobName);
+
+        /// <summary>
+        /// Copy from, to seperate container/blob
+        /// </summary>
+        /// <param name="from">From</param>
+        /// <param name="target">Target</param>
+        /// <param name="to">To</param>
+        /// <returns>Blob Uri</returns>
+        Task<string> Copy(string from, IContainer target, string to);
+
+        /// <summary>
+        /// Copy from, to seperate container/blob
+        /// </summary>
+        /// <param name="from">From</param>
+        /// <param name="target">Target</param>
+        /// <param name="to">To</param>
+        /// <returns>Blob Uri</returns>
+        Task<string> Copy(string from, string target, string to);
+
+        /// <summary>
+        /// Copy From Blob to Blob
+        /// </summary>
+        /// <param name="from">From</param>
+        /// <param name="to">To</param>
+        /// <returns>Blob Uri</returns>
+        Task<string> Copy(string from, string to);
         #endregion
 
         #region Properties
