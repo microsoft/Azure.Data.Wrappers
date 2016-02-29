@@ -259,7 +259,7 @@
         {
             var c = new Container("test", ConnectionString);
 
-            Assert.That(() => c.Copy(Guid.NewGuid().ToString(), (IContainer)null, Guid.NewGuid().ToString()), Throws.TypeOf<ArgumentException>());
+            Assert.That(() => c.Copy(Guid.NewGuid().ToString(), (IContainer)null, Guid.NewGuid().ToString()), Throws.TypeOf<ArgumentNullException>());
         }
     }
 }
