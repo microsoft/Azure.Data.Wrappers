@@ -1,7 +1,7 @@
 ﻿namespace King.Azure.Data
 {
-    using System;
     using Microsoft.WindowsAzure.Storage;
+    using System;
 
     /// <summary>
     /// Azure Storage
@@ -19,7 +19,7 @@
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="connectionString">Storage Account</param>
+        /// <param name="connectionString">Connection String</param>
         public AzureStorage(string connectionString)
             : this(CloudStorageAccount.Parse(connectionString))
         {

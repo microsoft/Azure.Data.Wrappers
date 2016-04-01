@@ -1,6 +1,7 @@
 ﻿namespace King.Azure.Data
 {
     using Microsoft.WindowsAzure.Storage;
+    using Microsoft.WindowsAzure.Storage.RetryPolicies;
     using Microsoft.WindowsAzure.Storage.Table;
     using Microsoft.WindowsAzure.Storage.Table.Queryable;
     using System;
@@ -56,17 +57,11 @@
         /// Table Storage
         /// </summary>
         /// <param name="tableName">Table Name</param>
-        /// <param name="connectionStringKey">Connection String</param>
-        public TableStorage(string tableName, string connectionStringKey)
-            : base(connectionStringKey)
+        /// <param name="connectionString">Connection String</param>
+        /// <param name="location">Location Mode</param>
+        public TableStorage(string tableName, string connectionString, LocationMode location = LocationMode.PrimaryThenSecondary)
+            : this(tableName, CloudStorageAccount.Parse(connectionString), location)
         {
-            if (string.IsNullOrWhiteSpace(tableName))
-            {
-                throw new ArgumentException("tableName");
-            }
-
-            this.client = base.Account.CreateCloudTableClient();
-            this.reference = client.GetTableReference(tableName);
         }
 
         /// <summary>
@@ -74,7 +69,8 @@
         /// </summary>
         /// <param name="tableName">Table Name</param>
         /// <param name="account">Storage Account</param>
-        public TableStorage(string tableName, CloudStorageAccount account)
+        /// <param name="location">Location Mode</param>
+        public TableStorage(string tableName, CloudStorageAccount account, LocationMode location = LocationMode.PrimaryThenSecondary)
             : base(account)
         {
             if (string.IsNullOrWhiteSpace(tableName))
@@ -83,6 +79,8 @@
             }
 
             this.client = base.Account.CreateCloudTableClient();
+            this.client.DefaultRequestOptions.LocationMode = location;
+
             this.reference = client.GetTableReference(tableName);
         }
         #endregion
