@@ -44,8 +44,9 @@
         /// <param name="name">Name</param>
         /// <param name="connectionString">Connection String</param>
         /// <param name="isPublic">Is Public</param>
-        public Container(string name, string connectionString, bool isPublic = false)
-            : this(name, CloudStorageAccount.Parse(connectionString), isPublic)
+        /// <param name="location">Location Mode</param>
+        public Container(string name, string connectionString, bool isPublic = false, LocationMode location = LocationMode.PrimaryThenSecondary)
+            : this(name, CloudStorageAccount.Parse(connectionString), isPublic, location)
         {
         }
 
@@ -55,7 +56,8 @@
         /// <param name="name">Name</param>
         /// <param name="account">Storage Account</param>
         /// <param name="isPublic">Is Public</param>
-        public Container(string name, CloudStorageAccount account, bool isPublic = false)
+        /// <param name="location">Location Mode</param>
+        public Container(string name, CloudStorageAccount account, bool isPublic = false, LocationMode location = LocationMode.PrimaryThenSecondary)
             : base(account)
         {
             if (string.IsNullOrWhiteSpace(name))
@@ -64,7 +66,7 @@
             }
 
             this.client = this.Account.CreateCloudBlobClient();
-            this.client.DefaultRequestOptions.LocationMode = LocationMode.PrimaryThenSecondary;
+            this.client.DefaultRequestOptions.LocationMode = location;
             this.reference = this.client.GetContainerReference(name);
             this.isPublic = isPublic;
         }
