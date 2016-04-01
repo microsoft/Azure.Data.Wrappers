@@ -8,6 +8,7 @@
     [TestFixture]
     public class FileShareTests
     {
+        private const string ConnectionString = "DefaultEndpointsProtocol=https;AccountName=kingtesting;AccountKey=g7WCz6wKVBQR38VkRekJyt9cMejowitMMfkjNZFLnvclph7gKTNb6o2u6YghGyfVTXolMSAhTiMLY+hPqaj5kg==;FileEndpoint=https://kingtesting.file.core.windows.net/";
 
         [Test]
         public async Task CreateIfNotExists()
