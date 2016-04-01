@@ -1,13 +1,13 @@
 ﻿namespace King.Azure.Data
 {
+    using Microsoft.WindowsAzure.Storage;
+    using Microsoft.WindowsAzure.Storage.Table;
+    using Microsoft.WindowsAzure.Storage.Table.Queryable;
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Threading.Tasks;
-    using Microsoft.WindowsAzure.Storage;
-    using Microsoft.WindowsAzure.Storage.Table;
     using System.Linq.Expressions;
-    using Microsoft.WindowsAzure.Storage.Table.Queryable;
+    using System.Threading.Tasks;
 
     /// <summary>
     /// Table Storage
