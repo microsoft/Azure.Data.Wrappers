@@ -2,6 +2,7 @@
 {
     using Microsoft.WindowsAzure.Storage;
     using Microsoft.WindowsAzure.Storage.Blob;
+    using Microsoft.WindowsAzure.Storage.RetryPolicies;
     using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
@@ -44,16 +45,8 @@
         /// <param name="connectionString">Connection String</param>
         /// <param name="isPublic">Is Public</param>
         public Container(string name, string connectionString, bool isPublic = false)
-            : base(connectionString)
+            : this(name, CloudStorageAccount.Parse(connectionString), isPublic)
         {
-            if (string.IsNullOrWhiteSpace(name))
-            {
-                throw new ArgumentException("name");
-            }
-
-            this.client = this.Account.CreateCloudBlobClient();
-            this.reference = this.client.GetContainerReference(name);
-            this.isPublic = isPublic;
         }
 
         /// <summary>
@@ -71,6 +64,7 @@
             }
 
             this.client = this.Account.CreateCloudBlobClient();
+            this.client.DefaultRequestOptions.LocationMode = LocationMode.PrimaryThenSecondary;
             this.reference = this.client.GetContainerReference(name);
             this.isPublic = isPublic;
         }
