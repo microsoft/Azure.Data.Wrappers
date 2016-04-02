@@ -1,15 +1,15 @@
 ﻿namespace King.Azure.Data
 {
-    using Microsoft.WindowsAzure.Storage;
-    using Microsoft.WindowsAzure.Storage.Blob;
-    using Microsoft.WindowsAzure.Storage.File;
-    using Microsoft.WindowsAzure.Storage.Queue;
-    using Microsoft.WindowsAzure.Storage.Table;
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq.Expressions;
     using System.Threading.Tasks;
+    using Microsoft.WindowsAzure.Storage;
+    using Microsoft.WindowsAzure.Storage.Blob;
+    using Microsoft.WindowsAzure.Storage.File;
+    using Microsoft.WindowsAzure.Storage.Queue;
+    using Microsoft.WindowsAzure.Storage.Table;
 
     #region IAccount
     /// <summary>
@@ -278,15 +278,17 @@
         /// Get Reference
         /// </summary>
         /// <param name="blobName">Blob Name</param>
+        /// <param name="snapshot">Snapshot time</param>
         /// <returns>Cloud Blob</returns>
-        CloudBlockBlob GetBlockReference(string blobName);
+        CloudBlockBlob GetBlockReference(string blobName, DateTimeOffset? snapshot = null);
 
         /// <summary>
         /// Get Reference
         /// </summary>
         /// <param name="blobName">Blob Name</param>
+        /// <param name="snapshot">Snapshot time</param>
         /// <returns>Cloud Blob</returns>
-        CloudPageBlob GetPageReference(string blobName);
+        CloudPageBlob GetPageReference(string blobName, DateTimeOffset? snapshot = null);
 
         /// <summary>
         /// Save Binary Data

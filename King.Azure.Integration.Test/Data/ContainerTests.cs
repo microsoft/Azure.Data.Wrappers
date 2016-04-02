@@ -340,7 +340,7 @@
             var snapshot = await storage.Snapshot(name);
             Assert.IsTrue(snapshot.IsSnapshot);
 
-            var returned = await storage.Client.GetBlobReferenceFromServerAsync(snapshot.SnapshotQualifiedUri);
+            var returned = storage.GetPageReference(snapshot.Name, snapshot.SnapshotTime);
             Assert.IsNotNull(returned);
             Assert.IsTrue(returned.IsSnapshot);
         }

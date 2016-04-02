@@ -1,14 +1,14 @@
 ﻿namespace King.Azure.Data
 {
-    using Microsoft.WindowsAzure.Storage;
-    using Microsoft.WindowsAzure.Storage.Blob;
-    using Microsoft.WindowsAzure.Storage.RetryPolicies;
-    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
+    using Microsoft.WindowsAzure.Storage;
+    using Microsoft.WindowsAzure.Storage.Blob;
+    using Microsoft.WindowsAzure.Storage.RetryPolicies;
+    using Newtonsoft.Json;
 
     /// <summary>
     /// Blob Container
@@ -391,30 +391,32 @@
         /// Get Reference
         /// </summary>
         /// <param name="blobName">Blob Name</param>
+        /// <param name="snapshot">Snapshot time</param>
         /// <returns>Cloud Block Blob</returns>
-        public virtual CloudBlockBlob GetBlockReference(string blobName)
+        public virtual CloudBlockBlob GetBlockReference(string blobName, DateTimeOffset? snapshot = null)
         {
             if (string.IsNullOrWhiteSpace(blobName))
             {
                 throw new ArgumentException("blobName");
             }
 
-            return this.reference.GetBlockBlobReference(blobName);
+            return this.reference.GetBlockBlobReference(blobName, snapshot);
         }
 
         /// <summary>
         /// Get Reference
         /// </summary>
         /// <param name="blobName">Blob Name</param>
+        /// <param name="snapshot">Snapshot time</param>
         /// <returns>Cloud Block Blob</returns>
-        public virtual CloudPageBlob GetPageReference(string blobName)
+        public virtual CloudPageBlob GetPageReference(string blobName, DateTimeOffset? snapshot = null)
         {
             if (string.IsNullOrWhiteSpace(blobName))
             {
                 throw new ArgumentException("blobName");
             }
 
-            return this.reference.GetPageBlobReference(blobName);
+            return this.reference.GetPageBlobReference(blobName, snapshot);
         }
 
         /// <summary>
@@ -464,12 +466,23 @@
             var block = blob as CloudBlockBlob;
             if (null != block)
             {
-                return await block.CreateSnapshotAsync();
+                var options = new BlobRequestOptions
+                {
+                    LocationMode = LocationMode.PrimaryOnly,
+
+                };
+
+                return await block.CreateSnapshotAsync(null, null, options, null);
             }
             var page = blob as CloudPageBlob;
             if (null != page)
             {
-                return await page.CreateSnapshotAsync();
+                var options = new BlobRequestOptions
+                {
+                    LocationMode = LocationMode.PrimaryOnly,
+                };
+
+                return await page.CreateSnapshotAsync(null, null, options, null);
             }
 
             return null;
