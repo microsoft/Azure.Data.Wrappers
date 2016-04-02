@@ -1,14 +1,14 @@
 ﻿namespace King.Azure.Integration.Test.Data
 {
-    using King.Azure.Data;
-    using NUnit.Framework;
     using System;
     using System.Threading.Tasks;
+    using King.Azure.Data;
+    using NUnit.Framework;
 
     [TestFixture]
     public class FileShareTests
     {
-        private const string ConnectionString = "DefaultEndpointsProtocol=https;AccountName=kingtesting;AccountKey=g7WCz6wKVBQR38VkRekJyt9cMejowitMMfkjNZFLnvclph7gKTNb6o2u6YghGyfVTXolMSAhTiMLY+hPqaj5kg==;FileEndpoint=https://kingtesting.file.core.windows.net/";
+        private const string ConnectionString = "DefaultEndpointsProtocol=https;AccountName=kingdottest;AccountKey=raLQzql5BzvYrHGPxZKJIFHDe/B0+kTpJwGokbQHX5p6EVbx8xOt6XbPKJsUWdyOMTYYEKAvZ7ImqFIfpLGOJQ==;FileEndpoint=https://kingdottest.file.core.windows.net/";
 
         [Test]
         public async Task CreateIfNotExists()
