@@ -12,7 +12,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Azure Storage Simplified.</description>
     <summary>Azure Storage Simplified.</summary>
-    <releaseNotes>Blob copy options, when working with multiple Blobs.</releaseNotes>
+    <releaseNotes>Container and Table resiliency fall back to secondary on primary failure.</releaseNotes>
     <copyright>Jef King</copyright>
     <language>en-US</language>
     <tags>King.Azure Azure Storage Mock Mockable Simple Data Table Storage File Share File-Share Queue Queuing Blob Query dependency injection dependency-injection Cloud Table-Storage Windows-Azure Windows dotNet CSharp Mocking Data-Table Blob Json WindowsAzure.Storage</tags>
