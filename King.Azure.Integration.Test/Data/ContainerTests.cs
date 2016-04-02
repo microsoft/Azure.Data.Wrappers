@@ -1,13 +1,13 @@
 ﻿namespace King.Service.Integration
 {
-    using King.Azure.Data;
-    using Microsoft.WindowsAzure.Storage;
-    using Microsoft.WindowsAzure.Storage.Blob;
-    using NUnit.Framework;
     using System;
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
+    using King.Azure.Data;
+    using Microsoft.WindowsAzure.Storage;
+    using Microsoft.WindowsAzure.Storage.Blob;
+    using NUnit.Framework;
 
     [TestFixture]
     public class ContainerTests
@@ -314,14 +314,14 @@
 
             var name = string.Format("{0}.bin", Guid.NewGuid());
             var storage = new Container(ContainerName, ConnectionString);
-            CloudPageBlob blob = storage.Reference.GetPageBlobReference(name);
+            var blob = storage.Reference.GetPageBlobReference(name);
             await blob.CreateAsync(1024);
             await blob.UploadFromByteArrayAsync(bytes, 0, bytes.Length);
 
             var snapshot = await storage.Snapshot(name);
             Assert.IsTrue(snapshot.IsSnapshot);
 
-            var returned = await storage.Client.GetBlobReferenceFromServerAsync(snapshot.SnapshotQualifiedUri);
+            var returned = storage.GetPageReference(snapshot.Name, snapshot.SnapshotTime);
             Assert.IsNotNull(returned);
             Assert.IsTrue(returned.IsSnapshot);
         }
