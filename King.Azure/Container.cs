@@ -462,26 +462,20 @@
                 throw new ArgumentException("blobName");
             }
 
+            var options = new BlobRequestOptions
+            {
+                LocationMode = LocationMode.PrimaryOnly,
+            };
+
             var blob = this.List(blobName).FirstOrDefault();
             var block = blob as CloudBlockBlob;
             if (null != block)
             {
-                var options = new BlobRequestOptions
-                {
-                    LocationMode = LocationMode.PrimaryOnly,
-
-                };
-
                 return await block.CreateSnapshotAsync(null, null, options, null);
             }
             var page = blob as CloudPageBlob;
             if (null != page)
             {
-                var options = new BlobRequestOptions
-                {
-                    LocationMode = LocationMode.PrimaryOnly,
-                };
-
                 return await page.CreateSnapshotAsync(null, null, options, null);
             }
 
