@@ -39,16 +39,16 @@
     <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Data\AzureStorage.cs" />
-    <Compile Include="Data\Container.cs" />
-    <Compile Include="Data\FileShare.cs" />
-    <Compile Include="Data\Interfaces.cs" />
-    <Compile Include="Data\AzureStorageResources.cs" />
-    <Compile Include="Data\StorageQueueShards.cs" />
-    <Compile Include="Data\StorageQueue.cs" />
-    <Compile Include="Data\StorageQueuedMessage.cs" />
-    <Compile Include="Data\StorageQueuePoller.cs" />
-    <Compile Include="Data\TableStorage.cs" />
+    <Compile Include="AzureStorage.cs" />
+    <Compile Include="Container.cs" />
+    <Compile Include="FileShare.cs" />
+    <Compile Include="Interfaces.cs" />
+    <Compile Include="AzureStorageResources.cs" />
+    <Compile Include="StorageQueueShards.cs" />
+    <Compile Include="StorageQueue.cs" />
+    <Compile Include="StorageQueuedMessage.cs" />
+    <Compile Include="StorageQueuePoller.cs" />
+    <Compile Include="TableStorage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
