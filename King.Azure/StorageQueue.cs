@@ -106,7 +106,7 @@
         /// <summary>
         /// Create If Not Exists
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Created</returns>
         public virtual async Task<bool> CreateIfNotExists()
         {
             return await this.reference.CreateIfNotExistsAsync();
@@ -115,7 +115,7 @@
         /// <summary>
         /// Delete Queue
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Task</returns>
         public virtual async Task Delete()
         {
             await this.reference.DeleteAsync();
