@@ -139,7 +139,7 @@
             for (var j = 0; j < i; j++)
             {
                 var q = Substitute.For<IStorageQueue>();
-                q.Save(msg).Returns(Task.CompletedTask);
+                q.Send(msg).Returns(Task.CompletedTask);
                 qs.Add(q);
             }
 
@@ -151,11 +151,11 @@
             {
                 if (j == index)
                 {
-                    await qs[j].Received().Save(msg);
+                    await qs[j].Received().Send(msg);
                 }
                 else
                 {
-                    await qs[j].DidNotReceive().Save(msg);
+                    await qs[j].DidNotReceive().Send(msg);
                 }
             }
         }

@@ -137,7 +137,7 @@
         {
             var index = this.Index(shardTarget);
             var q = this.queues.ElementAt(index);
-            await q.Save(obj);
+            await q.Send(obj);
         }
 
         /// <summary>

@@ -80,7 +80,7 @@
             var name = Guid.NewGuid().ToString();
             var t = new StorageQueue(name, ConnectionString);
 
-            Assert.That(() => t.Save((CloudQueueMessage)null), Throws.TypeOf<ArgumentNullException>());
+            Assert.That(() => t.Send((CloudQueueMessage)null), Throws.TypeOf<ArgumentNullException>());
         }
 
         [Test]
@@ -89,7 +89,7 @@
             var name = Guid.NewGuid().ToString();
             var t = new StorageQueue(name, ConnectionString);
 
-            Assert.That(() => t.Save((object)null), Throws.TypeOf<ArgumentNullException>());
+            Assert.That(() => t.Send((object)null), Throws.TypeOf<ArgumentNullException>());
         }
     }
 }

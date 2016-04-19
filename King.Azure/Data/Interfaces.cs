@@ -391,6 +391,23 @@
     }
     #endregion
 
+    #region IQueueObject
+    /// <summary>
+    /// Queue Object Interface
+    /// </summary>
+    public interface IQueueObject
+    {
+        #region Methods
+        /// <summary>
+        /// Save Specific Message to Queue
+        /// </summary>
+        /// <param name="obj">Object</param>
+        /// <returns>Task</returns>
+        Task Send(object obj);
+        #endregion
+    }
+    #endregion
+
     #region IQueue<T>
     /// <summary>
     /// IQueue
@@ -417,7 +434,23 @@
         /// </summary>
         /// <param name="message">Message</param>
         /// <returns>Task</returns>
-        Task Save(T message);
+        Task Send(T message);
+        #endregion
+    }
+    #endregion
+
+    #region IStorageQueue
+    /// <summary>
+    /// Storage Queue Interface
+    /// </summary>
+    public interface IStorageQueue : IQueue<CloudQueueMessage>, IQueueObject, IAzureStorage, IStorageReference<CloudQueue>, IStorageClient<CloudQueueClient>, IQueueCount
+    {
+        #region Methods
+        /// <summary>
+        /// Get Many Cloud Queue Message
+        /// </summary>
+        /// <returns>Messages</returns>
+        Task<IEnumerable<CloudQueueMessage>> GetMany(int messageCount = 5);
         #endregion
     }
     #endregion
@@ -434,29 +467,6 @@
         /// </summary>
         /// <returns>Message Count</returns>
         Task<long?> ApproixmateMessageCount();
-        #endregion
-    }
-    #endregion
-
-    #region IStorageQueue
-    /// <summary>
-    /// IStorage Queue
-    /// </summary>
-    public interface IStorageQueue : IQueue<CloudQueueMessage>, IAzureStorage, IStorageReference<CloudQueue>, IStorageClient<CloudQueueClient>, IQueueCount
-    {
-        #region Methods
-        /// <summary>
-        /// Get Many Cloud Queue Message
-        /// </summary>
-        /// <returns>Messages</returns>
-        Task<IEnumerable<CloudQueueMessage>> GetMany(int messageCount = 5);
-
-        /// <summary>
-        /// Save Specific Message to Queue
-        /// </summary>
-        /// <param name="obj">Object</param>
-        /// <returns>Task</returns>
-        Task Save(object obj);
         #endregion
     }
     #endregion

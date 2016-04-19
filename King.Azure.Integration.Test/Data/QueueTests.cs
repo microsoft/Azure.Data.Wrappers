@@ -56,7 +56,7 @@
             var storage = new StorageQueue(QueueName, ConnectionString);
 
             var msg = new CloudQueueMessage(Guid.NewGuid().ToByteArray());
-            await storage.Save(msg);
+            await storage.Send(msg);
             var returned = await storage.Get();
 
             Assert.AreEqual(msg.AsBytes, returned.AsBytes);
@@ -68,7 +68,7 @@
             var storage = new StorageQueue(QueueName, ConnectionString);
 
             var msg = new CloudQueueMessage(Guid.NewGuid().ToByteArray());
-            await storage.Save((object)msg);
+            await storage.Send((object)msg);
             var returned = await storage.Get();
 
             Assert.AreEqual(msg.AsBytes, returned.AsBytes);
@@ -79,7 +79,7 @@
         {
             var storage = new StorageQueue(QueueName, ConnectionString);
             var expected = Guid.NewGuid();
-            await storage.Save(expected);
+            await storage.Send(expected);
 
             var returned = await storage.Get();
 
@@ -96,7 +96,7 @@
             var storage = new StorageQueue(QueueName, ConnectionString);
             for (var i = 0; i < count; i++)
             {
-                await storage.Save(Guid.NewGuid());
+                await storage.Send(Guid.NewGuid());
             }
 
             var result = await storage.ApproixmateMessageCount();
@@ -117,7 +117,7 @@
             var storage = new StorageQueue(QueueName, ConnectionString);
 
             var msg = new CloudQueueMessage(Guid.NewGuid().ToByteArray());
-            await storage.Save(msg);
+            await storage.Send(msg);
             var returned = await storage.Get();
             await storage.Delete(returned);
         }
@@ -133,7 +133,7 @@
             for (var i = 0; i < count; i++)
             {
                 var msg = new CloudQueueMessage(Guid.NewGuid().ToByteArray());
-                await storage.Save(msg);
+                await storage.Send(msg);
             }
 
             var returned = await storage.GetMany(count);
@@ -152,7 +152,7 @@
             for (var i = 0; i < count; i++)
             {
                 var msg = new CloudQueueMessage(Guid.NewGuid().ToByteArray());
-                await storage.Save(msg);
+                await storage.Send(msg);
             }
 
             var returned = await storage.GetMany(-1);
