@@ -1,14 +1,14 @@
 ﻿namespace King.Azure.Data
 {
+    using Microsoft.WindowsAzure.Storage;
+    using Microsoft.WindowsAzure.Storage.Blob;
+    using Microsoft.WindowsAzure.Storage.RetryPolicies;
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
-    using Microsoft.WindowsAzure.Storage;
-    using Microsoft.WindowsAzure.Storage.Blob;
-    using Microsoft.WindowsAzure.Storage.RetryPolicies;
-    using Newtonsoft.Json;
 
     /// <summary>
     /// Blob Container
@@ -455,7 +455,7 @@
         /// </summary>
         /// <param name="blobName">Blob Name</param>
         /// <returns>Task</returns>
-        public async Task<ICloudBlob> Snapshot(string blobName)
+        public virtual async Task<ICloudBlob> Snapshot(string blobName)
         {
             if (string.IsNullOrWhiteSpace(blobName))
             {
@@ -494,7 +494,7 @@
         /// <param name="from">From</param>
         /// <param name="to">To</param>
         /// <returns>Blob Uri</returns>
-        public async Task<string> Copy(string from, string to)
+        public virtual async Task<string> Copy(string from, string to)
         {
             if (string.IsNullOrWhiteSpace(from))
             {
@@ -517,7 +517,7 @@
         /// <param name="target">Target</param>
         /// <param name="to">To</param>
         /// <returns>Blob Uri</returns>
-        public async Task<string> Copy(string from, string target, string to)
+        public virtual async Task<string> Copy(string from, string target, string to)
         {
             return await this.Copy(from, new Container(target, this.Account), to);
         }
@@ -529,7 +529,7 @@
         /// <param name="target">Target</param>
         /// <param name="to">To</param>
         /// <returns>Blob Uri</returns>
-        public async Task<string> Copy(string from, IContainer target, string to)
+        public virtual async Task<string> Copy(string from, IContainer target, string to)
         {
             if (string.IsNullOrWhiteSpace(from))
             {

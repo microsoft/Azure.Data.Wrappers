@@ -385,7 +385,7 @@
         /// <param name="predicate">Predicate</param>
         /// <param name="maxResults">Max Result</param>
         /// <returns></returns>
-        public async Task<IEnumerable<T>> Query<T>(Expression<Func<T, bool>> predicate, int maxResults = int.MaxValue)
+        public virtual async Task<IEnumerable<T>> Query<T>(Expression<Func<T, bool>> predicate, int maxResults = int.MaxValue)
             where T : ITableEntity, new()
         {
             if (null == predicate)
