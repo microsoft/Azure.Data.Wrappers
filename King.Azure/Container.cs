@@ -445,9 +445,22 @@
         /// <param name="prefix">Prefix</param>
         /// <param name="useFlatBlobListing">Use Flat Blob Listing</param>
         /// <returns>Blobs</returns>
-        public IEnumerable<IListBlobItem> List(string prefix = null, bool useFlatBlobListing = false)
+        public async Task<IEnumerable<IListBlobItem>> List(string prefix = null, bool useFlatBlobListing = false, BlobListingDetails details = BlobListingDetails.All, int? maxResults = int.MaxValue)
         {
-            return this.reference.ListBlobs(prefix, useFlatBlobListing);
+            BlobContinuationToken token = null;
+            var blobs = new List<IListBlobItem>();
+            var options = new BlobRequestOptions();
+            var operationContext = new OperationContext();
+
+            do
+            {
+                var segments = await this.reference.ListBlobsSegmentedAsync(prefix, useFlatBlobListing, details, maxResults, token, options, operationContext);
+                blobs.AddRange(segments.Results);
+                token = segments.ContinuationToken;
+            }
+            while (null != token);
+
+            return blobs;
         }
 
         /// <summary>
@@ -467,7 +480,8 @@
                 LocationMode = LocationMode.PrimaryOnly,
             };
 
-            var blob = this.List(blobName).FirstOrDefault();
+            var blobs = await this.List(blobName);
+            var blob = blobs.FirstOrDefault();
             var block = blob as CloudBlockBlob;
             if (null != block)
             {

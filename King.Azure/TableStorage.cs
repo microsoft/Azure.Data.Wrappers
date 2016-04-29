@@ -3,7 +3,7 @@
     using Microsoft.WindowsAzure.Storage;
     using Microsoft.WindowsAzure.Storage.RetryPolicies;
     using Microsoft.WindowsAzure.Storage.Table;
-    using Microsoft.WindowsAzure.Storage.Table.Queryable;
+    //using Microsoft.WindowsAzure.Storage.Table.Queryable;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -397,12 +397,16 @@
                 throw new InvalidOperationException("maxResults: must be above 0.");
             }
 
-            var query = this.reference.CreateQuery<T>()
-                .Where(predicate)
-                .Take(maxResults)
-                .AsTableQuery<T>();
+            //var query = this.reference.CreateQuery<T>()
+            //    .Where(predicate)
+            //    .Take(maxResults)
+            //    .AsTableQuery<T>();
 
-            return await this.Query<T>(query);
+            //return await this.Query<T>(query);
+
+            await Task.FromResult<bool>(false);
+
+            throw new InvalidOperationException("Not Implemented");
         }
 
         /// <summary>

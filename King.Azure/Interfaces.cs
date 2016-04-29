@@ -353,7 +353,7 @@
         /// <param name="prefix">Prefix</param>
         /// <param name="useFlatBlobListing">Use Flat Blob Listing</param>
         /// <returns>Blobs</returns>
-        IEnumerable<IListBlobItem> List(string prefix = null, bool useFlatBlobListing = false);
+        Task<IEnumerable<IListBlobItem>> List(string prefix = null, bool useFlatBlobListing = false, BlobListingDetails details = BlobListingDetails.All, int? maxResults = int.MaxValue);
 
         /// <summary>
         /// Create Snapshot
@@ -602,37 +602,37 @@
         /// List Table Names
         /// </summary>
         /// <returns>Table Names</returns>
-        IEnumerable<string> TableNames();
+        Task<IEnumerable<string>> TableNames();
 
         /// <summary>
         /// List Tables
         /// </summary>
         /// <returns>Tables</returns>
-        IEnumerable<ITableStorage> Tables();
+        Task<IEnumerable<ITableStorage>> Tables();
 
         /// <summary>
         /// List Container Names
         /// </summary>
         /// <returns>Container Names</returns>
-        IEnumerable<string> ContainerNames();
+        Task<IEnumerable<string>> ContainerNames();
 
         /// <summary>
         /// List Containers
         /// </summary>
         /// <returns>Containers</returns>
-        IEnumerable<IContainer> Containers();
+        Task<IEnumerable<IContainer>> Containers();
 
         /// <summary>
         /// List Queue Names
         /// </summary>
         /// <returns>Queue Names</returns>
-        IEnumerable<string> QueueNames();
+        Task<IEnumerable<string>> QueueNames();
 
         /// <summary>
         /// List Queues
         /// </summary>
         /// <returns>Queues</returns>
-        IEnumerable<IStorageQueue> Queues();
+        Task<IEnumerable<IStorageQueue>> Queues();
         #endregion
     }
     #endregion

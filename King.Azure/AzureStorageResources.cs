@@ -1,8 +1,11 @@
 ﻿namespace King.Azure.Data
 {
+    using Microsoft.WindowsAzure.Storage.Blob;
+    using Microsoft.WindowsAzure.Storage.Queue;
+    using Microsoft.WindowsAzure.Storage.Table;
     using System.Collections.Generic;
     using System.Linq;
-
+    using System.Threading.Tasks;
     /// <summary>
     /// Azure Storage Resources
     /// </summary>
@@ -24,69 +27,115 @@
         /// List Table Names
         /// </summary>
         /// <returns>Table Names</returns>
-        public virtual IEnumerable<string> TableNames()
+        public virtual async Task<IEnumerable<string>> TableNames()
         {
+            TableContinuationToken token = null;
+            var names = new List<string>();
+
             var client = base.Account.CreateCloudTableClient();
-            return client.ListTables().Select(t => t.Name);
+
+            do
+            {
+                var segments = await client.ListTablesSegmentedAsync(token);
+                names.AddRange(segments.Results.Select(s => s.Name));
+                token = segments.ContinuationToken;
+            }
+            while (null != token);
+
+            return names;
         }
 
         /// <summary>
         /// List Tables
         /// </summary>
         /// <returns>Tables</returns>
-        public virtual IEnumerable<ITableStorage> Tables()
+        public virtual async Task<IEnumerable<ITableStorage>> Tables()
         {
-            var names = this.TableNames();
+            var tables = new List<ITableStorage>();
+
+            var names = await this.TableNames();
             foreach (var name in names)
             {
-                yield return new TableStorage(name, base.Account);
+                tables.Add(new TableStorage(name, base.Account));
             }
+
+            return tables;
         }
 
         /// <summary>
         /// List Container Names
         /// </summary>
         /// <returns>Container Names</returns>
-        public virtual IEnumerable<string> ContainerNames()
+        public virtual async Task<IEnumerable<string>> ContainerNames()
         {
+            BlobContinuationToken token = null;
+            var names = new List<string>();
+
             var client = base.Account.CreateCloudBlobClient();
-            return client.ListContainers().Select(c => c.Name);
+
+            do
+            {
+                var segments = await client.ListContainersSegmentedAsync(token);
+                names.AddRange(segments.Results.Select(s => s.Name));
+                token = segments.ContinuationToken;
+            }
+            while (null != token);
+
+            return names;
         }
 
         /// <summary>
         /// List Containers
         /// </summary>
         /// <returns>Containers</returns>
-        public virtual IEnumerable<IContainer> Containers()
+        public virtual async Task<IEnumerable<IContainer>> Containers()
         {
-            var names = this.ContainerNames();
+            var containers = new List<IContainer>();
+            var names = await this.ContainerNames();
             foreach (var name in names)
             {
-                yield return new Container(name, base.Account);
+                containers.Add(new Container(name, base.Account));
             }
+
+            return containers;
         }
 
         /// <summary>
         /// List Queue Names
         /// </summary>
         /// <returns>Queue Names</returns>
-        public virtual IEnumerable<string> QueueNames()
+        public virtual async Task<IEnumerable<string>> QueueNames()
         {
+            QueueContinuationToken token = null;
+            var names = new List<string>();
+
             var client = base.Account.CreateCloudQueueClient();
-            return client.ListQueues().Select(q => q.Name);
+
+            do
+            {
+                var segments = await client.ListQueuesSegmentedAsync(token);
+                names.AddRange(segments.Results.Select(s => s.Name));
+                token = segments.ContinuationToken;
+            }
+            while (null != token);
+
+            return names;
         }
 
         /// <summary>
         /// List Queues
         /// </summary>
         /// <returns>Queues</returns>
-        public virtual IEnumerable<IStorageQueue> Queues()
+        public virtual async Task<IEnumerable<IStorageQueue>> Queues()
         {
-            var names = this.QueueNames();
+            var queues = new List<IStorageQueue>();
+            var names = await this.QueueNames();
             foreach (var name in names)
             {
-                yield return new StorageQueue(name, base.Account);
+                queues.Add(new StorageQueue(name, base.Account));
             }
+
+            return queues;
         }
         #endregion
     }
