@@ -301,7 +301,7 @@
                 await storage.Save(blobName, bytes);
             }
 
-            var blobs = storage.List();
+            var blobs = await storage.List();
             Assert.AreEqual(count, blobs.Count());
         }
 

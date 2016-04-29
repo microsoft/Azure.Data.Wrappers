@@ -19,7 +19,7 @@
             var created = await storage.CreateIfNotExists();
 
             var resources = new AzureStorageResources(ConnectionString);
-            var tables = resources.TableNames();
+            var tables = await resources.TableNames();
 
             Assert.IsTrue(tables.Contains(name));
         }
@@ -32,7 +32,7 @@
             var created = await storage.CreateIfNotExists();
 
             var resources = new AzureStorageResources(ConnectionString);
-            var tables = resources.Tables();
+            var tables = await resources.Tables();
 
             var exists = (from t in tables
                           where t.Name == name
@@ -49,7 +49,7 @@
             var created = await storage.CreateIfNotExists();
 
             var resources = new AzureStorageResources(ConnectionString);
-            var queues = resources.QueueNames();
+            var queues = await resources.QueueNames();
 
             Assert.IsTrue(queues.Contains(name));
         }
@@ -62,7 +62,7 @@
             var created = await storage.CreateIfNotExists();
 
             var resources = new AzureStorageResources(ConnectionString);
-            var queues = resources.Queues();
+            var queues = await resources.Queues();
 
             var exists = (from q in queues
                           where q.Name == name
@@ -81,7 +81,7 @@
             var created = await storage.CreateIfNotExists();
 
             var resources = new AzureStorageResources(ConnectionString);
-            var containers = resources.ContainerNames();
+            var containers = await resources.ContainerNames();
 
             Assert.IsTrue(containers.Contains(name));
         }
@@ -94,7 +94,7 @@
             var created = await storage.CreateIfNotExists();
 
             var resources = new AzureStorageResources(ConnectionString);
-            var containers = resources.Containers();
+            var containers = await resources.Containers();
 
             var exists = (from c in containers
                           where c.Name == name
