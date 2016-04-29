@@ -1,10 +1,14 @@
 ﻿{
-  "version": "1.0.0-*",
+  "version": "2.0.0-*",
   "description": "King.Azure.Unit.Test Console Application",
-  "authors": [ "jefkin" ],
+  "authors": [ "Jef King" ],
+  "owners": [ "Jef King" ],
   "tags": [ "" ],
-  "projectUrl": "",
-  "licenseUrl": "",
+  "projectUrl": "https://github.com/jefking/King.Azure",
+  "licenseUrl": "https://github.com/jefking/King.Azure/blob/master/LICENSE",
+  "iconUrl": "https://raw.githubusercontent.com/jefking/King.Azure/master/icon.png",
+  "copyright": "Jef King",
+  "language": "en-us",
 
   "compilationOptions": {
     "emitEntryPoint": true
@@ -12,7 +16,8 @@
 
   "dependencies": {
     "WindowsAzure.Storage": "7.0.1-preview",
-    "NUnit": "2.5.7.10213"
+    "NUnit": "3.2.1",
+    "King.Azure": { }
   },
 
   "commands": {
@@ -20,14 +25,10 @@
   },
 
   "frameworks": {
-    "dnx451": { },
-    "dnxcore50": {
+    "dotnet5.4": {
       "dependencies": {
-        "Microsoft.CSharp": "4.0.1-beta-23516",
         "System.Collections": "4.0.11-beta-23516",
-        "System.Console": "4.0.0-beta-23516",
-        "System.Linq": "4.0.1-beta-23516",
-        "System.Threading": "4.0.11-beta-23516"
+        "System.Linq": "4.0.1-beta-23516"
       }
     }
   }
