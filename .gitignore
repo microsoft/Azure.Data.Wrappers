@@ -172,5 +172,8 @@ UpgradeLog*.htm
 # Microsoft Fakes
 FakesAssemblies/
 
-NuGet Packages
+# NuGet Packages
 *.nupkg
+
+# ASP.NET Core
+*.lock.json

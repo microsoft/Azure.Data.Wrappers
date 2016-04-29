@@ -11,6 +11,7 @@
   },
 
   "dependencies": {
+    "WindowsAzure.Storage": "7.0.1-preview"
   },
 
   "commands": {

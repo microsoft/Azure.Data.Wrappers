@@ -6,6 +6,10 @@
   "projectUrl": "",
   "licenseUrl": "",
 
+  "dependencies": {
+    "WindowsAzure.Storage": "7.0.1-preview"
+  },
+
   "frameworks": {
     "net451": { },
     "dotnet5.4": {

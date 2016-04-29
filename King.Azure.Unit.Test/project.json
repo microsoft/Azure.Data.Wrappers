@@ -11,6 +11,8 @@
   },
 
   "dependencies": {
+    "WindowsAzure.Storage": "7.0.1-preview",
+    "NUnit": "2.5.7.10213"
   },
 
   "commands": {
