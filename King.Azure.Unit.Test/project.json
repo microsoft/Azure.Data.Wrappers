@@ -3,7 +3,6 @@
   "description": "King.Azure.Unit.Test Console Application",
   "authors": [ "Jef King" ],
   "owners": [ "Jef King" ],
-  "tags": [ "" ],
   "projectUrl": "https://github.com/jefking/King.Azure",
   "licenseUrl": "https://github.com/jefking/King.Azure/blob/master/LICENSE",
   "iconUrl": "https://raw.githubusercontent.com/jefking/King.Azure/master/icon.png",
