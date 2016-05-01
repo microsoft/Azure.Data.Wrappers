@@ -13,6 +13,7 @@
 
   "frameworks": {
     "net451": { },
+    "net461": { },
     "dotnet5.4": { },
     "dnxcore50": {
       "dependencies": {
