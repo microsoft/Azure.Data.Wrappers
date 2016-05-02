@@ -14,9 +14,8 @@
   },
 
   "dependencies": {
-    "WindowsAzure.Storage": "7.0.1-preview",
     "NUnitLite": "3.2.1",
-    "King.Azure": "2.0.2-preview"
+    "King.Azure": "2.0.3-preview"
   },
 
   "commands": {
