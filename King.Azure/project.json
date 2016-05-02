@@ -1,5 +1,5 @@
 ﻿{
-  "version": "2.0.2-preview",
+  "version": "2.0.3-preview",
   "title": "King.Azure",
   "description": "King.Azure.Data Class Library",
   "authors": [ "Jef King" ],
@@ -13,7 +13,9 @@
 
   "frameworks": {
     "net451": { },
+    "net45": { },
     "net461": { },
+    "net46": { },
     "dotnet5.4": { },
     "dnxcore50": {
       "dependencies": {
