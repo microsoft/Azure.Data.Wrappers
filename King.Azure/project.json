@@ -1,7 +1,7 @@
 ﻿{
   "version": "2.0.4-preview",
   "title": "King.Azure",
-  "description": "King.Azure Class Library",
+  "description": "Azure Storage Simplified.",
   "authors": [ "Jef King" ],
   "owners": [ "Jef King" ],
   "tags": [ "King.Azure", "Azure", "Storage", "Mock", "Mockable", "Simple", "Data", "Table", "Storage", "File", "Share", "File-Share", "Queue", "Queuing", "Blob", "Query", "dependency", "injection", "dependency-injection", "Cloud", "Table-Storage", "Windows-Azure", "Windows", "dotNet", "CSharp", "Mocking", "Data-Table", "Blob", "Json", "WindowsAzure.Storage", ".NetCore", "DNX" ],
@@ -10,7 +10,7 @@
   "iconUrl": "https://raw.githubusercontent.com/jefking/King.Azure/master/icon.png",
   "copyright": "Jef King",
   "language": "en-us",
- 
+
   "configurations": {
     "Release": {
       "compilationOptions": {
@@ -29,6 +29,7 @@
       }
     }
   },
+
   "dependencies": {
     "WindowsAzure.Storage": "7.0.1-preview"
   }

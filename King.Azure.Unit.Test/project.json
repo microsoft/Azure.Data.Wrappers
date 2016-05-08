@@ -1,13 +1,12 @@
 ﻿{
   "version": "2.0.0-*",
-  "description": "King.Azure.Unit.Test Console Application",
+  "description": "King.Azure Unit Tests",
   "authors": [ "Jef King" ],
   "owners": [ "Jef King" ],
   "projectUrl": "https://github.com/jefking/King.Azure",
   "licenseUrl": "https://github.com/jefking/King.Azure/blob/master/LICENSE",
   "iconUrl": "https://raw.githubusercontent.com/jefking/King.Azure/master/icon.png",
   "copyright": "Jef King",
-  "language": "en-us",
 
   "compilationOptions": {
     "emitEntryPoint": true
