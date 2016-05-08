@@ -1,22 +1,27 @@
 ﻿{
-  "version": "2.0.3-preview",
+  "version": "2.0.4-preview",
   "title": "King.Azure",
-  "description": "King.Azure.Data Class Library",
+  "description": "King.Azure Class Library",
   "authors": [ "Jef King" ],
   "owners": [ "Jef King" ],
-  "tags": [ "King.Azure Azure Storage Mock Mockable Simple Data Table Storage File Share File-Share Queue Queuing Blob Query dependency injection dependency-injection Cloud Table-Storage Windows-Azure Windows dotNet CSharp Mocking Data-Table Blob Json WindowsAzure.Storage .NetCore DNX" ],
+  "tags": [ "King.Azure", "Azure", "Storage", "Mock", "Mockable", "Simple", "Data", "Table", "Storage", "File", "Share", "File-Share", "Queue", "Queuing", "Blob", "Query", "dependency", "injection", "dependency-injection", "Cloud", "Table-Storage", "Windows-Azure", "Windows", "dotNet", "CSharp", "Mocking", "Data-Table", "Blob", "Json", "WindowsAzure.Storage", ".NetCore", "DNX" ],
   "projectUrl": "https://github.com/jefking/King.Azure",
   "licenseUrl": "https://github.com/jefking/King.Azure/blob/master/LICENSE",
   "iconUrl": "https://raw.githubusercontent.com/jefking/King.Azure/master/icon.png",
   "copyright": "Jef King",
   "language": "en-us",
+ 
+  "configurations": {
+    "Release": {
+      "compilationOptions": {
+        "optimize": true
+      }
+    }
+  },
 
   "frameworks": {
-    "net451": { },
     "net45": { },
-    "net461": { },
-    "net46": { },
-    "dotnet5.4": { },
+    "dnx451": { },
     "dnxcore50": {
       "dependencies": {
         "System.Collections": "4.0.11-beta-23516",

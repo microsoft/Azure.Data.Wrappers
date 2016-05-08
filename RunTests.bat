@@ -1,3 +1,7 @@
-dnvm use 1.0.0-rc1-update1 -r coreclr -a x64
+CD .\artifacts\bin\King.Azure.Unit.Test\Release\app
 
-dnu restore -f .
+dnvm use 1.0.0-rc1-update1 -r clr -a x64
+dnu restore -f ../../../King.Azure/Release
+./King.Azure.Unit.Test.cmd
+
+CD ../../../../../

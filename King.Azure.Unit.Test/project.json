@@ -15,7 +15,7 @@
 
   "dependencies": {
     "NUnitLite": "3.2.1",
-    "King.Azure": "2.0.3-preview"
+    "King.Azure": "2.0.4-preview"
   },
 
   "commands": {
@@ -23,15 +23,8 @@
   },
 
   "frameworks": {
-    "net451": { },
     "net45": { },
-    "net461": { },
-    "net46": { },
-    "dotnet5.4": {
-      "dependencies": {
-        "System.Console": "4.0.0-beta-23516"
-      }
-    },
+    "dnx451": { },
     "dnxcore50": {
       "dependencies": {
         "System.Collections": "4.0.11-beta-23516",
