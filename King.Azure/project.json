@@ -35,9 +35,6 @@
 
   "dependencies": {
     "WindowsAzure.Storage": "7.2.0",
-    "Microsoft.Data.OData": "5.6.4",
-    "Microsoft.Data.Services.Client": "5.6.4",
-    "System.Spatial": "5.6.4",
     "System.Diagnostics.TraceSource": "4.0.0"
   }
 }
