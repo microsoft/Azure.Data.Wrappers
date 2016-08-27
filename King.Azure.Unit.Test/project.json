@@ -16,6 +16,9 @@
     "NUnitLite": "3.4.1",
     "System.Runtime": "4.0.20",
     "System.Threading": "4.0.10",
-    "System.Threading.Tasks": "4.0.10"
+    "System.Threading.Tasks": "4.0.10",
+    "System.IO": "4.0.10",
+    "System.Linq": "4.0.0",
+    "System.Linq.Expressions": "4.0.10"
   }
 }
