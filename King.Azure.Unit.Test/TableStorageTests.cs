@@ -133,7 +133,7 @@
         {
             var name = Guid.NewGuid().ToString();
             var t = new TableStorage(name, ConnectionString);
-
+            
             Assert.That(() => t.Query((TableQuery)null), Throws.TypeOf<ArgumentNullException>());
         }
 

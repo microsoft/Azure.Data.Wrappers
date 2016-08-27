@@ -2,7 +2,7 @@
 {
     using King.Azure.Data;
     using Microsoft.WindowsAzure.Storage.Queue;
-    //using NSubstitute;
+    using NSubstitute;
     using NUnit.Framework;
     using System;
     using System.Collections.Generic;
@@ -35,11 +35,10 @@
         [Test]
         public void Queue()
         {
-            //var queue = Substitute.For<IStorageQueue>();
-            //var poller = new StorageQueuePoller<object>(queue);
-            //var returned = poller.Queue;
-            //Assert.AreEqual(queue, returned);
-            Assert.Inconclusive();
+            var queue = Substitute.For<IStorageQueue>();
+            var poller = new StorageQueuePoller<object>(queue);
+            var returned = poller.Queue;
+            Assert.AreEqual(queue, returned);
         }
 
         [Test]
