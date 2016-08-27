@@ -3,8 +3,8 @@
   "description": "King.Azure.Unit.Test Console Application",
   "authors": [ "Jef King" ],
 
-  "commands": {
-    "King.Azure.Unit.Test": "King.Azure.Unit.Test"
+  "buildOptions": {
+    "emitEntryPoint": true
   },
 
   "frameworks": {

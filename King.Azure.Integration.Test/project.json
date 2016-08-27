@@ -7,8 +7,8 @@
     "emitEntryPoint": true
   },
 
-  "commands": {
-    "King.Azure.Integration.Test": "King.Azure.Integration.Test"
+  "frameworks": {
+    "net46": {}
   },
 
   "dependencies": {
@@ -20,9 +20,5 @@
     "System.IO": "4.0.10",
     "System.Linq": "4.0.0",
     "System.Linq.Expressions": "4.0.10"
-  },
-
-  "frameworks": {
-    "net46": {}
   }
 }
