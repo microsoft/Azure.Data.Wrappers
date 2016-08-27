@@ -4,6 +4,7 @@
 - Mockable for dependancy injection and testing
 - Plugs into the [King.Service](https://github.com/jefking/King.Service) task framework
 - Prefer async calls where appropriate
+- .NET Standard 1.3
 
 ### [NuGet](https://www.nuget.org/packages/King.Azure)
 ```
