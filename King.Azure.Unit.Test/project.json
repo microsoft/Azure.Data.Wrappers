@@ -13,6 +13,7 @@
 
   "dependencies": {
     "King.Azure": "2.0.5",
+    "WindowsAzure.Storage": "7.2.0",
     "NUnitLite": "3.4.1",
     "System.Runtime": "4.0.20",
     "System.Threading": "4.0.10",
