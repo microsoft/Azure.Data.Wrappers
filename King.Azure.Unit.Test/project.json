@@ -1,35 +1,21 @@
 ﻿{
   "version": "2.0.0-*",
-  "description": "King.Azure Unit Tests",
+  "description": "King.Azure.Unit.Test Console Application",
   "authors": [ "Jef King" ],
-  "owners": [ "Jef King" ],
-  "projectUrl": "https://github.com/jefking/King.Azure",
-  "licenseUrl": "https://github.com/jefking/King.Azure/blob/master/LICENSE",
-  "iconUrl": "https://raw.githubusercontent.com/jefking/King.Azure/master/icon.png",
-  "copyright": "Jef King",
-
-  "compilationOptions": {
-    "emitEntryPoint": true
-  },
-
-  "dependencies": {
-    "NUnitLite": "3.2.1",
-    "King.Azure": "2.0.5-preview"
-  },
 
   "commands": {
     "King.Azure.Unit.Test": "King.Azure.Unit.Test"
   },
 
   "frameworks": {
-    "net45": { },
-    "dnx451": { },
-    "dnxcore50": {
-      "dependencies": {
-        "System.Collections": "4.0.11-beta-23516",
-        "System.Linq": "4.0.1-beta-23516",
-        "System.Console": "4.0.0-beta-22816"
-      }
-    }
+    "net46": {}
+  },
+
+  "dependencies": {
+    "King.Azure": "2.0.5",
+    "NUnitLite": "3.4.1",
+    "System.Runtime": "4.0.20",
+    "System.Threading": "4.0.10",
+    "System.Threading.Tasks": "4.0.10"
   }
 }
