@@ -12,8 +12,6 @@
   },
 
   "dependencies": {
-    "King.Azure": "2.0.5",
-    "WindowsAzure.Storage": "7.2.0",
     "NUnitLite": "3.4.1",
     "System.Runtime": "4.0.20",
     "System.Threading": "4.0.10",
@@ -21,6 +19,7 @@
     "System.IO": "4.0.10",
     "System.Linq": "4.0.0",
     "System.Linq.Expressions": "4.0.10",
-    "NSubstitute": "2.0.0-rc"
+    "NSubstitute": "2.0.0-rc",
+    "King.Azure": "2.0.5"
   }
 }
