@@ -45,44 +45,41 @@
         public async Task Poll()
         {
             var msg = new CloudQueueMessage("data");
-            //var queue = Substitute.For<IStorageQueue>();
-            //queue.Get().Returns(Task.FromResult(msg));
+            var queue = Substitute.For<IStorageQueue>();
+            queue.Get().Returns(Task.FromResult(msg));
 
-            //var poller = new StorageQueuePoller<object>(queue);
-            //var returned = await poller.Poll();
+            var poller = new StorageQueuePoller<object>(queue);
+            var returned = await poller.Poll();
 
-            //Assert.IsNotNull(returned);
+            Assert.IsNotNull(returned);
 
-            //await queue.Received().Get();
-            Assert.Inconclusive();
+            await queue.Received().Get();
         }
 
         [Test]
         public async Task PollGetNull()
         {
-            //var queue = Substitute.For<IStorageQueue>();
-            //queue.Get().Returns(Task.FromResult<CloudQueueMessage>(null));
+            var queue = Substitute.For<IStorageQueue>();
+            queue.Get().Returns(Task.FromResult<CloudQueueMessage>(null));
 
-            //var poller = new StorageQueuePoller<object>(queue);
-            //var returned = await poller.Poll();
+            var poller = new StorageQueuePoller<object>(queue);
+            var returned = await poller.Poll();
 
-            //Assert.IsNull(returned);
+            Assert.IsNull(returned);
 
-            //await queue.Received().Get();
-            Assert.Inconclusive();
+            await queue.Received().Get();
         }
 
         [Test]
         public void PollGetThrows()
         {
             var msg = new CloudQueueMessage("data");
-            //var queue = Substitute.For<IStorageQueue>();
-            //queue.Get().ReturnsForAnyArgs<object>(x => { throw new ApplicationException(); });
+            var queue = Substitute.For<IStorageQueue>();
+            queue.Get().ReturnsForAnyArgs<object>(x => { throw new ApplicationException(); });
 
-            //var poller = new StorageQueuePoller<object>(queue);
+            var poller = new StorageQueuePoller<object>(queue);
 
-            //Assert.That(() => poller.Poll(), Throws.TypeOf<ApplicationException>());
-            Assert.Inconclusive();
+            Assert.That(() => poller.Poll(), Throws.TypeOf<ApplicationException>());
         }
 
         [Test]
@@ -94,45 +91,42 @@
             msgs.Add(msg);
             msgs.Add(msg);
 
-            //var queue = Substitute.For<IStorageQueue>();
-            //queue.GetMany(3).Returns(Task.FromResult<IEnumerable<CloudQueueMessage>>(msgs));
+            var queue = Substitute.For<IStorageQueue>();
+            queue.GetMany(3).Returns(Task.FromResult<IEnumerable<CloudQueueMessage>>(msgs));
 
-            //var poller = new StorageQueuePoller<object>(queue);
-            //var returned = await poller.PollMany(3);
+            var poller = new StorageQueuePoller<object>(queue);
+            var returned = await poller.PollMany(3);
 
-            //Assert.IsNotNull(returned);
-            //Assert.AreEqual(3, returned.Count());
+            Assert.IsNotNull(returned);
+            Assert.AreEqual(3, returned.Count());
 
-            //await queue.Received().GetMany(3);
-            Assert.Inconclusive();
+            await queue.Received().GetMany(3);
         }
 
         [Test]
         public async Task PollGetManyNull()
         {
-            //var queue = Substitute.For<IStorageQueue>();
-            //queue.GetMany(3).Returns(Task.FromResult<IEnumerable<CloudQueueMessage>>(null));
+            var queue = Substitute.For<IStorageQueue>();
+            queue.GetMany(3).Returns(Task.FromResult<IEnumerable<CloudQueueMessage>>(null));
 
-            //var poller = new StorageQueuePoller<object>(queue);
-            //var returned = await poller.PollMany(3);
+            var poller = new StorageQueuePoller<object>(queue);
+            var returned = await poller.PollMany(3);
 
-            //Assert.IsNull(returned);
+            Assert.IsNull(returned);
 
-            //await queue.Received().GetMany(3);
-            Assert.Inconclusive();
+            await queue.Received().GetMany(3);
         }
 
         [Test]
         public void PollGetManyThrows()
         {
             var msg = new CloudQueueMessage("data");
-            //var queue = Substitute.For<IStorageQueue>();
-            //queue.GetMany().ReturnsForAnyArgs<object>(x => { throw new ApplicationException(); });
+            var queue = Substitute.For<IStorageQueue>();
+            queue.GetMany().ReturnsForAnyArgs<object>(x => { throw new ApplicationException(); });
 
-            //var poller = new StorageQueuePoller<object>(queue);
+            var poller = new StorageQueuePoller<object>(queue);
 
-            //Assert.That(() => poller.PollMany(), Throws.TypeOf<ApplicationException>());
-            Assert.Inconclusive();
+            Assert.That(() => poller.PollMany(), Throws.TypeOf<ApplicationException>());
         }
     }
 }
