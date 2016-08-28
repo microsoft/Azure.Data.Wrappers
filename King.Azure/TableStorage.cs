@@ -380,11 +380,12 @@
         /// <summary>
         /// Query by Expression
         /// </summary>
+        /// <remarks>Filtering is done on client; can be expensive</remarks>
         /// <typeparam name="T">Return Type</typeparam>
         /// <param name="predicate">Predicate</param>
         /// <param name="maxResults">Max Result</param>
         /// <returns></returns>
-        public virtual async Task<IEnumerable<T>> Query<T>(Expression<Func<T, bool>> predicate, int maxResults = int.MaxValue)
+        public virtual async Task<IEnumerable<T>> Query<T>(Func<T, bool> predicate, int maxResults = int.MaxValue)
             where T : ITableEntity, new()
         {
             if (null == predicate)
@@ -396,13 +397,9 @@
                 throw new InvalidOperationException("maxResults: must be above 0.");
             }
             
-            var query = new TableQuery<T>()
-            {
-                FilterString = predicate.Body.ToString(),
-                TakeCount = maxResults
-            };
+            var items = await this.Query<T>(new TableQuery<T>());
 
-            return await this.Query<T>(query);
+            return items.Where(predicate).Take(maxResults);
         }
 
         /// <summary>

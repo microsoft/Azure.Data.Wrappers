@@ -154,7 +154,7 @@
         /// <param name="predicate">Predicate</param>
         /// <param name="maxResults">Max Result</param>
         /// <returns></returns>
-        Task<IEnumerable<T>> Query<T>(Expression<Func<T, bool>> predicate, int maxResults = int.MaxValue)
+        Task<IEnumerable<T>> Query<T>(Func<T, bool> predicate, int maxResults = int.MaxValue)
             where T : ITableEntity, new();
 
         /// <summary>

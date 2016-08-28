@@ -716,7 +716,7 @@
         public async Task QueryFunction()
         {
             var random = new Random();
-            var count = random.Next(1, 25);
+            var count = random.Next(2, 25);
             var entities = new List<IDictionary<string, object>>();
             var partition = Guid.NewGuid().ToString();
             for (var i = 0; i < count; i++)
@@ -727,8 +727,16 @@
                 dic.Add("Id", Guid.NewGuid());
                 entities.Add(dic);
             }
+            for (var i = 0; i < 5; i++)//Invalid Range
+            {
+                var dic = new Dictionary<string, object>();
+                dic.Add(TableStorage.PartitionKey, Guid.NewGuid().ToString());
+                dic.Add(TableStorage.RowKey, Guid.NewGuid().ToString());
+                dic.Add("Id", Guid.NewGuid());
+                entities.Add(dic);
+            }
 
-            await storage.Insert(entities);
+            storage.Insert(entities).Wait();
             
             var returned = await storage.Query<Helper>(i => i.PartitionKey == partition);
 
@@ -748,22 +756,20 @@
         [Test]
         public async Task QueryFunctionNone()
         {
-            var random = new Random();
-            var count = random.Next(1, 25);
             var entities = new List<IDictionary<string, object>>();
-            var partition = Guid.NewGuid().ToString();
-            for (var i = 0; i < count; i++)
+
+            for (var i = 0; i < 5; i++)//Invalid Range
             {
                 var dic = new Dictionary<string, object>();
-                dic.Add(TableStorage.PartitionKey, partition);
+                dic.Add(TableStorage.PartitionKey, Guid.NewGuid().ToString());
                 dic.Add(TableStorage.RowKey, Guid.NewGuid().ToString());
                 dic.Add("Id", Guid.NewGuid());
                 entities.Add(dic);
             }
 
-            await storage.Insert(entities);
+            storage.Insert(entities).Wait();
 
-            var returned = await storage.Query<Helper>(i => i.PartitionKey != partition);
+            var returned = await storage.Query<Helper>(i => i.PartitionKey == Guid.NewGuid().ToString());
 
             Assert.IsNotNull(returned);
             Assert.AreEqual(0, returned.Count());
