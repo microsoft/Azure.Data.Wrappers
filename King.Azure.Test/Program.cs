@@ -1,4 +1,4 @@
-﻿namespace King.Azure.Unit.Test
+﻿namespace King.Azure.Test
 {
     using NUnit.Common;
     using NUnitLite;

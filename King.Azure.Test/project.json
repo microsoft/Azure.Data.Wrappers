@@ -1,6 +1,6 @@
 ﻿{
-  "version": "2.0.0-*",
-  "description": "King.Azure.Integration.Test Console Application",
+  "version": "2.1.0-*",
+  "description": "King.Azure.Test Console Application",
   "authors": [ "Jef King" ],
 
   "buildOptions": {
@@ -14,6 +14,7 @@
   "dependencies": {
     "King.Azure": "2.0.5",
     "NUnitLite": "3.4.1",
+    "NSubstitute": "2.0.0-rc",
     "System.Runtime": "4.0.20",
     "System.Threading": "4.0.10",
     "System.Threading.Tasks": "4.0.10",
