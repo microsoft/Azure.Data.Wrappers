@@ -395,17 +395,14 @@
             {
                 throw new InvalidOperationException("maxResults: must be above 0.");
             }
+            
+            var query = new TableQuery<T>()
+            {
+                FilterString = predicate.Body.ToString(),
+                TakeCount = maxResults
+            };
 
-            //var query = this.reference.CreateQuery<T>()
-            //    .Where(predicate)
-            //    .Take(maxResults)
-            //    .AsTableQuery<T>();
-
-            //return await this.Query<T>(query);
-
-            await Task.FromResult<bool>(false);
-
-            throw new InvalidOperationException("Not Implemented");
+            return await this.Query<T>(query);
         }
 
         /// <summary>
