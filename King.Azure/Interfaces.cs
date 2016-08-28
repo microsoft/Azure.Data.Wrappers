@@ -353,7 +353,7 @@
         /// <param name="prefix">Prefix</param>
         /// <param name="useFlatBlobListing">Use Flat Blob Listing</param>
         /// <returns>Blobs</returns>
-        Task<IEnumerable<IListBlobItem>> List(string prefix = null, bool useFlatBlobListing = false, BlobListingDetails details = BlobListingDetails.All, int? maxResults = int.MaxValue);
+        Task<IEnumerable<IListBlobItem>> List(string prefix = null, bool useFlatBlobListing = true, BlobListingDetails details = BlobListingDetails.All, int? maxResults = int.MaxValue);
 
         /// <summary>
         /// Create Snapshot

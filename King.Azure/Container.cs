@@ -445,7 +445,7 @@
         /// <param name="prefix">Prefix</param>
         /// <param name="useFlatBlobListing">Use Flat Blob Listing</param>
         /// <returns>Blobs</returns>
-        public async Task<IEnumerable<IListBlobItem>> List(string prefix = null, bool useFlatBlobListing = false, BlobListingDetails details = BlobListingDetails.All, int? maxResults = int.MaxValue)
+        public async Task<IEnumerable<IListBlobItem>> List(string prefix = null, bool useFlatBlobListing = true, BlobListingDetails details = BlobListingDetails.All, int? maxResults = int.MaxValue)
         {
             BlobContinuationToken token = null;
             var blobs = new List<IListBlobItem>();
