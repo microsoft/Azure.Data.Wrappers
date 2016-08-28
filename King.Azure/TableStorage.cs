@@ -490,12 +490,19 @@
                 throw new ArgumentNullException("query");
             }
 
+            var q = new TableQuery<DynamicTableEntity>()
+            {
+                FilterString = query.FilterString,
+                SelectColumns = query.SelectColumns,
+                TakeCount = query.TakeCount
+            };
+
             var entities = new List<DynamicTableEntity>();
             TableContinuationToken token = null;
 
             do
             {
-                var queryResult = await this.reference.ExecuteQuerySegmentedAsync(query, token);
+                var queryResult = await this.reference.ExecuteQuerySegmentedAsync<DynamicTableEntity>(q, token);
                 entities.AddRange(queryResult.Results);
                 token = queryResult.ContinuationToken;
             }
