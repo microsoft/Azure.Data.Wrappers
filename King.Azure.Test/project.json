@@ -1,7 +1,6 @@
 ﻿{
   "version": "2.1.0-*",
   "description": "King.Azure.Test Console Application",
-  "authors": [ "Jef King" ],
 
   "buildOptions": {
     "emitEntryPoint": true
