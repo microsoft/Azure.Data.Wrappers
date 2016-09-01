@@ -11,7 +11,7 @@
   },
 
   "dependencies": {
-    "King.Azure": "2.0.10",
+    "King.Azure": "2.0.11",
     "NUnitLite": "3.4.1",
     "NSubstitute": "2.0.0-rc",
     "System.Runtime": "4.0.20",
