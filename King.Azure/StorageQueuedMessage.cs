@@ -62,7 +62,7 @@
         /// <returns>Task</returns>
         public virtual async Task Abandon()
         {
-            await Task.Factory.StartNew(() => { Trace.TraceInformation("Abandon"); }); //No Abandon?
+            await Task.Factory.StartNew(() => { }); //No Abandon?
         }
 
         /// <summary>
