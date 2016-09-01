@@ -36,7 +36,10 @@
         "dnxcore50",
         "portable-net451+win8"
       ]
-    }
+    },
+    "net46": {},
+    "net461": {},
+    "net462": {}
   },
 
   "dependencies": {
