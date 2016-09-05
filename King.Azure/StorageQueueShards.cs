@@ -101,9 +101,9 @@
         /// <summary>
         /// Queue Message
         /// </summary>
-        /// <param name="obj">message</param>
+        /// <param name="obj">Message</param>
         /// <param name="shardTarget">Shard Target</param>
-        /// <returns>Task</returns>
+        /// <returns>Created</returns>
         public virtual async Task<bool> CreateIfNotExists()
         {
             var success = true;
@@ -130,7 +130,7 @@
         /// <summary>
         /// Queue Message to shard, 0 means at random
         /// </summary>
-        /// <param name="obj">message</param>
+        /// <param name="obj">Message</param>
         /// <param name="shardTarget">Shard Target</param>
         /// <returns>Task</returns>
         public virtual async Task Save(object obj, byte shardTarget = 0)
