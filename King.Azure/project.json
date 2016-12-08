@@ -19,7 +19,8 @@
   "configurations": {
     "Release": {
       "buildOptions": {
-        "optimize": true
+        "optimize": true,
+        "define": [ "TRACE" ]
       }
     }
   },
