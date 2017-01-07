@@ -1,5 +1,5 @@
 {
-  "version": "2.0.15",
+  "version": "2.0.16",
   "title": "King.Azure",
   "description": "King.Azure.Data Class Library",
   "authors": [ "Jef King" ],
@@ -40,11 +40,10 @@
     "net451": {},
     "net452": {},
     "net46": {},
-    "net461": {},
-    "net462": {}
+    "net461": {}
   },
 
   "dependencies": {
-    "WindowsAzure.Storage": "7.2.1"
+    "WindowsAzure.Storage": "8.0.0"
   }
 }

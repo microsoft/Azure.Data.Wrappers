@@ -11,8 +11,8 @@
   },
 
   "dependencies": {
-    "King.Azure": "2.0.15",
-    "NSubstitute": "2.0.0-rc",
+    "King.Azure": "2.0.16",
+    "NSubstitute": "2.0.1-rc",
     "System.Runtime": "4.0.20",
     "System.Threading": "4.0.10",
     "System.Threading.Tasks": "4.0.10",
