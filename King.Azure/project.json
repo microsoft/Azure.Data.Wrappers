@@ -1,11 +1,11 @@
 {
-  "version": "2.0.17",
+  "version": "2.0.18",
   "title": "King.Azure",
   "description": "King.Azure.Data Class Library",
   "authors": [ "Jef King" ],
   "packOptions": {
     "summary": "Azure Storage Simplified",
-    "releaseNotes": "Less Dependancies.",
+    "releaseNotes": "Updated Dependancies.",
     "tags": [ "King.Azure", "Azure", "Storage", "Mock", "Mockable", "Simple", "Data", "Table", "Storage", "File", "Share", "File-Share", "Queue", "Queuing", "Blob", "Query", "dependency", "injection", "dependency-injection", "Cloud", "Table-Storage", "Windows-Azure", "Windows", "dotNet", "CSharp", "Mocking", "Data-Table", "Blob", "Json", "WindowsAzure.Storage", ".NetCore", "DNX" ],
     "projectUrl": "https://github.com/jefking/King.Azure",
     "licenseUrl": "https://github.com/jefking/King.Azure/blob/master/LICENSE",
