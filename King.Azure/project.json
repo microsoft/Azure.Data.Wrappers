@@ -45,6 +45,6 @@
   },
 
   "dependencies": {
-    "WindowsAzure.Storage": "8.0.0"
+    "WindowsAzure.Storage": "8.0.1"
   }
 }

@@ -19,6 +19,6 @@
     "System.IO": "4.0.10",
     "System.Linq": "4.0.0",
     "System.Linq.Expressions": "4.0.10",
-    "NUnitLite": "3.5.0"
+    "NUnitLite": "3.6.0"
   }
 }
