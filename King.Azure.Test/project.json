@@ -1,4 +1,4 @@
-﻿{
+{
   "version": "2.1.0-*",
   "description": "King.Azure.Test Console Application",
 
@@ -11,14 +11,14 @@
   },
 
   "dependencies": {
-    "King.Azure": "2.0.18",
-    "NSubstitute": "2.0.1-rc",
+    "King.Azure": "2.0.19",
     "System.Runtime": "4.0.20",
     "System.Threading": "4.0.10",
     "System.Threading.Tasks": "4.0.10",
     "System.IO": "4.0.10",
     "System.Linq": "4.0.0",
     "System.Linq.Expressions": "4.0.10",
-    "NUnitLite": "3.6.0"
+    "NSubstitute": "2.0.2",
+    "NUnitLite": "3.6.1"
   }
 }

@@ -1,5 +1,5 @@
 {
-  "version": "2.0.18",
+  "version": "2.0.19",
   "title": "King.Azure",
   "description": "King.Azure.Data Class Library",
   "authors": [ "Jef King" ],
@@ -45,6 +45,6 @@
   },
 
   "dependencies": {
-    "WindowsAzure.Storage": "8.0.1"
+    "WindowsAzure.Storage": "8.1.1"
   }
 }
