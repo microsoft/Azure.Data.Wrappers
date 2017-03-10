@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("King.Azure.Unit.Test")]
-[assembly: AssemblyCopyright("Copyright © Jef King 2016")]
+[assembly: AssemblyCopyright("Copyright © Jef King 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
