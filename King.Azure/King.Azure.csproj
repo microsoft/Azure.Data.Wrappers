@@ -32,6 +32,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netcoreapp1.0|AnyCPU'">
     <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
     <TreatSpecificWarningsAsErrors />
+    <DefineConstants>TRACE;RELEASE;NETCOREAPP1_0</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
