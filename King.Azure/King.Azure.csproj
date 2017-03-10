@@ -24,6 +24,9 @@
     <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
     <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
+    <RepositoryUrl>https://github.com/jefking/King.Azure</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netcoreapp1.0|AnyCPU'">
