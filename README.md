@@ -1,8 +1,9 @@
 ### Azure Storage Simplified
-- Queues/Blobs/Tables
+- Queues/Blobs/Tables/File Shares
 - Azure Storage Resources
-- Mockable for dependancy injection and testing
-- Prefer async calls where appropriate
+- Dependancy Injection
+- Mockable for testing
+- Prefer async calls
 - Plugs into the [King.Service](https://github.com/jefking/King.Service) task framework
 
 ### [NuGet](https://www.nuget.org/packages/King.Azure)
