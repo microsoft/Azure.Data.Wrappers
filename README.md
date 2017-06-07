@@ -15,5 +15,5 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 PM> Install-Package King.Azure
 ```
 
-### [Wiki](https://github.com/jefking/King.Azure/wiki)
+### [Wiki](https://github.com/microsoft/King.Azure/wiki)
 View the wiki to learn how to use this.
