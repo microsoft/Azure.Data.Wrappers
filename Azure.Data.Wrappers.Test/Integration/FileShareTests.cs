@@ -1,8 +1,8 @@
-﻿namespace King.Azure.Integration.Test.Data
+﻿namespace Azure.Data.Wrappers.Test.Integration
 {
     using System;
     using System.Threading.Tasks;
-    using King.Azure.Data;
+    using Azure.Data.Wrappers;
     using NUnit.Framework;
 
     [TestFixture]

@@ -1,6 +1,6 @@
-﻿namespace King.Azure.Unit.Test.Data
+﻿namespace Azure.Data.Wrappers.Test.Unit
 {
-    using King.Azure.Data;
+    using Azure.Data.Wrappers;
     using NUnit.Framework;
 
     [TestFixture]

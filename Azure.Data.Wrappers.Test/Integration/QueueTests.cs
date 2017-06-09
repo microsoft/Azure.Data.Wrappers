@@ -1,9 +1,9 @@
-﻿namespace King.Service.Integration
+﻿namespace Azure.Data.Wrappers.Test.Integration
 {
     using System;
     using System.Linq;
     using System.Threading.Tasks;
-    using King.Azure.Data;
+    using Azure.Data.Wrappers;
     using Microsoft.WindowsAzure.Storage;
     using Microsoft.WindowsAzure.Storage.Queue;
     using Newtonsoft.Json;

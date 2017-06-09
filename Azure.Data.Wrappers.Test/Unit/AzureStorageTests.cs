@@ -1,7 +1,7 @@
-﻿namespace King.Azure.Unit.Test.Data
+﻿namespace Azure.Data.Wrappers.Test.Unit
 {
     using System;
-    using King.Azure.Data;
+    using Azure.Data.Wrappers;
     using Microsoft.WindowsAzure.Storage;
     using NUnit.Framework;
 

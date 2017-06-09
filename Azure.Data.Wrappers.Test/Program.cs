@@ -1,4 +1,4 @@
-﻿namespace King.Azure.Test
+﻿namespace Azure.Data.Wrappers.Test
 {
     using NUnit.Common;
     using NUnitLite;

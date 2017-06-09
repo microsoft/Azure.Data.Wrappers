@@ -35,7 +35,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Azure.Data.Wrappers\Azure.Data.Wrappers.csproj" />
-    <ProjectReference Include="..\King.Azure\Azure.Storage.Wrappers.csproj" />
   </ItemGroup>
 
 </Project>

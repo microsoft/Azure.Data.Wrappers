@@ -1,6 +1,6 @@
-﻿namespace King.Azure.Unit.Test.Data
+﻿namespace Azure.Data.Wrappers.Test.Unit
 {
-    using King.Azure.Data;
+    using Azure.Data.Wrappers;
     using Microsoft.WindowsAzure.Storage.Queue;
     using NSubstitute;
     using NUnit.Framework;

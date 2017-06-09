@@ -1,4 +1,4 @@
-﻿namespace Azure.Data.Wrappers.Integration.Test
+﻿namespace Azure.Data.Wrappers.Test.Integration
 {
     using NUnit.Framework;
     using System;

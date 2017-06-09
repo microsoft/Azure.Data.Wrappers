@@ -1,6 +1,6 @@
-﻿namespace King.Service.Integration
+﻿namespace Azure.Data.Wrappers.Test.Integration
 {
-    using King.Azure.Data;
+    using Azure.Data.Wrappers;
     using Microsoft.WindowsAzure.Storage;
     using Microsoft.WindowsAzure.Storage.Table;
     using NUnit.Framework;
