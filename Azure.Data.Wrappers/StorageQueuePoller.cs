@@ -1,4 +1,4 @@
-﻿namespace King.Azure.Data
+﻿namespace Azure.Data.Wrappers
 {
     using System;
     using System.Collections.Generic;

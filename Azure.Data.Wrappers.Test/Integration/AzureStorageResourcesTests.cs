@@ -1,6 +1,5 @@
-﻿namespace King.Azure.Integration.Test.Data
+﻿namespace Azure.Data.Wrappers.Integration.Test
 {
-    using King.Azure.Data;
     using NUnit.Framework;
     using System;
     using System.Linq;

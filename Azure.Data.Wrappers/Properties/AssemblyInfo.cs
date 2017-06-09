@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("King.Azure")]
+[assembly: AssemblyTitle("Azure.Data.Wrappers")]
 [assembly: AssemblyDescription("Azure Storage Simplified")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
@@ -11,5 +11,5 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
 [assembly: Guid("4e7ae8fe-0ee3-44a4-bae7-2ea46062c10e")]
-[assembly: AssemblyVersion("2.0.0.11")]
-[assembly: AssemblyFileVersion("2.0.0.11")]
+[assembly: AssemblyVersion("3.0.0.0")]
+[assembly: AssemblyFileVersion("3.0.0.0")]

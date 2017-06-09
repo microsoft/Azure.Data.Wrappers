@@ -1,4 +1,4 @@
-﻿namespace King.Azure.Data
+﻿namespace Azure.Data.Wrappers
 {
     using Microsoft.WindowsAzure.Storage.Blob;
     using Microsoft.WindowsAzure.Storage.Queue;
@@ -6,6 +6,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+
     /// <summary>
     /// Azure Storage Resources
     /// </summary>

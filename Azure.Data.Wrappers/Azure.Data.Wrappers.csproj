@@ -6,7 +6,7 @@
     <VersionPrefix>2.0.19</VersionPrefix>
     <Authors>Jef King</Authors>
     <TargetFrameworks>netcoreapp1.0;netstandard1.3;net45;net451;net452;net46;net461;net462</TargetFrameworks>
-    <AssemblyName>King.Azure</AssemblyName>
+    <AssemblyName>Azure.Data.Wrappers</AssemblyName>
     <PackageId>King.Azure</PackageId>
     <PackageTags>King.Azure;Azure;Storage;Mock;Mockable;Simple;Data;Table;Storage;File;Share;File-Share;Queue;Queuing;Blob;Query;dependency;injection;dependency-injection;Cloud;Table-Storage;Windows-Azure;Windows;dotNet;CSharp;Mocking;Data-Table;Blob;Json;WindowsAzure.Storage;.NetCore;DNX</PackageTags>
     <PackageReleaseNotes>Updated Dependancies.</PackageReleaseNotes>
@@ -27,6 +27,7 @@
     <ApplicationIcon>icon.ico</ApplicationIcon>
     <RepositoryUrl>https://github.com/jefking/King.Azure</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
+    <RootNamespace>Azure.Data.Wrappers</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netcoreapp1.0|AnyCPU'">

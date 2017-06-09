@@ -1,4 +1,4 @@
-﻿namespace King.Azure.Data
+﻿namespace Azure.Data.Wrappers
 {
     using Microsoft.WindowsAzure.Storage;
     using Microsoft.WindowsAzure.Storage.Blob;
