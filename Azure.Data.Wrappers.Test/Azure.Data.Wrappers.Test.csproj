@@ -4,7 +4,7 @@
     <Description>King.Azure.Test Console Application</Description>
     <VersionPrefix>2.1.0</VersionPrefix>
     <TargetFramework>net462</TargetFramework>
-    <AssemblyName>King.Azure.Test</AssemblyName>
+    <AssemblyName>Azure.Data.Wrappers.Test</AssemblyName>
     <OutputType>Exe</OutputType>
     <PackageId>King.Azure.Test</PackageId>
     <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
@@ -34,6 +34,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Azure.Data.Wrappers\Azure.Data.Wrappers.csproj" />
     <ProjectReference Include="..\King.Azure\Azure.Storage.Wrappers.csproj" />
   </ItemGroup>
 
