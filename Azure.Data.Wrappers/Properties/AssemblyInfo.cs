@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("Azure Storage Simplified")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("King.Azure")]
+[assembly: AssemblyProduct("Azure.Data.Wrappers")]
 [assembly: AssemblyCopyright("Copyright © Jef King 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
