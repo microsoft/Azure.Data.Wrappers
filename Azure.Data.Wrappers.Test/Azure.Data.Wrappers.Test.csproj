@@ -18,10 +18,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\King.Azure\King.Azure.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="System.Runtime" Version="4.1.0" />
     <PackageReference Include="System.Threading" Version="4.0.11" />
     <PackageReference Include="System.Threading.Tasks" Version="4.0.11" />
@@ -35,6 +31,10 @@
   <ItemGroup Condition=" '$(TargetFramework)' == 'net462' ">
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\King.Azure\Azure.Storage.Wrappers.csproj" />
   </ItemGroup>
 
 </Project>
