@@ -7,12 +7,12 @@
     <Authors>Jef King</Authors>
     <TargetFrameworks>netcoreapp1.0;netstandard1.3;net45;net451;net452;net46;net461;net462</TargetFrameworks>
     <AssemblyName>Azure.Data.Wrappers</AssemblyName>
-    <PackageId>King.Azure</PackageId>
+    <PackageId>Azure.Data.Wrappers</PackageId>
     <PackageTags>King.Azure;Azure;Storage;Mock;Mockable;Simple;Data;Table;Storage;File;Share;File-Share;Queue;Queuing;Blob;Query;dependency;injection;dependency-injection;Cloud;Table-Storage;Windows-Azure;Windows;dotNet;CSharp;Mocking;Data-Table;Blob;Json;WindowsAzure.Storage;.NetCore;DNX</PackageTags>
-    <PackageReleaseNotes>Updated Dependancies.</PackageReleaseNotes>
-    <PackageIconUrl>https://raw.githubusercontent.com/jefking/King.Azure/master/icon.png</PackageIconUrl>
-    <PackageProjectUrl>https://github.com/jefking/King.Azure</PackageProjectUrl>
-    <PackageLicenseUrl>https://github.com/jefking/King.Azure/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageReleaseNotes>Moved and remaned; functionally the same, however everything is in a new namespace.</PackageReleaseNotes>
+    <PackageIconUrl>https://raw.githubusercontent.com/Microsoft/Azure.Data.Wrappers/master/icon.png</PackageIconUrl>
+    <PackageProjectUrl>https://github.com/Microsoft/Azure.Data.Wrappers</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/Microsoft/Azure.Data.Wrappers/blob/master/LICENSE</PackageLicenseUrl>
     <PackageTargetFallback Condition=" '$(TargetFramework)' == 'netcoreapp1.0' ">$(PackageTargetFallback);portable-net451+win8</PackageTargetFallback>
     <PackageTargetFallback Condition=" '$(TargetFramework)' == 'netstandard1.3' ">$(PackageTargetFallback);portable-net451+win8</PackageTargetFallback>
     <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
@@ -25,9 +25,11 @@
     <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <ApplicationIcon>icon.ico</ApplicationIcon>
-    <RepositoryUrl>https://github.com/jefking/King.Azure</RepositoryUrl>
+    <RepositoryUrl>https://github.com/Microsoft/Azure.Data.Wrappers</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <RootNamespace>Azure.Data.Wrappers</RootNamespace>
+    <Version>3.0.0</Version>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netcoreapp1.0|AnyCPU'">
