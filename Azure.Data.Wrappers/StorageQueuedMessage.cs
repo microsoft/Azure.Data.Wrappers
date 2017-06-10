@@ -3,7 +3,6 @@
     using Microsoft.WindowsAzure.Storage.Queue;
     using Newtonsoft.Json;
     using System;
-    using System.Diagnostics;
     using System.Threading.Tasks;
 
     /// <summary>

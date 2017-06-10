@@ -1,12 +1,12 @@
 ﻿namespace Azure.Data.Wrappers.Test.Unit
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using Azure.Data.Wrappers;
     using Microsoft.WindowsAzure.Storage;
     using Microsoft.WindowsAzure.Storage.Table;
     using NUnit.Framework;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
 
     [TestFixture]
     public class TableStorageTests

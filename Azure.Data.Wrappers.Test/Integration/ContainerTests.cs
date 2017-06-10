@@ -1,13 +1,13 @@
 ﻿namespace Azure.Data.Wrappers.Test.Integration
 {
-    using System;
-    using System.IO;
-    using System.Linq;
-    using System.Threading.Tasks;
     using Azure.Data.Wrappers;
     using Microsoft.WindowsAzure.Storage;
     using Microsoft.WindowsAzure.Storage.Blob;
     using NUnit.Framework;
+    using System;
+    using System.IO;
+    using System.Linq;
+    using System.Threading.Tasks;
 
     [TestFixture]
     public class ContainerTests

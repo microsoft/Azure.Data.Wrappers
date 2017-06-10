@@ -1,9 +1,9 @@
 ﻿namespace Azure.Data.Wrappers.Test.Unit
 {
-    using System;
     using Azure.Data.Wrappers;
     using Microsoft.WindowsAzure.Storage;
     using NUnit.Framework;
+    using System;
 
     [TestFixture]
     public class AzureStorageTests

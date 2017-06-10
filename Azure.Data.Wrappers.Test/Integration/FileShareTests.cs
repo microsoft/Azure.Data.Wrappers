@@ -1,9 +1,9 @@
 ﻿namespace Azure.Data.Wrappers.Test.Integration
 {
-    using System;
-    using System.Threading.Tasks;
     using Azure.Data.Wrappers;
     using NUnit.Framework;
+    using System;
+    using System.Threading.Tasks;
 
     [TestFixture]
     public class FileShareTests

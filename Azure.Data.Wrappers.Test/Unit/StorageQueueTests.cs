@@ -1,10 +1,10 @@
 ﻿namespace Azure.Data.Wrappers.Test.Unit
 {
-    using System;
     using Azure.Data.Wrappers;
     using Microsoft.WindowsAzure.Storage;
     using Microsoft.WindowsAzure.Storage.Queue;
     using NUnit.Framework;
+    using System;
 
     [TestFixture]
     public class StorageQueueTests

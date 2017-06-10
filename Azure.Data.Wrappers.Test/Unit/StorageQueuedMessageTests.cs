@@ -1,12 +1,12 @@
 ﻿namespace Azure.Data.Wrappers.Test.Unit
 {
-    using System;
-    using System.Threading.Tasks;
     using Azure.Data.Wrappers;
     using Microsoft.WindowsAzure.Storage.Queue;
     using Newtonsoft.Json;
     using NSubstitute;
     using NUnit.Framework;
+    using System;
+    using System.Threading.Tasks;
 
     [TestFixture]
     public class StorageQueuedMessageTests
