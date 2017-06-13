@@ -14,5 +14,5 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 PM> Install-Package King.Azure
 ```
 
-# [Wiki](https://github.com/microsoft/Azure.Storage.Wrappers/wiki)
+# [Wiki](https://github.com/microsoft/Azure.Data.Wrappers/wiki)
 View the wiki to learn how to use this.
