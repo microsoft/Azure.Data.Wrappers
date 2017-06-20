@@ -9,9 +9,9 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 - Mockable for testing
 - Prefer async calls
 
-# [NuGet](https://www.nuget.org/packages/King.Azure)
+# [NuGet](https://www.nuget.org/packages/Azure.Data.Wrappers)
 ```
-PM> Install-Package King.Azure
+PM> Install-Package Azure.Data.Wrappers
 ```
 
 # [Wiki](https://github.com/microsoft/Azure.Data.Wrappers/wiki)
