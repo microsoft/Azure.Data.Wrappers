@@ -13,71 +13,73 @@
     public class QueueTests
     {
         private const string ConnectionString = "UseDevelopmentStorage=true;";
-        private const string QueueName = "testing";
 
-        [SetUp]
-        public void SetUp()
+        private string GetQueueName()
         {
-            var storage = new StorageQueue(QueueName, ConnectionString);
-            storage.CreateIfNotExists().Wait();
+            return 'a' + Guid.NewGuid().ToString().ToLowerInvariant().Replace('-', 'a');
         }
 
-        [TearDown]
-        public void TearDown()
+        private async Task<StorageQueue> QueueSetup()
         {
-            var storage = new StorageQueue(QueueName, ConnectionString);
-            storage.Delete().Wait();
+            var storage = new StorageQueue(GetQueueName(), ConnectionString);
+            await storage.CreateIfNotExists();
+            return storage;
         }
 
         [Test]
         public async Task CreateIfNotExists()
         {
-            var name = 'a' + Guid.NewGuid().ToString().ToLowerInvariant().Replace('-', 'a');
+            var name = GetQueueName();
             var storage = new StorageQueue(name, ConnectionString);
             var created = await storage.CreateIfNotExists();
 
             Assert.IsTrue(created);
+            await storage.Delete();
         }
 
         [Test]
         public async Task ConstructorAccount()
         {
-            var name = 'a' + Guid.NewGuid().ToString().ToLowerInvariant().Replace('-', 'a');
+            var name = GetQueueName();
             var account = CloudStorageAccount.Parse(ConnectionString);
             var storage = new StorageQueue(name, account, TimeSpan.FromSeconds(34));
             var created = await storage.CreateIfNotExists();
 
             Assert.IsTrue(created);
+            await storage.Delete();
         }
 
         [Test]
         public async Task RoundTrip()
         {
-            var storage = new StorageQueue(QueueName, ConnectionString);
-
+            StorageQueue storage = await QueueSetup();
             var msg = new CloudQueueMessage(Guid.NewGuid().ToByteArray());
             await storage.Send(msg);
             var returned = await storage.Get();
 
             Assert.AreEqual(msg.AsBytes, returned.AsBytes);
+            await storage.Delete();
         }
+
+        
 
         [Test]
         public async Task RoundTripMsgAsObj()
         {
-            var storage = new StorageQueue(QueueName, ConnectionString);
+            StorageQueue storage = await QueueSetup();
 
             var msg = new CloudQueueMessage(Guid.NewGuid().ToByteArray());
             await storage.Send((object)msg);
             var returned = await storage.Get();
 
             Assert.AreEqual(msg.AsBytes, returned.AsBytes);
+            await storage.Delete();
         }
         
         [Test]
         public async Task RoundTripObject()
         {
-            var storage = new StorageQueue(QueueName, ConnectionString);
+            StorageQueue storage = await QueueSetup();
             var expected = Guid.NewGuid();
             await storage.Send(expected);
 
@@ -86,6 +88,7 @@
             var guid = JsonConvert.DeserializeObject<Guid>(returned.AsString);
 
             Assert.AreEqual(expected, guid);
+            await storage.Delete();
         }
         
         [Test]
@@ -93,7 +96,7 @@
         {
             var random = new Random();
             var count = random.Next(1, 1000);
-            var storage = new StorageQueue(QueueName, ConnectionString);
+            StorageQueue storage = await QueueSetup();
             for (var i = 0; i < count; i++)
             {
                 await storage.Send(Guid.NewGuid());
@@ -101,25 +104,28 @@
 
             var result = await storage.ApproixmateMessageCount();
             Assert.AreEqual(count, result);
+            await storage.Delete();
         }
 
         [Test]
         public async Task ApproixmateMessageCountNone()
         {
-            var storage = new StorageQueue(QueueName, ConnectionString);
+            StorageQueue storage = await QueueSetup();
             var result = await storage.ApproixmateMessageCount();
             Assert.AreEqual(0, result);
+            await storage.Delete();
         }
 
         [Test]
         public async Task Delete()
         {
-            var storage = new StorageQueue(QueueName, ConnectionString);
+            StorageQueue storage = await QueueSetup();
 
             var msg = new CloudQueueMessage(Guid.NewGuid().ToByteArray());
             await storage.Send(msg);
             var returned = await storage.Get();
             await storage.Delete(returned);
+            await storage.Delete();
         }
 
         [Test]
@@ -128,7 +134,7 @@
             var random = new Random();
             var count = random.Next(1, 25);
 
-            var storage = new StorageQueue(QueueName, ConnectionString);
+            StorageQueue storage = await QueueSetup();
 
             for (var i = 0; i < count; i++)
             {
@@ -139,6 +145,7 @@
             var returned = await storage.GetMany(count);
 
             Assert.AreEqual(count, returned.Count());
+            await storage.Delete();
         }
 
         [Test]
@@ -147,7 +154,7 @@
             var random = new Random();
             var count = random.Next(1, 25);
 
-            var storage = new StorageQueue(QueueName, ConnectionString);
+            StorageQueue storage = await QueueSetup();
 
             for (var i = 0; i < count; i++)
             {
@@ -158,6 +165,7 @@
             var returned = await storage.GetMany(-1);
 
             Assert.AreEqual(1, returned.Count());
+            await storage.Delete();
         }
     }
 }

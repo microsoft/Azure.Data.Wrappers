@@ -179,19 +179,28 @@
         }
         
         [Test]
-        public void IndexBad([Values(0,255)] int val, [Values(0,0)] int expected)
+        public void IndexBad()
         {
-            var msg = new object();
-            var q = Substitute.For<IStorageQueue>();
+            var val = new int[] { 0, 255 };
+            var expected = new int[] { 0, 0 };
+            for (int i = 0; i < val.Length; i++)
+            {
+                for (int ii = 0; ii < expected.Length; ii++)
+                {
+                    var msg = new object();
+                    var q = Substitute.For<IStorageQueue>();
 
-            var qs = new List<IStorageQueue>();
-            qs.Add(q);
+                    var qs = new List<IStorageQueue>();
+                    qs.Add(q);
 
-            var sqs = new StorageQueueShards(qs);
+                    var sqs = new StorageQueueShards(qs);
 
-            var index = sqs.Index((byte)val);
+                    var index = sqs.Index((byte)val[i]);
 
-            Assert.AreEqual(expected, index);
+                    Assert.AreEqual(expected[ii], index);
+                }
+            }
+            
         }
     }
 }
