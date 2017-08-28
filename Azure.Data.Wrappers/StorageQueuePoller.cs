@@ -6,7 +6,7 @@
     using System.Threading.Tasks;
 
     /// <summary>
-    /// Queue Poller
+    /// Storage Queue Poller
     /// </summary>
     /// <typeparam name="T">Type</typeparam>
     public class StorageQueuePoller<T> : IStorageQueuePoller<T>
