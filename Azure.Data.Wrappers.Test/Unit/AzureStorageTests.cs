@@ -48,6 +48,8 @@
             var target = new AzureStorage(ConnectionString);
 
             var result = target.GetSharedAccessSignature(new SharedAccessAccountPolicy());
+
+            Assert.IsNotNull(result);
         }
     }
 }
