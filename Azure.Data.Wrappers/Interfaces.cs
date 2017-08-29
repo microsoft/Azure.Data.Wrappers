@@ -25,6 +25,13 @@
             get;
         }
         #endregion
+
+        /// <summary>
+        /// Returns a shared access signature for the account.
+        /// </summary>
+        /// <param name="policy">A <see cref="SharedAccessAccountPolicy"/> object specifying the access policy for the shared access signature.</param>
+        /// <returns>A shared access signature, as a URI query string.</returns>
+        string GetSharedAccessSignature(SharedAccessAccountPolicy policy);
     }
     #endregion
 
