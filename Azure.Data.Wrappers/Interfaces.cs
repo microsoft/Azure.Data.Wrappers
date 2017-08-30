@@ -9,6 +9,7 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Threading.Tasks;
+    using Microsoft.WindowsAzure.Storage.RetryPolicies;
 
     #region IAccount
     /// <summary>
@@ -690,6 +691,18 @@
         /// <returns>Task</returns>
         Task Delete();
         #endregion
+    }
+    #endregion
+
+    #region 
+    public interface IAzureStorageFactory
+    {
+        IStorageAccount GetAccount(string accountName, string key, bool useHttps);
+        IStorageAccount GetAccount(string connectionString);
+        IStorageQueue GetAzureQueue<T>(IStorageAccount storageAccount, string queueName, int visibilityTimeoutInMS = 300000);
+        ITableStorage GetAzureTable(IStorageAccount storageAccount, string tableName);
+        IContainer GetBlobFileContainer(IStorageAccount storageAccount, string containerName, bool isPublic = false, LocationMode location = LocationMode.PrimaryThenSecondary);
+
     }
     #endregion
 }
