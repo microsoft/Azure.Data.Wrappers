@@ -10,6 +10,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 - Prefer async calls
 
 ## Running Tests
+- Make sure the Azure Storage Emulator is running
 - execute the NUnit console runner against the test assembly
 
 # [NuGet](https://www.nuget.org/packages/Azure.Data.Wrappers)
