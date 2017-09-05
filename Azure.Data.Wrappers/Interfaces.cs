@@ -694,7 +694,7 @@
     }
     #endregion
 
-    #region 
+    #region IAzureStorageFactory
     public interface IAzureStorageFactory
     {
         IStorageAccount GetAccount(string accountName, string key, bool useHttps);
