@@ -9,6 +9,7 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Threading.Tasks;
+    using Microsoft.WindowsAzure.Storage.RetryPolicies;
 
     #region IAccount
     /// <summary>
@@ -25,6 +26,13 @@
             get;
         }
         #endregion
+
+        /// <summary>
+        /// Returns a shared access signature for the account.
+        /// </summary>
+        /// <param name="policy">A <see cref="SharedAccessAccountPolicy"/> object specifying the access policy for the shared access signature.</param>
+        /// <returns>A shared access signature, as a URI query string.</returns>
+        string GetSharedAccessSignature(SharedAccessAccountPolicy policy);
     }
     #endregion
 
@@ -683,6 +691,18 @@
         /// <returns>Task</returns>
         Task Delete();
         #endregion
+    }
+    #endregion
+
+    #region IAzureStorageFactory
+    public interface IAzureStorageFactory
+    {
+        IStorageAccount GetAccount(string accountName, string key, bool useHttps);
+        IStorageAccount GetAccount(string connectionString);
+        IStorageQueue GetAzureQueue<T>(IStorageAccount storageAccount, string queueName, int visibilityTimeoutInMS = 300000);
+        ITableStorage GetAzureTable(IStorageAccount storageAccount, string tableName);
+        IContainer GetBlobFileContainer(IStorageAccount storageAccount, string containerName, bool isPublic = false, LocationMode location = LocationMode.PrimaryThenSecondary);
+
     }
     #endregion
 }

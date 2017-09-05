@@ -33,7 +33,7 @@
         {
             if (null == account)
             {
-                throw new ArgumentNullException("account");
+                throw new ArgumentNullException(nameof(account));
             }
 
             this.account = account;
@@ -50,6 +50,13 @@
             {
                 return this.account;
             }
+        }
+
+        public string GetSharedAccessSignature(SharedAccessAccountPolicy policy)
+        {
+            if (policy == null) throw new ArgumentNullException(nameof(policy));
+
+            return this.account.GetSharedAccessSignature(policy);
         }
         #endregion
     }

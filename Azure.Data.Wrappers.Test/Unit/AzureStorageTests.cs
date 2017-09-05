@@ -25,13 +25,31 @@
         [Test]
         public void ConstructorConnectionStringNull()
         {
-            Assert.That(() => new AzureStorage((string)null), Throws.TypeOf<ArgumentNullException>());
+            Assert.That(() => new AzureStorage(default(string)), Throws.TypeOf<ArgumentNullException>());
         }
 
         [Test]
         public void ConstructorAccountNull()
         {
-            Assert.That(() => new AzureStorage((CloudStorageAccount)null), Throws.TypeOf<ArgumentNullException>());
+            Assert.That(() => new AzureStorage(default(CloudStorageAccount)), Throws.TypeOf<ArgumentNullException>());
+        }
+
+        [Test]
+        public void GetSharedAccessSignatureThrowsOnNullPolicy()
+        {
+            var target = new AzureStorage(ConnectionString);
+
+            Assert.That(() => target.GetSharedAccessSignature(default(SharedAccessAccountPolicy)), Throws.TypeOf<ArgumentNullException>());
+        }
+
+        [Test]
+        public void GetSharedAccessSignatureSuccess()
+        {
+            var target = new AzureStorage(ConnectionString);
+
+            var result = target.GetSharedAccessSignature(new SharedAccessAccountPolicy());
+
+            Assert.IsNotNull(result);
         }
     }
 }
