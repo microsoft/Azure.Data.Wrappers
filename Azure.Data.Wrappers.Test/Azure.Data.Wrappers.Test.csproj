@@ -18,11 +18,6 @@
     <ApplicationIcon />
     <StartupObject />
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="Program.cs" />
-  </ItemGroup>
-
   <ItemGroup>
     <None Remove="icon.ico" />
   </ItemGroup>
