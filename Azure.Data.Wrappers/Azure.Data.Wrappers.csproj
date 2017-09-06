@@ -1,9 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Description>King.Azure.Data Class Library</Description>
-    <AssemblyTitle>King.Azure</AssemblyTitle>
-    <VersionPrefix>2.0.19</VersionPrefix>
+    <Description>Azure.Data.Wrappers Class Library</Description>
+    <AssemblyTitle>Azure.Data.Wrappers</AssemblyTitle>
+    <VersionPrefix>3.0.0</VersionPrefix>
     <Authors>Jef King,Christopher Scott</Authors>
     <TargetFrameworks>netcoreapp1.0;netstandard1.3;net45;net451;net452;net46;net461;net462</TargetFrameworks>
     <AssemblyName>Azure.Data.Wrappers</AssemblyName>
