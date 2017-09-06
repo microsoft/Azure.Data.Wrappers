@@ -4,7 +4,7 @@
     <Description>King.Azure.Data Class Library</Description>
     <AssemblyTitle>King.Azure</AssemblyTitle>
     <VersionPrefix>2.0.19</VersionPrefix>
-    <Authors>Jef King</Authors>
+    <Authors>Jef King,Christopher Scott</Authors>
     <TargetFrameworks>netcoreapp1.0;netstandard1.3;net45;net451;net452;net46;net461;net462</TargetFrameworks>
     <AssemblyName>Azure.Data.Wrappers</AssemblyName>
     <PackageId>Azure.Data.Wrappers</PackageId>
@@ -28,7 +28,7 @@
     <RepositoryUrl>https://github.com/Microsoft/Azure.Data.Wrappers</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <RootNamespace>Azure.Data.Wrappers</RootNamespace>
-    <Version>3.0.1</Version>
+    <Version>3.0.2</Version>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
