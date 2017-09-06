@@ -8,7 +8,7 @@
     <TargetFrameworks>netcoreapp1.0;netstandard1.3;net45;net451;net452;net46;net461;net462</TargetFrameworks>
     <AssemblyName>Azure.Data.Wrappers</AssemblyName>
     <PackageId>Azure.Data.Wrappers</PackageId>
-    <PackageTags>King.Azure;Azure;Storage;Mock;Mockable;Simple;Data;Table;Storage;File;Share;File-Share;Queue;Queuing;Blob;Query;dependency;injection;dependency-injection;Cloud;Table-Storage;Windows-Azure;Windows;dotNet;CSharp;Mocking;Data-Table;Blob;Json;WindowsAzure.Storage;.NetCore;DNX</PackageTags>
+    <PackageTags>King.Azure;Azure;Storage;Mock;Mockable;Simple;Data;Table;Storage;File;Share;File-Share;Queue;Queuing;Blob;Query;dependency;injection;dependency-injection;Cloud;Table-Storage;Windows-Azure;Windows;dotNet;CSharp;Mocking;Data-Table;Blob;Json;WindowsAzure.Storage;.NetCore;DNX,storage-account,blobs,binary,text,data,event-store</PackageTags>
     <PackageReleaseNotes>Moved and remaned; functionally the same, however everything is in a new namespace.</PackageReleaseNotes>
     <PackageIconUrl>https://raw.githubusercontent.com/Microsoft/Azure.Data.Wrappers/master/icon.png</PackageIconUrl>
     <PackageProjectUrl>https://github.com/Microsoft/Azure.Data.Wrappers</PackageProjectUrl>
