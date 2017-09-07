@@ -10,10 +10,10 @@
     using System.Threading.Tasks;
 
     [TestFixture]
+    [Category("Integration")]
     public class TableStorageTests
     {
         #region Members
-        private readonly string ConnectionString = "UseDevelopmentStorage=true;";
         private ITableStorage storage = null;
         #endregion
 
@@ -44,7 +44,7 @@
         public void Init()
         {
             var table = 'a' + Guid.NewGuid().ToString().ToLowerInvariant().Replace('-', 'a');
-            this.storage = new TableStorage(table, ConnectionString);
+            this.storage = new TableStorage(table, TestHelpers.DevConnectionString);
             storage.CreateIfNotExists().Wait();
         }
 
@@ -59,7 +59,7 @@
         public async Task ConstructorAccount()
         {
             var name = 'a' + Guid.NewGuid().ToString().ToLowerInvariant().Replace('-', 'a');
-            var account = CloudStorageAccount.Parse(ConnectionString);
+            var account = CloudStorageAccount.Parse(TestHelpers.DevConnectionString);
             var localStorage = new TableStorage(name, account);
             var created = await localStorage.CreateIfNotExists();
 
@@ -70,7 +70,7 @@
         public async Task CreateIfNotExists()
         {
             var table = 'a' + Guid.NewGuid().ToString().ToLowerInvariant().Replace('-', 'a');
-            var localStorage = new TableStorage(table, ConnectionString);
+            var localStorage = new TableStorage(table, TestHelpers.DevConnectionString);
             var created = await localStorage.CreateIfNotExists();
 
             Assert.IsTrue(created);
@@ -82,7 +82,7 @@
         public async Task CreateIfNotExistsAlreadyExists()
         {
             var table = 'a' + Guid.NewGuid().ToString().ToLowerInvariant().Replace('-', 'a');
-            var storage = new TableStorage(table, ConnectionString);
+            var storage = new TableStorage(table, TestHelpers.DevConnectionString);
             var created = await storage.CreateIfNotExists();
 
             Assert.IsTrue(created);
@@ -96,7 +96,7 @@
         public async Task Create()
         {
             var table = 'a' + Guid.NewGuid().ToString().ToLowerInvariant().Replace('-', 'a');
-            var storage = new TableStorage(table, ConnectionString);
+            var storage = new TableStorage(table, TestHelpers.DevConnectionString);
             var created = await storage.Create();
 
             Assert.IsTrue(created);
@@ -108,7 +108,7 @@
         public async Task Delete()
         {
             var table = 'a' + Guid.NewGuid().ToString().ToLowerInvariant().Replace('-', 'a');
-            var localStorage = new TableStorage(table, ConnectionString);
+            var localStorage = new TableStorage(table, TestHelpers.DevConnectionString);
             var created = await localStorage.Create();
 
             Assert.IsTrue(created);

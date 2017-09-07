@@ -6,6 +6,7 @@
     using System.Threading.Tasks;
 
     [TestFixture]
+    [Category("Integration")]
     public class FileShareTests
     {
         private const string ConnectionString = "DefaultEndpointsProtocol=https;AccountName=kingdottest;AccountKey=DESdtrm9Rj+pOzS1XGIvnmuzMJN+mvOAlwy75CWJxWKPYmVNQyuSwhUG/UcAzb3/Q1c+pHdMxddvXBzDuwevxQ==;FileEndpoint=https://kingdottest.file.core.windows.net/";
