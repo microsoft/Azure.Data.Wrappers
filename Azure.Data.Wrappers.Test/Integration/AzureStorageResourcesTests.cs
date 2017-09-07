@@ -6,6 +6,7 @@
     using System.Threading.Tasks;
 
     [TestFixture]
+    [Category("Integration")]
     public class AzureStorageResourcesTests
     {
         private readonly string ConnectionString = "UseDevelopmentStorage=true;";

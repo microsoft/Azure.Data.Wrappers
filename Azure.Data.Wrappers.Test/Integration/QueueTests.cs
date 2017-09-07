@@ -10,10 +10,9 @@
     using System.Threading.Tasks;
 
     [TestFixture]
+    [Category("Integration")]
     public class QueueTests
     {
-        private const string ConnectionString = "UseDevelopmentStorage=true;";
-
         private string GetQueueName()
         {
             return 'a' + Guid.NewGuid().ToString().ToLowerInvariant().Replace('-', 'a');
@@ -21,7 +20,7 @@
 
         private async Task<StorageQueue> QueueSetup()
         {
-            var storage = new StorageQueue(GetQueueName(), ConnectionString);
+            var storage = new StorageQueue(GetQueueName(), TestHelpers.DevConnectionString);
             await storage.CreateIfNotExists();
             return storage;
         }
@@ -30,7 +29,7 @@
         public async Task CreateIfNotExists()
         {
             var name = GetQueueName();
-            var storage = new StorageQueue(name, ConnectionString);
+            var storage = new StorageQueue(name, TestHelpers.DevConnectionString);
             var created = await storage.CreateIfNotExists();
 
             Assert.IsTrue(created);
@@ -41,7 +40,7 @@
         public async Task ConstructorAccount()
         {
             var name = GetQueueName();
-            var account = CloudStorageAccount.Parse(ConnectionString);
+            var account = CloudStorageAccount.Parse(TestHelpers.DevConnectionString);
             var storage = new StorageQueue(name, account, TimeSpan.FromSeconds(34));
             var created = await storage.CreateIfNotExists();
 

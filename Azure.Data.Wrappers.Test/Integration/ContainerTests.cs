@@ -10,11 +10,9 @@
     using System.Threading.Tasks;
 
     [TestFixture]
+    [Category("Integration")]
     public class ContainerTests
     {
-        private readonly string ConnectionString = "UseDevelopmentStorage=true;";
-        private readonly string ContainerName = 'a' + Guid.NewGuid().ToString().Replace("-", "");
-
         #region Helper
         private class Helper
         {
@@ -26,25 +24,11 @@
         }
         #endregion
 
-        [SetUp]
-        public void SetUp()
-        {
-            var storage = new Container(ContainerName, ConnectionString);
-            storage.CreateIfNotExists().Wait();
-        }
-
-        [TearDown]
-        public void TearDown()
-        {
-            var storage = new Container(ContainerName, ConnectionString);
-            storage.Delete().Wait();
-        }
-
         [Test]
         public async Task ConstructorAccount()
         {
             var name = 'a' + Guid.NewGuid().ToString().ToLowerInvariant().Replace('-', 'a');
-            var account = CloudStorageAccount.Parse(ConnectionString);
+            var account = CloudStorageAccount.Parse(TestHelpers.DevConnectionString);
             var storage = new Container(name, account);
             var created = await storage.CreateIfNotExists();
 
@@ -55,7 +39,7 @@
         public async Task CreateIfNotExists()
         {
             var name = 'a' + Guid.NewGuid().ToString().ToLowerInvariant().Replace('-', 'a');
-            var storage = new Container(name, ConnectionString);
+            var storage = new Container(name,TestHelpers.DevConnectionString);
             var created = await storage.CreateIfNotExists();
 
             Assert.IsTrue(created);
@@ -70,7 +54,7 @@
         public async Task CreateIfNotExistsPublic()
         {
             var name = 'a' + Guid.NewGuid().ToString().ToLowerInvariant().Replace('-', 'a');
-            var storage = new Container(name, ConnectionString, true);
+            var storage = new Container(name,TestHelpers.DevConnectionString, true);
             var created = await storage.CreateIfNotExists();
 
             Assert.IsTrue(created);
@@ -85,7 +69,7 @@
         public async Task Exists()
         {
             var blobName = Guid.NewGuid().ToString();
-            var storage = new Container(ContainerName, ConnectionString);
+            var storage = await TestHelpers.GetTestContainer();
             await storage.Save(blobName, Guid.NewGuid());
             var exists = await storage.Exists(blobName);
 
@@ -96,7 +80,7 @@
         public async Task ExistsNo()
         {
             var blobName = Guid.NewGuid().ToString();
-            var storage = new Container(ContainerName, ConnectionString);
+            var storage = new Container(TestHelpers.generateUniqueName(),TestHelpers.DevConnectionString);
 
             var exists = await storage.Exists(blobName);
 
@@ -107,7 +91,7 @@
         public async Task GetBlockReference()
         {
             var name = string.Format("{0}.bin", Guid.NewGuid());
-            var storage = new Container(ContainerName, ConnectionString);
+            var storage = await TestHelpers.GetTestContainer();
             await storage.Save(name, new Helper());
 
             var block = storage.GetBlockReference(name);
@@ -123,7 +107,7 @@
             random.NextBytes(bytes);
 
             var name = string.Format("{0}.bin", Guid.NewGuid());
-            var storage = new Container(ContainerName, ConnectionString);
+            var storage = await TestHelpers.GetTestContainer();
             var blob = storage.Reference.GetPageBlobReference(name);
             await blob.CreateAsync(1024);
             await blob.UploadFromByteArrayAsync(bytes, 0, bytes.Length);
@@ -142,7 +126,7 @@
             };
 
             var blobName = Guid.NewGuid().ToString();
-            var storage = new Container(ContainerName, ConnectionString);
+            var storage = await TestHelpers.GetTestContainer();
 
             await storage.Save(blobName, helper);
             var returned = await storage.Get<Helper>(blobName);
@@ -160,7 +144,7 @@
         {
             var data = Guid.NewGuid().ToString();
             var blobName = Guid.NewGuid().ToString();
-            var storage = new Container(ContainerName, ConnectionString);
+            var storage = await TestHelpers.GetTestContainer();
 
             await storage.Save(blobName, data);
             var returned = await storage.GetText(blobName);
@@ -182,7 +166,7 @@
             };
 
             var blobName = Guid.NewGuid().ToString();
-            var storage = new Container(ContainerName, ConnectionString);
+            var storage = await TestHelpers.GetTestContainer();
 
             await storage.Save(blobName, helper);
             var returned = await storage.Properties(blobName);
@@ -199,7 +183,7 @@
             random.NextBytes(bytes);
 
             var blobName = Guid.NewGuid().ToString();
-            var storage = new Container(ContainerName, ConnectionString);
+            var storage = await TestHelpers.GetTestContainer();
 
             await storage.Save(blobName, bytes);
             var returned = await storage.Get(blobName);
@@ -221,7 +205,7 @@
             random.NextBytes(bytes);
 
             var blobName = Guid.NewGuid().ToString();
-            var storage = new Container(ContainerName, ConnectionString);
+            var storage = await TestHelpers.GetTestContainer();
 
             await storage.Save(blobName, bytes);
             using (var returned = await storage.Stream(blobName) as MemoryStream)
@@ -242,7 +226,7 @@
             random.NextBytes(bytes);
 
             var blobName = Guid.NewGuid().ToString();
-            var storage = new Container(ContainerName, ConnectionString);
+            var storage = await TestHelpers.GetTestContainer();
 
             await storage.Save(blobName, bytes);
             var returned = await storage.Properties(blobName);
@@ -260,7 +244,7 @@
             random.NextBytes(bytes);
 
             var blobName = Guid.NewGuid().ToString();
-            var storage = new Container(ContainerName, ConnectionString);
+            var storage = await TestHelpers.GetTestContainer();
 
             await storage.Save(blobName, bytes, "application/pdf");
             var returned = await storage.Properties(blobName);
@@ -279,7 +263,7 @@
             };
 
             var blobName = Guid.NewGuid().ToString();
-            var storage = new Container(ContainerName, ConnectionString);
+            var storage = await TestHelpers.GetTestContainer();
 
             await storage.Save(blobName, helper);
             await storage.Delete(blobName);
@@ -294,7 +278,7 @@
             var bytes = new byte[16];
             random.NextBytes(bytes);
             var count = random.Next(1, 32);
-            var storage = new Container(ContainerName, ConnectionString);
+            var storage = await TestHelpers.GetTestContainer();
             for (var i = 0; i < count; i++)
             {
                 var blobName = Guid.NewGuid().ToString();
@@ -313,7 +297,7 @@
             random.NextBytes(bytes);
 
             var name = string.Format("{0}.bin", Guid.NewGuid());
-            var storage = new Container(ContainerName, ConnectionString);
+            var storage = await TestHelpers.GetTestContainer();
             var blob = storage.Reference.GetPageBlobReference(name);
             await blob.CreateAsync(1024);
             await blob.UploadFromByteArrayAsync(bytes, 0, bytes.Length);
@@ -334,7 +318,7 @@
             random.NextBytes(bytes);
 
             var name = string.Format("{0}.bin", Guid.NewGuid());
-            var storage = new Container(ContainerName, ConnectionString);
+            var storage = await TestHelpers.GetTestContainer();
             await storage.Save(name, bytes);
 
             var snapshot = await storage.Snapshot(name);
@@ -353,7 +337,7 @@
             random.NextBytes(bytes);
 
             var name = string.Format("{0}.bin", Guid.NewGuid());
-            var storage = new Container(ContainerName, ConnectionString);
+            var storage = await TestHelpers.GetTestContainer();
             await storage.Save(name, bytes);
 
             var snapshot = await storage.Snapshot(name);
@@ -368,7 +352,7 @@
             random.NextBytes(bytes);
 
             var name = string.Format("{0}.bin", Guid.NewGuid());
-            var storage = new Container(ContainerName, ConnectionString);
+            var storage = await TestHelpers.GetTestContainer();
             await storage.Save(name, bytes);
 
             var snapshot = await storage.Snapshot(name);
@@ -380,7 +364,7 @@
         public async Task SnapshotNonExistant()
         {
             var blob = Guid.NewGuid().ToString();
-            var storage = new Container(ContainerName, ConnectionString);
+            var storage = await TestHelpers.GetTestContainer();
             Assert.IsNull(await storage.Snapshot(blob));
         }
 
@@ -390,7 +374,7 @@
             var cache = "public, max-age=31536000";
             var contentType = "text/guid";
             var blobName = Guid.NewGuid().ToString();
-            var storage = new Container(ContainerName, ConnectionString);
+            var storage = await TestHelpers.GetTestContainer();
 
             await storage.Save(blobName, Guid.NewGuid().ToString(), contentType);
             await storage.SetCacheControl(blobName);
@@ -407,7 +391,7 @@
             var cache = "public, max-age=31536000";
             var contentType = "text/guid";
             var blobName = Guid.NewGuid().ToString();
-            var storage = new Container(ContainerName, ConnectionString);
+            var storage = await TestHelpers.GetTestContainer();
 
             await storage.Save(blobName, Guid.NewGuid().ToString(), contentType);
             await storage.SetCacheControl(blobName);
@@ -424,7 +408,7 @@
         {
             var cache = "public, max-age=31536000";
             var blobName = Guid.NewGuid().ToString();
-            var storage = new Container(ContainerName, ConnectionString);
+            var storage = await TestHelpers.GetTestContainer();
 
             await storage.Save(blobName, Guid.NewGuid().ToString());
             await storage.SetCacheControl(blobName);
@@ -439,7 +423,7 @@
         {
             var cache = "public, max-age=31536000";
             var blobName = Guid.NewGuid().ToString();
-            var storage = new Container(ContainerName, ConnectionString);
+            var storage = await TestHelpers.GetTestContainer();
 
             await storage.Save(blobName, Guid.NewGuid().ToString());
             await storage.SetCacheControl(blobName, 0);
@@ -454,7 +438,7 @@
         {
             var cache = "public, max-age=1000";
             var blobName = Guid.NewGuid().ToString();
-            var storage = new Container(ContainerName, ConnectionString);
+            var storage = await TestHelpers.GetTestContainer();
 
             await storage.Save(blobName, Guid.NewGuid().ToString());
             await storage.SetCacheControl(blobName, 1000);
@@ -473,7 +457,7 @@
 
             var from = string.Format("{0}.bin", Guid.NewGuid());
             var to = string.Format("{0}.bin", Guid.NewGuid());
-            var storage = new Container(ContainerName, ConnectionString);
+            var storage = await TestHelpers.GetTestContainer();
             await storage.Save(from, bytes);
 
             var uri = await storage.Copy(from, to);
@@ -496,12 +480,12 @@
             random.NextBytes(bytes);
 
             var toContainerName = 'a' + Guid.NewGuid().ToString().Replace("-", string.Empty);
-            var toContainer = new Container(toContainerName, ConnectionString);
+            var toContainer = new Container(toContainerName,TestHelpers.DevConnectionString);
             await toContainer.CreateIfNotExists();
 
             var from = string.Format("{0}.bin", Guid.NewGuid());
             var to = string.Format("{0}.bin", Guid.NewGuid());
-            var storage = new Container(ContainerName, ConnectionString);
+            var storage = await TestHelpers.GetTestContainer();
             await storage.Save(from, bytes);
 
             var uri = await storage.Copy(from, toContainer, to);
@@ -525,12 +509,12 @@
             random.NextBytes(bytes);
 
             var toContainerName = 'a' + Guid.NewGuid().ToString().Replace("-", string.Empty);
-            var toContainer = new Container(toContainerName, ConnectionString);
+            var toContainer = new Container(toContainerName,TestHelpers.DevConnectionString);
             await toContainer.CreateIfNotExists();
 
             var from = string.Format("{0}.bin", Guid.NewGuid());
             var to = string.Format("{0}.bin", Guid.NewGuid());
-            var storage = new Container(ContainerName, ConnectionString);
+            var storage = await TestHelpers.GetTestContainer();
             await storage.Save(from, bytes);
 
             var uri = await storage.Copy(from, toContainerName, to);
