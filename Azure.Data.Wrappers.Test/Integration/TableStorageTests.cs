@@ -438,8 +438,7 @@
         [Test]
         public async Task CreateQuery()
         {
-            var random = new Random();
-            var count = random.Next(1, 25);
+            var count = 5;
             var entities = new List<Helper>();
             var rowKey = Guid.NewGuid().ToString();
             for (var i = 0; i < count; i++)
