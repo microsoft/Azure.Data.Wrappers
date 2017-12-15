@@ -436,6 +436,35 @@
         }
 
         [Test]
+        public async Task CreateQuery()
+        {
+            var count = 5;
+            var entities = new List<Helper>();
+            var rowKey = Guid.NewGuid().ToString();
+            for (var i = 0; i < count; i++)
+            {
+                var h = new Helper()
+                {
+                    PartitionKey = Guid.NewGuid().ToString(),
+                    RowKey = rowKey,
+                    Id = Guid.NewGuid(),
+                };
+                entities.Add(h);
+
+                await storage.InsertOrReplace(h);
+            }
+
+            var queryResult = storage.CreateQuery<Helper>()
+                .Where(h => h.Id == entities.First().Id)
+                .ToList();
+
+            Assert.AreEqual(1, queryResult.Count);
+            Assert.AreEqual(queryResult.First().Id, entities.First().Id);
+
+            await storage.Delete(entities);
+        }
+
+        [Test]
         public async Task DeleteByPartition()
         {
             var random = new Random();
@@ -758,7 +787,7 @@
             }
 
             storage.Insert(entities).Wait();
-            
+
             var returned = await storage.Query<Helper>(i => i.PartitionKey == partition);
 
             Assert.IsNotNull(returned);
