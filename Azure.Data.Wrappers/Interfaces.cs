@@ -1,15 +1,16 @@
 ﻿namespace Azure.Data.Wrappers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Threading.Tasks;
     using Microsoft.WindowsAzure.Storage;
     using Microsoft.WindowsAzure.Storage.Blob;
     using Microsoft.WindowsAzure.Storage.File;
     using Microsoft.WindowsAzure.Storage.Queue;
-    using Microsoft.WindowsAzure.Storage.Table;
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Threading.Tasks;
     using Microsoft.WindowsAzure.Storage.RetryPolicies;
+    using Microsoft.WindowsAzure.Storage.Table;
 
     #region IAccount
     /// <summary>
@@ -231,6 +232,16 @@
         /// <param name="entities">Entities</param>
         /// <returns>Table Results</returns>
         Task<IEnumerable<TableResult>> Delete(IEnumerable<ITableEntity> entities);
+
+        #if (!NETCOREAPP1_0 && !NETSTANDARD1_3)
+        /// <summary>
+        /// CreateQuery
+        /// </summary>
+        /// <typeparam name="TElement">Entity type</typeparam>
+        /// <returns>IQueryable<TElement></returns>
+        IQueryable<TElement> CreateQuery<TElement>() where TElement : ITableEntity, new();
+        #endif
+
         #endregion
     }
     #endregion

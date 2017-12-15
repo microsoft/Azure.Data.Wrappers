@@ -1,12 +1,12 @@
 ﻿namespace Azure.Data.Wrappers
 {
-    using Microsoft.WindowsAzure.Storage;
-    using Microsoft.WindowsAzure.Storage.RetryPolicies;
-    using Microsoft.WindowsAzure.Storage.Table;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using Microsoft.WindowsAzure.Storage;
+    using Microsoft.WindowsAzure.Storage.RetryPolicies;
+    using Microsoft.WindowsAzure.Storage.Table;
 
     /// <summary>
     /// Table Storage
@@ -428,6 +428,19 @@
 
             return entities;
         }
+
+        
+        #if (!NETCOREAPP1_0 && !NETSTANDARD1_3)
+        /// <summary>
+        /// CreateQuery
+        /// </summary>
+        /// <typeparam name="TElement">Entity type</typeparam>
+        /// <returns>IQueryable<TElement></returns>
+        public IQueryable<TElement> CreateQuery<TElement>() where TElement : ITableEntity, new()
+        {
+            return this.reference.CreateQuery<TElement>();
+        }
+        #endif
         #endregion
 
         #region Query Dictionary
