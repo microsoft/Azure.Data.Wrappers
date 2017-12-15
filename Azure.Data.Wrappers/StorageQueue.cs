@@ -6,6 +6,7 @@
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using System.Linq;
 
     /// <summary>
     /// Storage Queue
@@ -156,6 +157,33 @@
         }
 
         /// <summary>
+        /// Get Cloud Queue Message
+        /// </summary>
+        /// <returns>Message</returns>
+        public virtual async Task<T> GetAsync<T>()
+        {
+            var returned = await this.reference.GetMessageAsync(this.visibilityTimeout, null, null);
+            return JsonConvert.DeserializeObject<T>(returned.AsString);
+        }
+
+        /// <summary>
+        /// Get Cloud Queue Message(s)
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="count">number of messages to get. Default is 5</param>
+        /// <returns>Message</returns>
+        public async Task<IEnumerable<T>> GetManyAsync<T>(int messageCount = 5)
+        {
+            if (0 >= messageCount)
+            {
+                messageCount = 1;
+            }
+
+            var returned = await this.reference.GetMessagesAsync(messageCount, this.visibilityTimeout, null, null);
+            return returned.Select(m => JsonConvert.DeserializeObject<T>(m.AsString));
+        }
+
+        /// <summary>
         /// Save Message to Queue
         /// </summary>
         /// <param name="message">Message</param>
@@ -164,7 +192,7 @@
         {
             if (null == message)
             {
-                throw new ArgumentNullException("message");
+                throw new ArgumentNullException(nameof(message));
             }
 
             await this.reference.AddMessageAsync(message);
@@ -177,19 +205,30 @@
         /// <returns>Task</returns>
         public virtual async Task Send(object obj)
         {
-            if (null == obj)
+            await this.SendAsync(obj);
+        }
+
+        /// <summary>
+        /// Save Model to queue, as json
+        /// </summary>
+        /// <param name="message">object</param>
+        /// <returns>Task</returns>
+        public virtual async Task SendAsync<T>(T message)
+        {
+            if (null == message)
             {
-                throw new ArgumentNullException("obj");
+                throw new ArgumentNullException(nameof(message));
             }
 
-            if (obj is CloudQueueMessage)
+            if (message is CloudQueueMessage)
             {
-                await this.Send(obj as CloudQueueMessage);
+                await this.Send(message as CloudQueueMessage);
             }
             else
             {
-                await this.Send(new CloudQueueMessage(JsonConvert.SerializeObject(obj)));
+                await this.Send(new CloudQueueMessage(JsonConvert.SerializeObject(message)));
             }
+            
         }
 
         /// <summary>
@@ -205,6 +244,36 @@
             }
 
             await this.reference.DeleteMessageAsync(message);
+        }
+
+        /// <summary>
+        /// Clears the contents of the queue
+        /// </summary>
+        /// <returns></returns>
+        public virtual async Task ClearAsync()
+        {
+            await this.reference.ClearAsync();
+        }
+
+        /// <summary>
+        /// Peeks the queue
+        /// </summary>
+        /// <param name="count">number of messages to peek with a default value of 1</param>
+        /// <returns>Messages</returns>
+        public virtual async Task<IEnumerable<CloudQueueMessage>> PeekAsync(int count = 1)
+        {
+            return await this.reference.PeekMessagesAsync(count);
+        }
+
+        /// <summary>
+        /// Peeks the queue
+        /// </summary>
+        /// <param name="count">number of messages to peek with a default value of 1</param>
+        /// <returns>Messages</returns>
+        public virtual async Task<IEnumerable<T>> PeekAsync<T>(int count = 1)
+        {
+            var returned = await this.reference.PeekMessagesAsync(count);
+            return returned.Select(m => JsonConvert.DeserializeObject<T>(m.AsString));
         }
         #endregion
     }

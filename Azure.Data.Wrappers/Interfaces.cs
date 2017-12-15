@@ -422,6 +422,36 @@
         /// <param name="obj">Object</param>
         /// <returns>Task</returns>
         Task Send(object obj);
+
+        /// <summary>
+        /// Send a generic Object
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="message"></param>
+        /// <returns></returns>
+        Task SendAsync<T>(T message);
+
+        /// <summary>
+        /// Get Cloud Queue Message
+        /// </summary>
+        /// <returns>Message</returns>
+        Task<T> GetAsync<T>();
+
+        /// <summary>
+        /// Get Cloud Queue Message(s)
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="count">number of messages to get. Default is 5</param>
+        /// <returns>Message</returns>
+        Task<IEnumerable<T>> GetManyAsync<T>(int count = 5);
+
+        /// <summary>
+        /// Peeks the queue
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="count">number of messages to peek with a default value of 1</param>
+        /// <returns>Messages</returns>
+        Task<IEnumerable<T>> PeekAsync<T>(int count = 1);
         #endregion
     }
     #endregion
@@ -453,6 +483,19 @@
         /// <param name="message">Message</param>
         /// <returns>Task</returns>
         Task Send(T message);
+
+        /// <summary>
+        /// Clear the contents of the queue
+        /// </summary>
+        /// <returns></returns>
+        Task ClearAsync();
+
+        /// <summary>
+        /// Peeks the queue
+        /// </summary>
+        /// <param name="count">number of messages to peek with a default value of 1</param>
+        /// <returns>Messages</returns>
+        Task<IEnumerable<T>> PeekAsync(int count = 1);
         #endregion
     }
     #endregion
@@ -469,6 +512,17 @@
         /// </summary>
         /// <returns>Messages</returns>
         Task<IEnumerable<CloudQueueMessage>> GetMany(int messageCount = 5);
+        #endregion
+    }
+
+    public interface IStorageQueue<T> : IQueue<T>, IAzureStorage, IStorageReference<CloudQueue>, IStorageClient<CloudQueueClient>, IQueueCount
+    {
+        #region Methods
+        /// <summary>
+        /// Get Many Cloud Queue Message
+        /// </summary>
+        /// <returns>Messages</returns>
+        Task<IEnumerable<T>> GetMany(int messageCount = 5);
         #endregion
     }
     #endregion

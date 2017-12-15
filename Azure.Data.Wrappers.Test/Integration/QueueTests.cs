@@ -8,11 +8,17 @@
     using System;
     using System.Linq;
     using System.Threading.Tasks;
+    using System.Collections.Generic;
 
     [TestFixture]
     [Category("Integration")]
     public class QueueTests
     {
+        private class TestCustomObject
+        {
+            public string FooString { get; set; }
+            public int FooInt { get; set; }
+        }
         private string GetQueueName()
         {
             return 'a' + Guid.NewGuid().ToString().ToLowerInvariant().Replace('-', 'a');
@@ -60,8 +66,6 @@
             await storage.Delete();
         }
 
-        
-
         [Test]
         public async Task RoundTripMsgAsObj()
         {
@@ -74,22 +78,58 @@
             Assert.AreEqual(msg.AsBytes, returned.AsBytes);
             await storage.Delete();
         }
-        
+
         [Test]
         public async Task RoundTripObject()
         {
             StorageQueue storage = await QueueSetup();
-            var expected = Guid.NewGuid();
-            await storage.Send(expected);
+            var expected = new TestCustomObject { FooInt = 42, FooString = "The Answer" };
+            await storage.SendAsync<TestCustomObject>(expected);
 
             var returned = await storage.Get();
 
-            var guid = JsonConvert.DeserializeObject<Guid>(returned.AsString);
+            var deserialized = JsonConvert.DeserializeObject<TestCustomObject>(returned.AsString);
 
-            Assert.AreEqual(expected, guid);
+            Assert.AreEqual(expected.FooString, deserialized.FooString);
+            Assert.AreEqual(expected.FooInt, deserialized.FooInt  );
             await storage.Delete();
         }
-        
+
+        [Test]
+        public async Task GenericGet()
+        {
+            StorageQueue storage = await QueueSetup();
+            var expected = new TestCustomObject { FooInt = 42, FooString = "The Answer" };
+            await storage.SendAsync(expected);
+
+            var returned = await storage.GetAsync<TestCustomObject>();
+
+            Assert.AreEqual(expected.FooString, returned.FooString);
+            Assert.AreEqual(expected.FooInt, returned.FooInt);
+            await storage.Delete();
+        }
+
+        [Test]
+        public async Task GenericGetMany()
+        {
+            StorageQueue storage = await QueueSetup();
+            var expected = new TestCustomObject { FooInt = 42, FooString = "The Answer" };
+            var expected2 = new TestCustomObject { FooInt = 43, FooString = "The Answer 2" };
+            var expectedList = new List<TestCustomObject> { expected, expected2 };
+
+            foreach (var item in expectedList)
+            {
+                await storage.SendAsync(item);
+            }
+
+            var returned = (await storage.GetManyAsync<TestCustomObject>()).ToList();
+
+            Assert.AreEqual(expectedList.Count, returned.Count);
+            Assert.IsTrue(returned.Any(m => m.FooInt == expected.FooInt && m.FooString == expected.FooString));
+            Assert.IsTrue(returned.Any(m => m.FooInt == expected2.FooInt && m.FooString == expected2.FooString));
+            await storage.Delete();
+        }
+
         [Test]
         public async Task ApproixmateMessageCount()
         {
@@ -98,7 +138,7 @@
             StorageQueue storage = await QueueSetup();
             for (var i = 0; i < count; i++)
             {
-                await storage.Send(Guid.NewGuid());
+                await storage.SendAsync(Guid.NewGuid());
             }
 
             var result = await storage.ApproixmateMessageCount();
@@ -164,6 +204,60 @@
             var returned = await storage.GetMany(-1);
 
             Assert.AreEqual(1, returned.Count());
+            await storage.Delete();
+        }
+
+        [Test]
+        public async Task Peek()
+        {
+            StorageQueue storage = await QueueSetup();
+            var msg = new CloudQueueMessage(Guid.NewGuid().ToByteArray());
+            await storage.Send(msg);
+
+            var peeked = await storage.PeekAsync();
+            Assert.AreEqual(msg.AsBytes, peeked.First().AsBytes);
+
+            var returned = await storage.Get();
+            Assert.AreEqual(msg.AsBytes, returned.AsBytes);
+            await storage.Delete();
+        }
+
+        [Test]
+        public async Task PeekGeneric()
+        {
+            StorageQueue storage = await QueueSetup();
+            var expected = new TestCustomObject { FooInt = 42, FooString = "The Answer" };
+            var expected2 = new TestCustomObject { FooInt = 43, FooString = "The Answer 2" };
+            var expectedList = new List<TestCustomObject> { expected, expected2 };
+
+            foreach (var item in expectedList)
+            {
+                await storage.SendAsync(item);
+            }
+
+            var peeked = (await storage.PeekAsync<TestCustomObject>(2)).ToList();
+            Assert.AreEqual(expectedList.Count, peeked.Count);
+            Assert.IsTrue(expectedList.Any(m => m.FooInt == expected.FooInt && m.FooString == expected.FooString));
+            Assert.IsTrue(expectedList.Any(m => m.FooInt == expected2.FooInt && m.FooString == expected2.FooString));
+
+            var returned = (await storage.GetManyAsync<TestCustomObject>()).ToList();
+            Assert.AreEqual(expectedList.Count, returned.Count);
+            Assert.IsTrue(returned.Any(m => m.FooInt == expected.FooInt && m.FooString == expected.FooString));
+            Assert.IsTrue(returned.Any(m => m.FooInt == expected2.FooInt && m.FooString == expected2.FooString));
+            await storage.Delete();
+        }
+
+        [Test]
+        public async Task ClearAsync()
+        {
+            StorageQueue storage = await QueueSetup();
+            var msg = new CloudQueueMessage(Guid.NewGuid().ToByteArray());
+            await storage.Send(msg);
+
+            await storage.ClearAsync();
+
+            var returned = await storage.Get();
+            Assert.IsNull(returned);
             await storage.Delete();
         }
     }
