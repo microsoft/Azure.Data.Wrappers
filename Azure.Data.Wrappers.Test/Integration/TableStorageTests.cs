@@ -442,7 +442,7 @@
             var count = random.Next(1, 25);
             var entities = new List<Helper>();
             var rowKey = Guid.NewGuid().ToString();
-            for (var i = 0; i<count; i++)
+            for (var i = 0; i < count; i++)
             {
                 var h = new Helper()
                 {
@@ -788,7 +788,7 @@
             }
 
             storage.Insert(entities).Wait();
-            
+
             var returned = await storage.Query<Helper>(i => i.PartitionKey == partition);
 
             Assert.IsNotNull(returned);

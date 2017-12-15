@@ -395,7 +395,7 @@
             {
                 throw new InvalidOperationException("maxResults: must be above 0.");
             }
-            
+
             var items = await this.Query<T>(new TableQuery<T>());
 
             return items.Where(predicate).Take(maxResults);
@@ -429,8 +429,8 @@
             return entities;
         }
 
-        
-        #if (!NETCOREAPP1_0 && !NETSTANDARD1_3)
+
+#if (!NETCOREAPP1_0 && !NETSTANDARD1_3)
         /// <summary>
         /// CreateQuery
         /// </summary>
@@ -440,7 +440,7 @@
         {
             return this.reference.CreateQuery<TElement>();
         }
-        #endif
+#endif
         #endregion
 
         #region Query Dictionary

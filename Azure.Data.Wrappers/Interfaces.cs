@@ -233,14 +233,14 @@
         /// <returns>Table Results</returns>
         Task<IEnumerable<TableResult>> Delete(IEnumerable<ITableEntity> entities);
 
-        #if (!NETCOREAPP1_0 && !NETSTANDARD1_3)
+#if (!NETCOREAPP1_0 && !NETSTANDARD1_3)
         /// <summary>
         /// CreateQuery
         /// </summary>
         /// <typeparam name="TElement">Entity type</typeparam>
         /// <returns>IQueryable<TElement></returns>
         IQueryable<TElement> CreateQuery<TElement>() where TElement : ITableEntity, new();
-        #endif
+#endif
 
         #endregion
     }
