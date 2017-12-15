@@ -156,12 +156,22 @@
             return await this.reference.GetMessagesAsync(messageCount, this.visibilityTimeout, null, null);
         }
 
+        /// <summary>
+        /// Get Cloud Queue Message
+        /// </summary>
+        /// <returns>Message</returns>
         public virtual async Task<T> GetAsync<T>()
         {
             var returned = await this.reference.GetMessageAsync(this.visibilityTimeout, null, null);
             return JsonConvert.DeserializeObject<T>(returned.AsString);
         }
 
+        /// <summary>
+        /// Get Cloud Queue Message(s)
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="count">number of messages to get. Default is 5</param>
+        /// <returns>Message</returns>
         public async Task<IEnumerable<T>> GetManyAsync<T>(int messageCount = 5)
         {
             if (0 >= messageCount)
@@ -182,7 +192,7 @@
         {
             if (null == message)
             {
-                throw new ArgumentNullException("message");
+                throw new ArgumentNullException(nameof(message));
             }
 
             await this.reference.AddMessageAsync(message);
@@ -207,7 +217,7 @@
         {
             if (null == message)
             {
-                throw new ArgumentNullException("obj");
+                throw new ArgumentNullException(nameof(message));
             }
 
             if (message is CloudQueueMessage)

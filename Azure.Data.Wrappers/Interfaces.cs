@@ -427,9 +427,9 @@
         /// Send a generic Object
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="obj"></param>
+        /// <param name="message"></param>
         /// <returns></returns>
-        Task SendAsync<T>(T obj);
+        Task SendAsync<T>(T message);
 
         /// <summary>
         /// Get Cloud Queue Message
@@ -438,7 +438,7 @@
         Task<T> GetAsync<T>();
 
         /// <summary>
-        /// Get Cloud Queue Message
+        /// Get Cloud Queue Message(s)
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="count">number of messages to get. Default is 5</param>
