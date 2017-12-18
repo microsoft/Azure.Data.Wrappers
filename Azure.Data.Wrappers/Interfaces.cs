@@ -92,13 +92,13 @@
         /// Insert or update the record in table
         /// </summary>
         /// <param name="entity">Entity</param>
-        Task<TableResult> InsertOrReplace(ITableEntity entity);
+        Task<TableResult> InsertOrReplace(ITableEntity entity, ISanitizationProvider sanitizationProvider);
 
         /// <summary>
         /// Insert Batch
         /// </summary>
         /// <param name="entities"></param>
-        Task<IEnumerable<TableResult>> Insert(IEnumerable<ITableEntity> entities);
+        Task<IEnumerable<TableResult>> Insert(IEnumerable<ITableEntity> entities, ISanitizationProvider sanitizationProvider);
 
         /// <summary>
         /// Insert Or Replace Entity (Dictionary)
@@ -108,13 +108,13 @@
         /// </remarks>
         /// <param name="entity">Entity</param>
         /// <returns>Result</returns>
-        Task<TableResult> InsertOrReplace(IDictionary<string, object> entity);
+        Task<TableResult> InsertOrReplace(IDictionary<string, object> entity, ISanitizationProvider sanitizationProvider);
 
         /// <summary>
         /// Insert Batch
         /// </summary>
         /// <param name="entities">Entities</param>
-        Task<IEnumerable<TableResult>> Insert(IEnumerable<IDictionary<string, object>> entities);
+        Task<IEnumerable<TableResult>> Insert(IEnumerable<IDictionary<string, object>> entities, ISanitizationProvider sanitizationProvider);
 
         /// <summary>
         /// Query By Partition
@@ -768,6 +768,24 @@
         ITableStorage GetAzureTable(IStorageAccount storageAccount, string tableName);
         IContainer GetBlobFileContainer(IStorageAccount storageAccount, string containerName, bool isPublic = false, LocationMode location = LocationMode.PrimaryThenSecondary);
 
+    }
+    #endregion
+
+    #region Sanitization
+    public interface ISanitizationProvider
+    {
+        string Sanitize(string input);
+    }
+    public interface ISupportsSanitizedKeys 
+    {
+        [IgnoreProperty]
+        string PartitionKeyUnsanitized { get; }
+        [IgnoreProperty]
+        string RowKeyUnsanitized { get; }
+        [IgnoreProperty]
+        string ReplacementValue { get; }
+
+        bool SanitizeKeys(ISanitizationProvider sanitizationProvider);
     }
     #endregion
 }
