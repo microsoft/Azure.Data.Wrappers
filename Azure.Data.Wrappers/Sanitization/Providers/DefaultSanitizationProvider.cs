@@ -1,8 +1,8 @@
-﻿using System;
-using System.Text.RegularExpressions;
-
-namespace Azure.Data.Wrappers.Sanitization.Providers
+﻿namespace Azure.Data.Wrappers.Sanitization.Providers
 {
+    using System;
+    using System.Text.RegularExpressions;
+
     public class DefaultSanitizationProvider : ISanitizationProvider
     {
         private const string DisallowedCharsInTableKeys = @"[\\\\#%+/?\u0000-\u001F\u007F-\u009F]";
@@ -24,13 +24,23 @@ namespace Azure.Data.Wrappers.Sanitization.Providers
         /// <param name="replacementValue">value to use when replacing a character.  Note that using a fixed replacement value could cause collisions and that could cause a RowKey failure.  </param>
         /// <seealso cref="https://docs.microsoft.com/en-us/rest/api/storageservices/Understanding-the-Table-Service-Data-Model?redirectedfrom=MSDN"/>
         /// <returns>sanitized string</returns>
-        public string Sanitize(string input)
+        public virtual string Sanitize(string input)
         {
             if (input == null) throw new ArgumentNullException(nameof(input));
-            string replacementValue = string.Empty;
+            string replacementValue = this.GetReplacenentValue(input);
 
-            if (Regex.IsMatch(replacementValue, DisallowedCharsInTableKeys)) throw new ArgumentException("replacementValue cannot contain a character in the disallowed list.");
+            if (Regex.IsMatch(replacementValue, DisallowedCharsInTableKeys)) throw new InvalidOperationException("Replacement Value cannot contain a character in the disallowed list.");
 
+            return this.Replace(input, replacementValue);
+        }
+
+        protected virtual string GetReplacenentValue(string input)
+        {
+            return string.Empty;
+        }
+
+        protected virtual string Replace(string input, string replacementValue)
+        {
             return Regex.Replace(input, DisallowedCharsInTableKeys, replacementValue);
         }
     }

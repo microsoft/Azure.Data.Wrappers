@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using Azure.Data.Wrappers.Sanitization;
     using Azure.Data.Wrappers.Sanitization.Providers;
     using Microsoft.WindowsAzure.Storage;
     using Microsoft.WindowsAzure.Storage.RetryPolicies;
@@ -248,7 +249,11 @@
         /// <param name="entity">Entity</param>
         public virtual async Task<TableResult> InsertOrReplace(ITableEntity entity, ISanitizationProvider sanitizationProvider = null)
         {
-            this.TrySanitizeEntity(entity, sanitizationProvider);
+            if (entity is ISupportsSanitizedKeys)
+            {
+                this.SanitizeEntity(entity as ISupportsSanitizedKeys, sanitizationProvider);
+            }
+            
             return await this.reference.ExecuteAsync(TableOperation.InsertOrReplace(entity));
         }
 
@@ -258,7 +263,7 @@
         /// <param name="entities">Entities</param>
         public virtual async Task<IEnumerable<TableResult>> Insert(IEnumerable<ITableEntity> entities, ISanitizationProvider sanitizationProvider = null)
         {
-            this.TrySanitizeEntities(entities, sanitizationProvider);
+            this.SanitizeEntities(entities, sanitizationProvider);
 
             var result = new List<TableResult>();
 
@@ -274,22 +279,6 @@
         }
 
         /// <summary>
-        /// Insert Or Replace Entity (Dictionary)
-        /// </summary>
-        /// <remarks>
-        /// Specify: PartitionKey, RowKey and ETag
-        /// </remarks>
-        /// <param name="entity">Entity</param>
-        /// <returns>Result</returns>
-        public virtual async Task<TableResult> InsertOrReplace(IDictionary<string, object> entity)
-        {
-            if (null == entity)
-            {
-                throw new ArgumentNullException(nameof(entity));
-            }
-            return await this.InsertOrReplace(entity, null);
-        }
-        /// <summary>
         /// Insert Or Replace Entity (Dictionary) with Sanitization of Keys
         /// </summary>
         /// <remarks>
@@ -297,10 +286,9 @@
         /// </remarks>
         /// <param name="entity">Entity</param>
         /// <returns>Result</returns>
-        public virtual async Task<TableResult> InsertOrReplace(IDictionary<string, object> entity, ISanitizationProvider sanitizationProvider)
+        public virtual async Task<TableResult> InsertOrReplace(IDictionary<string, object> entity, ISanitizationProvider sanitizationProvider = null)
         {
             if (null == entity) throw new ArgumentNullException(nameof(entity));
-            if (null == sanitizationProvider) throw new ArgumentNullException(nameof(entity));
 
             var properties = new Dictionary<string, EntityProperty>();
             entity.Keys.Where(k => k != PartitionKey && k != RowKey && k != ETag).ToList().ForEach(key => properties.Add(key, EntityProperty.CreateEntityPropertyFromObject(entity[key])));
@@ -309,7 +297,7 @@
             var rowKey = entity.Keys.Contains(RowKey) ? entity[RowKey].ToString() : string.Empty;
             var etag = entity.Keys.Contains(ETag) ? entity[ETag].ToString() : null;
             var dynamicEntity = new DynamicTableEntity(partitionKey, rowKey, etag, properties);
-
+            this.SanitizeEntity(dynamicEntity, sanitizationProvider);
             return await this.InsertOrReplace(dynamicEntity, sanitizationProvider);
         }
 
@@ -317,7 +305,7 @@
         /// Insert Batch
         /// </summary>
         /// <param name="entities">Entities</param>
-        public virtual async Task<IEnumerable<TableResult>> Insert(IEnumerable<IDictionary<string, object>> entities, ISanitizationProvider sanitizationProvider)
+        public virtual async Task<IEnumerable<TableResult>> Insert(IEnumerable<IDictionary<string, object>> entities, ISanitizationProvider sanitizationProvider = null)
         {
             var result = new List<TableResult>();
 
@@ -334,7 +322,11 @@
                     var rowKey = entity.Keys.Contains(RowKey) ? entity[RowKey].ToString() : string.Empty;
                     var etag = entity.Keys.Contains(ETag) ? entity[ETag].ToString() : null;
 
-                    batchOperation.InsertOrMerge(new DynamicTableEntity(partitionKey, rowKey, etag, properties));
+                    var dynamicEntity = new DynamicTableEntity(partitionKey, rowKey, etag, properties);
+
+                    this.SanitizeEntity(dynamicEntity, sanitizationProvider);
+
+                    batchOperation.InsertOrMerge(dynamicEntity);
                 }
 
                 var r = await this.reference.ExecuteBatchAsync(batchOperation);
@@ -585,29 +577,28 @@
         #endregion
 
         #region Sanitization
-        private void TrySanitizeEntities(IEnumerable<ITableEntity> entities, ISanitizationProvider sanitizationProvider)
+        private void SanitizeEntities(IEnumerable<ITableEntity> entities, ISanitizationProvider sanitizationProvider)
         {
-            foreach (ISupportsSanitizedKeys entityToSanitize in entities.OfType<ISupportsSanitizedKeys>())
+            foreach (ISupportsSanitizedKeys entitySupportsSanitizedKeys in entities.OfType<ISupportsSanitizedKeys>())
             {
-                SanitizeEntity(entityToSanitize, sanitizationProvider);
+                SanitizeEntity(entitySupportsSanitizedKeys, sanitizationProvider);
             }
-        }
-        private void TrySanitizeEntity(ITableEntity entity, ISanitizationProvider sanitizationProvider)
-        {
-            ISupportsSanitizedKeys entityToSanitize;
-            entityToSanitize = entity as ISupportsSanitizedKeys;
-            if (entityToSanitize != null) SanitizeEntity(entityToSanitize, sanitizationProvider);
-        }
-        private void TrySanitizeEntity(IDictionary<string, object> entity, ISanitizationProvider sanitizationProvider)
-        {
-            ISupportsSanitizedKeys entityToSanitize;
-            entityToSanitize = entity as ISupportsSanitizedKeys;
-            if (entityToSanitize != null) SanitizeEntity(entityToSanitize, sanitizationProvider);
+
+            foreach (DynamicTableEntity entityIsDynamic in entities.OfType<DynamicTableEntity>())
+            {
+                SanitizeEntity(entityIsDynamic, sanitizationProvider);
+            }
         }
         private void SanitizeEntity(ISupportsSanitizedKeys entity, ISanitizationProvider sanitizationProvider)
         {
             if (sanitizationProvider == null) sanitizationProvider = new DefaultSanitizationProvider();
             entity.SanitizeKeys(sanitizationProvider);
+        }
+        private void SanitizeEntity(DynamicTableEntity entity, ISanitizationProvider sanitizationProvider)
+        {
+            if (sanitizationProvider == null) return;
+            entity.PartitionKey = sanitizationProvider.Sanitize(entity.PartitionKey);
+            entity.RowKey = sanitizationProvider.Sanitize(entity.RowKey);
         }
         #endregion
     }
