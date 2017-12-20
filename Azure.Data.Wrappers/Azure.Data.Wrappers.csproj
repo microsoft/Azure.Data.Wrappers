@@ -9,12 +9,7 @@
     <AssemblyName>Azure.Data.Wrappers</AssemblyName>
     <PackageId>Azure.Data.Wrappers</PackageId>
     <PackageTags>King.Azure;Azure;Storage;Mock;Mockable;Simple;Data;Table;Storage;File;Share;File-Share;Queue;Queuing;Blob;Query;dependency;injection;dependency-injection;Cloud;Table-Storage;Windows-Azure;Windows;dotNet;CSharp;Mocking;Data-Table;Blob;Json;WindowsAzure.Storage;.NetCore;DNX,storage-account,blobs,binary,text,data,event-store</PackageTags>
-    <PackageReleaseNotes>Implemented some new methods on the StorageQueue interface.
-
-- Task&lt;T&gt; GetAsync&lt;T&gt;()
-- ClearAsync()
-- Task&lt;IEnumerable&lt;CloudQueueMessage&gt;&gt; PeekAsync
-- Task&lt;IEnumerable&lt;T&gt;&gt; PeekAsync&lt;T&gt;</PackageReleaseNotes>
+    <PackageReleaseNotes>Azure Table Key Sanitization and Upgraded to WindowsAzure.Storage 8.7.0</PackageReleaseNotes>
     <PackageIconUrl>https://raw.githubusercontent.com/Microsoft/Azure.Data.Wrappers/master/icon.png</PackageIconUrl>
     <PackageProjectUrl>https://github.com/Microsoft/Azure.Data.Wrappers</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/Microsoft/Azure.Data.Wrappers/blob/master/LICENSE</PackageLicenseUrl>
@@ -33,7 +28,7 @@
     <RepositoryUrl>https://github.com/Microsoft/Azure.Data.Wrappers</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <RootNamespace>Azure.Data.Wrappers</RootNamespace>
-    <Version>3.0.5</Version>
+    <Version>3.0.6</Version>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
