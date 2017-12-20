@@ -43,16 +43,25 @@
             Assert.ThrowsAsync<StorageException>(async() => await storage.InsertOrReplace(entity));
         }
         [Test]
+        public async Task InsertOrReplace_TableEntity_SanitizationRequired()
+        {
+            ITableEntity entity = GenerateEntry(partitionKey: unsanitizedPartition, rowKey: unsanitizedRow);
+            await InsertOrReplace(unsanitizedPartition, unsanitizedRow, sanitizedPartition, sanitizedRow, entity, new DefaultSanitizationProvider());
+        }
+        #endregion
+
+        #region InsertOrReplaceWithISupportsSanitizedKeys
+        [Test]
         public async Task InsertOrReplace_SanitizedKeysTableEntity_NoSanitizationRequired()
         {
             ISupportsSanitizedKeys entity = GenerateSanitizedKeysTableEntry(partitionKey: sanitizedPartition, rowKey: sanitizedRow);
-            await InsertOrReplace(sanitizedPartition, sanitizedRow, sanitizedPartition, sanitizedRow, entity);
+            await InsertOrReplace(sanitizedPartition, sanitizedRow, sanitizedPartition, sanitizedRow, entity, new DefaultSanitizationProvider());
         }
         [Test]
         public async Task InsertOrReplace_SanitizedKeysTableEntity_SanitizationRequired()
         {
             ISupportsSanitizedKeys entity = GenerateSanitizedKeysTableEntry(partitionKey: unsanitizedPartition, rowKey: unsanitizedRow);
-            await InsertOrReplace(unsanitizedPartition, unsanitizedRow, sanitizedPartition, sanitizedRow, entity);
+            await InsertOrReplace(unsanitizedPartition, unsanitizedRow, sanitizedPartition, sanitizedRow, entity, new DefaultSanitizationProvider());
         }
         [Test]
         public async Task InsertOrReplace_SanitizedKeysTableEntity_SanitizationRequired_UsingCustomSanitizationProvider()
@@ -99,19 +108,22 @@
 
             Assert.ThrowsAsync<StorageException>(async () => await storage.Insert(entities));
         }
+        #endregion
+
+        #region InsertUsingISupportsSanitizedKeys
         [Test]
         public async Task Insert_SanitizedKeysTableEntity_DoesNotNeedSanitization()
         {
             ISupportsSanitizedKeys entity = GenerateSanitizedKeysTableEntry(partitionKey: sanitizedPartition, rowKey: sanitizedRow);
             var entities = new List<ISupportsSanitizedKeys>() { entity };
-            await Insert(sanitizedPartition, sanitizedRow, sanitizedPartition, sanitizedRow, entities);
+            await Insert(sanitizedPartition, sanitizedRow, sanitizedPartition, sanitizedRow, entities, new DefaultSanitizationProvider());
         }
         [Test]
         public async Task Insert_SanitizedKeysTableEntity_NeedsSanitization()
         {
             ISupportsSanitizedKeys entity = GenerateSanitizedKeysTableEntry(partitionKey: unsanitizedPartition, rowKey: unsanitizedRow);
             var entities = new List<ISupportsSanitizedKeys>() { entity };
-            await Insert(unsanitizedPartition, unsanitizedRow, sanitizedPartition, sanitizedRow, entities);
+            await Insert(unsanitizedPartition, unsanitizedRow, sanitizedPartition, sanitizedRow, entities, new DefaultSanitizationProvider());
         }
         [Test]
         public async Task Insert_SanitizedKeysTableEntity_NeedsSanitization_CustomSanitizationProvider()
@@ -120,6 +132,9 @@
             var entities = new List<ISupportsSanitizedKeys>() { entity };
             await Insert(unsanitizedPartition, unsanitizedRow, stubSanitizedValue, stubSanitizedValue, entities, new StubSanitizationProvider());
         }
+        #endregion
+
+        #region InsertUsingDyanamicTableEntity
         [Test]
         public async Task Insert_DynamicTableEntity_NeedsSanitization_DefaultSanitizationProvider()
         {

@@ -75,7 +75,7 @@
             storage.Delete(entity);
         }
 
-        protected async Task InsertOrReplace(string inputPartition, string inputRow, string sanitizedPartition, string sanitizedRow, ISupportsSanitizedKeys entity, ISanitizationProvider sanitizationProvider = null)
+        protected async Task InsertOrReplace(string inputPartition, string inputRow, string sanitizedPartition, string sanitizedRow, ISupportsSanitizedKeys entity, ISanitizationProvider sanitizationProvider)
         {
             await storage.InsertOrReplace(entity, sanitizationProvider);
 
@@ -88,7 +88,24 @@
             DeleteTestEntity(entity);
         }
 
-        protected async Task InsertOrReplaceDictionary(string sanitizedPartition, string sanitizedRow, IDictionary<string, object> dictionary, ISanitizationProvider sanitizationProvider = null)
+        protected async Task InsertOrReplace(string inputPartition, string inputRow, string sanitizedPartition, string sanitizedRow, ITableEntity entity, ISanitizationProvider sanitizationProvider)
+        {
+            await storage.InsertOrReplace(entity, sanitizationProvider);
+
+            var returned = await storage.QueryByPartition<TableEntity>(sanitizedPartition);
+            var e = returned.First();
+            Assert.AreEqual(sanitizedPartition, e.PartitionKey);
+            Assert.AreEqual(sanitizedRow, e.RowKey);
+            ISupportsSanitizedKeys supportsSanitizedKeys = entity as ISupportsSanitizedKeys;
+            if (null != supportsSanitizedKeys)
+            {
+                Assert.AreEqual(inputPartition, supportsSanitizedKeys.PartitionKeyUnsanitized);
+                Assert.AreEqual(inputRow, supportsSanitizedKeys.RowKeyUnsanitized);
+            }
+            DeleteTestEntity(entity);
+        }
+
+        protected async Task InsertOrReplaceDictionary(string sanitizedPartition, string sanitizedRow, IDictionary<string, object> dictionary, ISanitizationProvider sanitizationProvider)
         {
             await storage.InsertOrReplace(dictionary, sanitizationProvider);
 
@@ -98,7 +115,7 @@
             Assert.AreEqual(sanitizedRow, e.RowKey);
             await storage.DeleteByPartition(sanitizedPartition);
         }
-        protected async Task InsertDictionary(string sanitizedPartition, string sanitizedRow, IEnumerable<IDictionary<string, object>> dictionary, ISanitizationProvider sanitizationProvider = null)
+        protected async Task InsertDictionary(string sanitizedPartition, string sanitizedRow, IEnumerable<IDictionary<string, object>> dictionary, ISanitizationProvider sanitizationProvider)
         {
             await storage.Insert(dictionary, sanitizationProvider);
 
@@ -109,7 +126,7 @@
             await storage.DeleteByPartition(sanitizedPartition);
         }
 
-        protected async Task Insert(string inputPartition, string inputRow, string sanitizedPartition, string sanitizedRow, List<ISupportsSanitizedKeys> entities, ISanitizationProvider sanitizationProvider = null)
+        protected async Task Insert(string inputPartition, string inputRow, string sanitizedPartition, string sanitizedRow, List<ISupportsSanitizedKeys> entities, ISanitizationProvider sanitizationProvider)
         {
             await storage.Insert(entities, sanitizationProvider);
 
@@ -124,7 +141,7 @@
             DeleteTestEntity(entities.First());
         }
 
-        protected async Task Insert(string inputPartition, string inputRow, string sanitizedPartition, string sanitizedRow, List<DynamicTableEntity> entities, ISanitizationProvider sanitizationProvider = null)
+        protected async Task Insert(string inputPartition, string inputRow, string sanitizedPartition, string sanitizedRow, List<DynamicTableEntity> entities, ISanitizationProvider sanitizationProvider)
         {
             await storage.Insert(entities, sanitizationProvider);
 

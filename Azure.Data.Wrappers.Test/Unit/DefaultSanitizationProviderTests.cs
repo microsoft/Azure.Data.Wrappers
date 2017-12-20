@@ -35,7 +35,7 @@
 
     public class CustomDefaultSanitizationProvider : DefaultSanitizationProvider
     {
-        protected override string GetReplacenentValue(string input)
+        protected override string GetReplacementValue(string input)
         {
             return "%";
         }

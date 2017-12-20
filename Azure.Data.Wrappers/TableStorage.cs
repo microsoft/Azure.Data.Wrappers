@@ -244,28 +244,75 @@
 
         #region Save Data
         /// <summary>
-        /// Insert or update the record in table
+        /// Insert or replaces the record in table
         /// </summary>
-        /// <param name="entity">TableEntity or use a SanitizedKeysTableEntity for Table Key Sanitization.</param>
-        /// <param name="sanitizationProvider">Indicates which sanitization provider is used for an entity of type SanitizedKeysTableEntity.</param>
-        public virtual async Task<TableResult> InsertOrReplace(ITableEntity entity, ISanitizationProvider sanitizationProvider = null)
+        /// <param name="entity">Entity</param>
+        public virtual async Task<TableResult> InsertOrReplace(ITableEntity entity)
         {
-            if (entity is ISupportsSanitizedKeys)
-            {
-                this.SanitizeEntity(entity as ISupportsSanitizedKeys, sanitizationProvider);
-            }
-            
             return await this.reference.ExecuteAsync(TableOperation.InsertOrReplace(entity));
+        }
+
+        /// <summary>
+        /// Insert or replaces the record in table with sanitized table keys via the provided sanitizationProvider
+        /// </summary>
+        /// <remarks>This operation will set the entity PartitionKey and RowKey with sanitized values.  It will also set the entity UnsanitizedPartitionKey and UnsanitizedRowKey values.</remarks>
+        /// <param name="entity">Entity</param>
+        /// <param name="sanitizationProvider">The SanitizationProvider used to sanitize the keys</param>
+        public virtual async Task<TableResult> InsertOrReplace(ISupportsSanitizedKeys entity, ISanitizationProvider sanitizationProvider)
+        {
+            if (null == entity) throw new ArgumentNullException(nameof(entity));
+            if (null == sanitizationProvider) throw new ArgumentNullException(nameof(sanitizationProvider));
+
+            this.SanitizeEntity(entity as ISupportsSanitizedKeys, sanitizationProvider);
+            return await InsertOrReplace(entity);
+        }
+
+        /// <summary>
+        /// Insert or replaces the record in table with sanitized table keys via the provided sanitizationProvider
+        /// </summary>
+        /// <remarks>This operation will set the entity PartitionKey and RowKey with the sanitized values.</remarks>
+        /// <param name="entity">Entity</param>
+        /// <param name="sanitizationProvider">The SanitizationProvider used to sanitize the keys</param>
+        public virtual async Task<TableResult> InsertOrReplace(ITableEntity entity, ISanitizationProvider sanitizationProvider)
+        {
+            if (null == entity) throw new ArgumentNullException(nameof(entity));
+            if (null == sanitizationProvider) throw new ArgumentNullException(nameof(sanitizationProvider));
+
+            this.SanitizeEntity(entity, sanitizationProvider);
+            return await InsertOrReplace(entity);
+        }
+
+        /// <summary>
+        /// Insert batch records in table with sanitized table keys via the provided sanitizationProvider.
+        /// </summary>
+        /// <remarks>This operation will set the entity PartitionKey and RowKey with sanitized values.  It will also set the entity UnsanitizedPartitionKey and UnsanitizedRowKey for any ISupportsSanitizedKeys entities.</remarks>
+        /// <param name="entity">Entity</param>
+        /// <param name="sanitizationProvider">The SanitizationProvider used to sanitize the keys</param>
+        public virtual async Task<IEnumerable<TableResult>> Insert(IEnumerable<ITableEntity> entities, ISanitizationProvider sanitizationProvider)
+        {
+            if (null == entities) throw new ArgumentNullException(nameof(entities));
+            if (null == sanitizationProvider) throw new ArgumentNullException(nameof(sanitizationProvider));
+
+            return await InsertInternal(entities, sanitizationProvider);
         }
 
         /// <summary>
         /// Insert Batch
         /// </summary>
-        /// <param name="entities">A collection of TableEntity or use a SanitizedKeysTableEntity for Table Key Sanitization.</param>
-        /// <param name="sanitizationProvider">Indicates which sanitization provider is used for any entities of type SanitizedKeysTableEntity.</param>
-        public virtual async Task<IEnumerable<TableResult>> Insert(IEnumerable<ITableEntity> entities, ISanitizationProvider sanitizationProvider = null)
+        /// <param name="entities"></param>
+        public virtual async Task<IEnumerable<TableResult>> Insert(IEnumerable<ITableEntity> entities)
         {
-            this.SanitizeEntities(entities, sanitizationProvider);
+            if (null == entities) throw new ArgumentNullException(nameof(entities));
+
+            return await InsertInternal(entities);
+        }
+
+        private async Task<IEnumerable<TableResult>> InsertInternal(IEnumerable<ITableEntity> entities, ISanitizationProvider sanitizationProvider = null)
+        {
+            if (null != sanitizationProvider)
+            {
+                this.SanitizeEntities(entities, sanitizationProvider);
+            }
 
             var result = new List<TableResult>();
 
@@ -281,18 +328,38 @@
         }
 
         /// <summary>
-        /// Insert Or Replace Entity (Dictionary) with Sanitization of Keys
+        /// Insert Or Replace Entity (Dictionary) with sanitized table keys via the provided sanitizationProvider
         /// </summary>
         /// <remarks>
         /// Specify: PartitionKey, RowKey and ETag
         /// </remarks>
-        /// <param name="entity">A Dictionary containing PartitionKey, RowKey, and Etag</param>
-        /// <param name="sanitizationProvider">If a SanitizationProvider is passed in, the entity keys are sanitized according to the rules of the provider.</param>
-        /// <returns>Result</returns>
-        public virtual async Task<TableResult> InsertOrReplace(IDictionary<string, object> entity, ISanitizationProvider sanitizationProvider = null)
+        /// <remarks>This operation will set the entity PartitionKey and RowKey with the sanitized values.</remarks>
+        /// <param name="entity">Entity</param>
+        /// <param name="sanitizationProvider">The SanitizationProvider used to sanitize the keys</param>
+        public virtual async Task<TableResult> InsertOrReplace(IDictionary<string, object> entity, ISanitizationProvider sanitizationProvider)
+        {
+            if (null == entity) throw new ArgumentNullException(nameof(entity));
+            if (null == sanitizationProvider) throw new ArgumentNullException(nameof(sanitizationProvider));
+
+            return await this.InsertOrReplaceInternal(entity, sanitizationProvider);
+        }
+
+        /// <summary>
+        /// Insert Or Replace Entity (Dictionary) 
+        /// </summary>
+        /// <remarks>
+        /// Specify: PartitionKey, RowKey and ETag
+        /// </remarks>
+        /// <param name="entity">Entity</param>
+        public virtual async Task<TableResult> InsertOrReplace(IDictionary<string, object> entity)
         {
             if (null == entity) throw new ArgumentNullException(nameof(entity));
 
+            return await this.InsertOrReplaceInternal(entity);
+        }
+
+        private async Task<TableResult> InsertOrReplaceInternal(IDictionary<string, object> entity, ISanitizationProvider sanitizationProvider = null)
+        {
             var properties = new Dictionary<string, EntityProperty>();
             entity.Keys.Where(k => k != PartitionKey && k != RowKey && k != ETag).ToList().ForEach(key => properties.Add(key, EntityProperty.CreateEntityPropertyFromObject(entity[key])));
 
@@ -300,15 +367,34 @@
             var rowKey = entity.Keys.Contains(RowKey) ? entity[RowKey].ToString() : string.Empty;
             var etag = entity.Keys.Contains(ETag) ? entity[ETag].ToString() : null;
             var dynamicEntity = new DynamicTableEntity(partitionKey, rowKey, etag, properties);
-            this.SanitizeEntity(dynamicEntity, sanitizationProvider);
-            return await this.InsertOrReplace(dynamicEntity, sanitizationProvider);
+            if (null == sanitizationProvider)
+            {
+                return await this.InsertOrReplace(dynamicEntity);
+            }
+            else
+            {
+                this.SanitizeEntity(dynamicEntity, sanitizationProvider);
+                return await this.InsertOrReplace(dynamicEntity, sanitizationProvider);
+            }
         }
 
         /// <summary>
         /// Insert Batch
         /// </summary>
         /// <param name="entities">Entities</param>
-        public virtual async Task<IEnumerable<TableResult>> Insert(IEnumerable<IDictionary<string, object>> entities, ISanitizationProvider sanitizationProvider = null)
+        public virtual async Task<IEnumerable<TableResult>> Insert(IEnumerable<IDictionary<string, object>> entities, ISanitizationProvider sanitizationProvider)
+        {
+            if (null == entities) throw new ArgumentNullException(nameof(entities));
+            if (null == sanitizationProvider) throw new ArgumentNullException(nameof(sanitizationProvider));
+
+            return await this.InsertInternal(entities, sanitizationProvider);
+        }
+        public virtual async Task<IEnumerable<TableResult>> Insert(IEnumerable<IDictionary<string, object>> entities)
+        {
+            if (null == entities) throw new ArgumentNullException(nameof(entities));
+            return await this.InsertInternal(entities);
+        }
+        private async Task<IEnumerable<TableResult>> InsertInternal(IEnumerable<IDictionary<string, object>> entities, ISanitizationProvider sanitizationProvider = null)
         {
             var result = new List<TableResult>();
 
@@ -582,22 +668,26 @@
         #region Sanitization
         private void SanitizeEntities(IEnumerable<ITableEntity> entities, ISanitizationProvider sanitizationProvider)
         {
-            foreach (ISupportsSanitizedKeys entitySupportsSanitizedKeys in entities.OfType<ISupportsSanitizedKeys>())
-            {
-                SanitizeEntity(entitySupportsSanitizedKeys, sanitizationProvider);
-            }
+            if (sanitizationProvider == null) throw new ArgumentNullException(nameof(sanitizationProvider));
 
-            foreach (DynamicTableEntity entityIsDynamic in entities.OfType<DynamicTableEntity>())
+            foreach (ITableEntity entity in entities)
             {
-                SanitizeEntity(entityIsDynamic, sanitizationProvider);
+                var entitySupportsSanitizedKeys = entity as ISupportsSanitizedKeys;
+                if (entitySupportsSanitizedKeys != null)
+                {
+                    SanitizeEntity(entitySupportsSanitizedKeys, sanitizationProvider);
+                }
+                else
+                {
+                    SanitizeEntity(entity, sanitizationProvider);
+                }
             }
         }
         private void SanitizeEntity(ISupportsSanitizedKeys entity, ISanitizationProvider sanitizationProvider)
         {
-            if (sanitizationProvider == null) sanitizationProvider = new DefaultSanitizationProvider();
             entity.SanitizeKeys(sanitizationProvider);
         }
-        private void SanitizeEntity(DynamicTableEntity entity, ISanitizationProvider sanitizationProvider)
+        private void SanitizeEntity(ITableEntity entity, ISanitizationProvider sanitizationProvider)
         {
             if (sanitizationProvider == null) return;
             entity.PartitionKey = sanitizationProvider.Sanitize(entity.PartitionKey);
