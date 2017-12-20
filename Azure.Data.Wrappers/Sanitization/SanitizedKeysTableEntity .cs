@@ -6,8 +6,14 @@
     public class SanitizedKeysTableEntity : TableEntity, ISupportsSanitizedKeys
     {
         #region Properties
+        /// <summary>
+        /// Input (Unsanitized) PartitionKey
+        /// </summary>
         [IgnoreProperty]
         public string PartitionKeyUnsanitized { get; private set; }
+        /// <summary>
+        /// Input (Unsanitized) RowKey
+        /// </summary>
         [IgnoreProperty]
         public string RowKeyUnsanitized { get; private set; }
         #endregion
@@ -23,6 +29,11 @@
         #endregion
 
         #region Operations
+        /// <summary>
+        /// Sanitize the PartitionKey and RowKey.  Sets PartitionKeyUnsanitized and RowKeyUnsanitized to the original key values.
+        /// </summary>
+        /// <param name="sanitizationProvider">An ISanitizationProvider to provide sanitization logic</param>
+        /// <returns>True if either key was changed.</returns>
         public bool SanitizeKeys(ISanitizationProvider sanitizationProvider)
         {
             if (sanitizationProvider == null) throw new ArgumentNullException(nameof(sanitizationProvider));

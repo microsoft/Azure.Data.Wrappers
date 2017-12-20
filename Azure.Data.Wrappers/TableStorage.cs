@@ -246,7 +246,8 @@
         /// <summary>
         /// Insert or update the record in table
         /// </summary>
-        /// <param name="entity">Entity</param>
+        /// <param name="entity">TableEntity or use a SanitizedKeysTableEntity for Table Key Sanitization.</param>
+        /// <param name="sanitizationProvider">Indicates which sanitization provider is used for an entity of type SanitizedKeysTableEntity.</param>
         public virtual async Task<TableResult> InsertOrReplace(ITableEntity entity, ISanitizationProvider sanitizationProvider = null)
         {
             if (entity is ISupportsSanitizedKeys)
@@ -260,7 +261,8 @@
         /// <summary>
         /// Insert Batch
         /// </summary>
-        /// <param name="entities">Entities</param>
+        /// <param name="entities">A collection of TableEntity or use a SanitizedKeysTableEntity for Table Key Sanitization.</param>
+        /// <param name="sanitizationProvider">Indicates which sanitization provider is used for any entities of type SanitizedKeysTableEntity.</param>
         public virtual async Task<IEnumerable<TableResult>> Insert(IEnumerable<ITableEntity> entities, ISanitizationProvider sanitizationProvider = null)
         {
             this.SanitizeEntities(entities, sanitizationProvider);
@@ -284,7 +286,8 @@
         /// <remarks>
         /// Specify: PartitionKey, RowKey and ETag
         /// </remarks>
-        /// <param name="entity">Entity</param>
+        /// <param name="entity">A Dictionary containing PartitionKey, RowKey, and Etag</param>
+        /// <param name="sanitizationProvider">If a SanitizationProvider is passed in, the entity keys are sanitized according to the rules of the provider.</param>
         /// <returns>Result</returns>
         public virtual async Task<TableResult> InsertOrReplace(IDictionary<string, object> entity, ISanitizationProvider sanitizationProvider = null)
         {
