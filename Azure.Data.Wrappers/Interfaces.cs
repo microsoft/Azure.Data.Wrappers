@@ -5,6 +5,7 @@
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
+    using Azure.Data.Wrappers.Sanitization;
     using Microsoft.WindowsAzure.Storage;
     using Microsoft.WindowsAzure.Storage.Blob;
     using Microsoft.WindowsAzure.Storage.File;
@@ -89,11 +90,27 @@
         Task<bool> Create();
 
         /// <summary>
-        /// Insert or update the record in table
+        /// Insert or replaces the record in table
         /// </summary>
         /// <param name="entity">Entity</param>
         Task<TableResult> InsertOrReplace(ITableEntity entity);
 
+        /// <summary>
+        /// Insert or replaces the record in table with sanitized table keys via the provided sanitizationProvider
+        /// </summary>
+        /// <remarks>This operation will set the entity PartitionKey and RowKey with sanitized values.  It will also set the entity UnsanitizedPartitionKey and UnsanitizedRowKey values.</remarks>
+        /// <param name="entity">Entity</param>
+        /// <param name="sanitizationProvider">The SanitizationProvider used to sanitize the keys</param>
+        Task<TableResult> InsertOrReplace(ISupportsSanitizedKeys entity, ISanitizationProvider sanitizationProvider);
+
+        /// <summary>
+        /// Insert or replaces the record in table with sanitized table keys via the provided sanitizationProvider
+        /// </summary>
+        /// <remarks>This operation will set the entity PartitionKey and RowKey with the sanitized values.</remarks>
+        /// <param name="entity">Entity</param>
+        /// <param name="sanitizationProvider">The SanitizationProvider used to sanitize the keys</param>
+        Task<TableResult> InsertOrReplace(ITableEntity entity, ISanitizationProvider sanitizationProvider);
+        
         /// <summary>
         /// Insert Batch
         /// </summary>
@@ -101,20 +118,50 @@
         Task<IEnumerable<TableResult>> Insert(IEnumerable<ITableEntity> entities);
 
         /// <summary>
-        /// Insert Or Replace Entity (Dictionary)
+        /// Insert batch records in table with sanitized table keys via the provided sanitizationProvider.
+        /// </summary>
+        /// <remarks>This operation will set the entity PartitionKey and RowKey with sanitized values.  It will also set the entity UnsanitizedPartitionKey and UnsanitizedRowKey for any ISupportsSanitizedKeys entities.</remarks>
+        /// <param name="entity">Entity</param>
+        /// <param name="sanitizationProvider">The SanitizationProvider used to sanitize the keys</param>
+        Task<IEnumerable<TableResult>> Insert(IEnumerable<ITableEntity> entities, ISanitizationProvider sanitizationProvider);
+
+        /// <summary>
+        /// Insert Or Replace Entity (Dictionary) 
         /// </summary>
         /// <remarks>
         /// Specify: PartitionKey, RowKey and ETag
         /// </remarks>
         /// <param name="entity">Entity</param>
-        /// <returns>Result</returns>
         Task<TableResult> InsertOrReplace(IDictionary<string, object> entity);
+
+        /// <summary>
+        /// Insert Or Replace Entity (Dictionary) with sanitized table keys via the provided sanitizationProvider
+        /// </summary>
+        /// <remarks>
+        /// Specify: PartitionKey, RowKey and ETag
+        /// </remarks>
+        /// <remarks>This operation will set the entity PartitionKey and RowKey with the sanitized values.</remarks>
+        /// <param name="entity">Entity</param>
+        /// <param name="sanitizationProvider">The SanitizationProvider used to sanitize the keys</param>
+        Task<TableResult> InsertOrReplace(IDictionary<string, object> entity, ISanitizationProvider sanitizationProvider);
+
 
         /// <summary>
         /// Insert Batch
         /// </summary>
         /// <param name="entities">Entities</param>
         Task<IEnumerable<TableResult>> Insert(IEnumerable<IDictionary<string, object>> entities);
+
+        /// <summary>
+        /// Insert Batch with sanitized table keys via the provided sanitizationProvider
+        /// </summary>
+        /// <remarks>
+        /// Specify: PartitionKey, RowKey and ETag
+        /// </remarks>
+        /// <remarks>This operation will set the entity PartitionKey and RowKey with the sanitized values.</remarks>
+        /// <param name="entities">Entities</param>
+        /// <param name="sanitizationProvider">The SanitizationProvider used to sanitize the keys</param>
+        Task<IEnumerable<TableResult>> Insert(IEnumerable<IDictionary<string, object>> entities, ISanitizationProvider sanitizationProvider);
 
         /// <summary>
         /// Query By Partition

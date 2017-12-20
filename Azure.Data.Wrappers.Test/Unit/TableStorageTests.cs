@@ -1,6 +1,8 @@
 ﻿namespace Azure.Data.Wrappers.Test.Unit
 {
     using Azure.Data.Wrappers;
+    using Azure.Data.Wrappers.Sanitization;
+    using Azure.Data.Wrappers.Sanitization.Providers;
     using Microsoft.WindowsAzure.Storage;
     using Microsoft.WindowsAzure.Storage.Table;
     using NUnit.Framework;
@@ -92,12 +94,57 @@
         }
 
         [Test]
-        public void InsertDictionaryNull()
+        public void InsertOrReplaceEntityNull()
         {
             var name = Guid.NewGuid().ToString();
             var t = new TableStorage(name, ConnectionString);
 
             Assert.That(() => t.InsertOrReplace((IDictionary<string, object>)null), Throws.TypeOf<ArgumentNullException>());
+            Assert.That(() => t.InsertOrReplace((ISupportsSanitizedKeys)null, new DefaultSanitizationProvider()), Throws.TypeOf<ArgumentNullException>());
+            Assert.That(() => t.InsertOrReplace((ITableEntity)null, new DefaultSanitizationProvider()), Throws.TypeOf<ArgumentNullException>());
+        }
+
+        [Test]
+        public void InsertOrReplaceSanitizationProviderNull()
+        {
+            var name = Guid.NewGuid().ToString();
+            var t = new TableStorage(name, ConnectionString);
+
+            Assert.That(() => t.InsertOrReplace(new Dictionary<string, object>(), null), Throws.TypeOf<ArgumentNullException>());
+            Assert.That(() => t.InsertOrReplace(new SanitizedKeysTableEntity(), null), Throws.TypeOf<ArgumentNullException>());
+            Assert.That(() => t.InsertOrReplace(new TableEntity(), null), Throws.TypeOf<ArgumentNullException>());
+        }
+
+        [Test]
+        public void InsertEntityNull()
+        {
+            var name = Guid.NewGuid().ToString();
+            var t = new TableStorage(name, ConnectionString);
+
+            Assert.That(() => t.Insert((IEnumerable<ITableEntity>)null), Throws.TypeOf<ArgumentNullException>());
+            Assert.That(() => t.Insert((IEnumerable<ITableEntity>)null, new DefaultSanitizationProvider()), Throws.TypeOf<ArgumentNullException>());
+            Assert.That(() => t.Insert((IEnumerable<IDictionary<string, object>>)null), Throws.TypeOf<ArgumentNullException>());
+            Assert.That(() => t.Insert((IEnumerable<IDictionary<string, object>>)null, new DefaultSanitizationProvider()), Throws.TypeOf<ArgumentNullException>());
+        }
+
+        [Test]
+        public void InsertSanitizationProviderNull()
+        {
+            var name = Guid.NewGuid().ToString();
+            var t = new TableStorage(name, ConnectionString);
+
+            Assert.That(() => t.Insert(new List<TableEntity>(), null), Throws.TypeOf<ArgumentNullException>());
+            Assert.That(() => t.Insert(new List<TableEntity>(), null), Throws.TypeOf<ArgumentNullException>());
+            Assert.That(() => t.Insert(new List<Dictionary<string, object>>(), null), Throws.TypeOf<ArgumentNullException>());
+        }
+
+        [Test]
+        public void InsertOrReplaceSupportsSanitizedKeysNull()
+        {
+            var name = Guid.NewGuid().ToString();
+            var t = new TableStorage(name, ConnectionString);
+
+            Assert.That(() => t.InsertOrReplace((ISupportsSanitizedKeys)null, new DefaultSanitizationProvider()), Throws.TypeOf<ArgumentNullException>());
         }
 
         [Test]
