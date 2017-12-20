@@ -3,7 +3,7 @@
     using Azure.Data.Wrappers.Sanitization;
     using Microsoft.WindowsAzure.Storage.Table;
 
-    public interface ISupportsSanitizedKeys 
+    public interface ISupportsSanitizedKeys : ITableEntity
     {
         [IgnoreProperty]
         string PartitionKeyUnsanitized { get; }

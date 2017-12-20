@@ -11,35 +11,8 @@
 
     [TestFixture]
     [Category("Integration")]
-    public class TableStorageTests
+    public class TableStorageTests : TableStorageTestsBase
     {
-        #region Members
-        private ITableStorage storage = null;
-        #endregion
-
-        public class Helper : TableEntity
-        {
-            public Guid Id
-            {
-                get;
-                set;
-            }
-        }
-
-        private TableEntity GenerateEntry()
-        {
-            return new TableEntity()
-            {
-                PartitionKey = "partition",
-                RowKey = "row",
-            };
-        }
-
-        private void DeleteTestEntity(TableEntity entity)
-        {
-            storage.Delete(entity);
-        }
-
         [OneTimeSetUp]
         public void Init()
         {
@@ -53,7 +26,6 @@
         {
             storage.Delete().Wait();
         }
-
 
         [Test]
         public async Task ConstructorAccount()
@@ -120,6 +92,7 @@
 
             await localStorage.Delete();
         }
+
 
         [Test]
         public async Task Insert()
