@@ -556,6 +556,19 @@
             var targetBlockBlob = target.GetBlockReference(to);
             return await targetBlockBlob.StartCopyAsync(source);
         }
+
+        /// <summary>
+        /// Returns a shared access signature for the container.
+        /// </summary>
+        /// <param name="policy">the access policy for the shared access signature.</param>
+        /// <returns>A shared access signature, as a URI query string.</returns>
+        public virtual string GetSharedAccessSignature(SharedAccessBlobPolicy policy)
+        {
+            if (policy == null) throw new ArgumentNullException(nameof(policy));
+
+            return reference.GetSharedAccessSignature(policy);
+        }
+
         #endregion
     }
 }

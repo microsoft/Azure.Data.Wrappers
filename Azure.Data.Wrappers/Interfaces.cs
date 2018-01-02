@@ -405,6 +405,13 @@
         /// <param name="to">To</param>
         /// <returns>Blob Uri</returns>
         Task<string> Copy(string from, string to);
+
+        /// <summary>
+        /// Returns a shared access signature for the container.
+        /// </summary>
+        /// <param name="policy">the access policy for the shared access signature.</param>
+        /// <returns>A shared access signature, as a URI query string.</returns>
+        string GetSharedAccessSignature(SharedAccessBlobPolicy policy);
         #endregion
     }
     #endregion
