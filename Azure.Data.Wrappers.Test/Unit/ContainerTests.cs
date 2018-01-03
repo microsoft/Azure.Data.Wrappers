@@ -261,5 +261,13 @@
 
             Assert.That(() => c.Copy(Guid.NewGuid().ToString(), (IContainer)null, Guid.NewGuid().ToString()), Throws.TypeOf<ArgumentNullException>());
         }
+
+        [Test]
+        public void GetSharedAccessSignatureThrowsOnNullPolicy()
+        {
+            var target = new Container("test", ConnectionString);
+
+            Assert.That(() => target.GetSharedAccessSignature(default(SharedAccessAccountPolicy)), Throws.TypeOf<ArgumentNullException>());
+        }
     }
 }
