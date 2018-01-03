@@ -529,5 +529,15 @@
             await toContainer.Delete(to);
             await toContainer.Delete();
         }
+
+        [Test]
+        public void GetSharedAccessSignatureSuccess()
+        {
+            var target = new Container(TestHelpers.generateUniqueName(), TestHelpers.DevConnectionString);
+
+            var result = target.GetSharedAccessSignature(new SharedAccessAccountPolicy());
+
+            Assert.IsNotNull(result);
+        }
     }
 }
