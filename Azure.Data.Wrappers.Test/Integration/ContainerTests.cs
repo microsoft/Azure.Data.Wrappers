@@ -535,7 +535,17 @@
         {
             var target = new Container(TestHelpers.generateUniqueName(), TestHelpers.DevConnectionString);
 
-            var result = target.GetSharedAccessSignature(new SharedAccessAccountPolicy());
+            var result = target.GetSharedAccessSignature(new SharedAccessBlobPolicy());
+
+            Assert.IsNotNull(result);
+        }
+
+        [Test]
+        public void GetSharedAccessSignatureWithGroupPolicySuccess()
+        {
+            var target = new Container(TestHelpers.generateUniqueName(), TestHelpers.DevConnectionString);
+
+            var result = target.GetSharedAccessSignature(null, "foo");
 
             Assert.IsNotNull(result);
         }

@@ -561,12 +561,11 @@
         /// Returns a shared access signature for the container.
         /// </summary>
         /// <param name="policy">the access policy for the shared access signature.</param>
+        /// <param name="groupPolicyIdentifier">A container-level access policy</param>
         /// <returns>A shared access signature, as a URI query string.</returns>
-        public virtual string GetSharedAccessSignature(SharedAccessBlobPolicy policy)
+        public virtual string GetSharedAccessSignature(SharedAccessBlobPolicy policy, string groupPolicyIdentifier = null)
         {
-            if (policy == null) throw new ArgumentNullException(nameof(policy));
-
-            return reference.GetSharedAccessSignature(policy);
+            return string.IsNullOrEmpty(groupPolicyIdentifier) ? reference.GetSharedAccessSignature(policy) : reference.GetSharedAccessSignature(policy, groupPolicyIdentifier);
         }
 
         #endregion
