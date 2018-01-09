@@ -100,7 +100,7 @@
         /// <returns>Created</returns>
         public virtual async Task<bool> CreateIfNotExists()
         {
-            return await this.reference.CreateIfNotExistsAsync();
+            return await this.reference.CreateIfNotExistsAsync().ConfigureAwait(false);
         }
         #endregion
     }

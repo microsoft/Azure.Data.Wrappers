@@ -125,7 +125,7 @@
         /// <returns></returns>
         public virtual async Task<bool> CreateIfNotExists()
         {
-            return await this.reference.CreateIfNotExistsAsync();
+            return await this.reference.CreateIfNotExistsAsync().ConfigureAwait(false);
         }
 
         /// <summary>
@@ -134,7 +134,7 @@
         /// <param name="tableName">Table Name</param>
         public virtual async Task<bool> Create()
         {
-            return await this.reference.CreateIfNotExistsAsync();
+            return await this.reference.CreateIfNotExistsAsync().ConfigureAwait(false);
         }
         #endregion
 
@@ -145,7 +145,7 @@
         /// <param name="tableName"></param>
         public virtual async Task Delete()
         {
-            await this.reference.DeleteAsync();
+            await this.reference.DeleteAsync().ConfigureAwait(false);
         }
 
         /// <summary>
@@ -155,10 +155,10 @@
         /// <returns>Task</returns>
         public virtual async Task DeleteByPartition(string partitionKey)
         {
-            var entities = await this.QueryByPartition<TableEntity>(partitionKey);
+            var entities = await this.QueryByPartition<TableEntity>(partitionKey).ConfigureAwait(false);
             if (null != entities && entities.Any())
             {
-                await this.Delete(entities);
+                await this.Delete(entities).ConfigureAwait(false);
             }
         }
 
@@ -169,12 +169,12 @@
         /// <returns>Task</returns>
         public virtual async Task DeleteByRow(string rowKey)
         {
-            var entities = await this.QueryByRow<TableEntity>(rowKey);
+            var entities = await this.QueryByRow<TableEntity>(rowKey).ConfigureAwait(false);
             if (null != entities && entities.Any())
             {
                 foreach (var entity in entities)
                 {
-                    await this.Delete(entity);
+                    await this.Delete(entity).ConfigureAwait(false);
                 }
             }
         }
@@ -187,11 +187,11 @@
         /// <returns>Task</returns>
         public virtual async Task DeleteByPartitionAndRow(string partitionKey, string rowKey)
         {
-            var entity = await this.QueryByPartitionAndRow<TableEntity>(partitionKey, rowKey);
+            var entity = await this.QueryByPartitionAndRow<TableEntity>(partitionKey, rowKey).ConfigureAwait(false);
 
             if (null != entity)
             {
-                await this.Delete(entity);
+                await this.Delete(entity).ConfigureAwait(false);
             }
         }
 
@@ -207,7 +207,7 @@
                 throw new ArgumentNullException("entity");
             }
 
-            return await this.reference.ExecuteAsync(TableOperation.Delete(entity));
+            return await this.reference.ExecuteAsync(TableOperation.Delete(entity)).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -232,7 +232,7 @@
             {
                 var batchOperation = new TableBatchOperation();
                 batch.ToList().ForEach(e => batchOperation.Delete(e));
-                var r = await this.reference.ExecuteBatchAsync(batchOperation);
+                var r = await this.reference.ExecuteBatchAsync(batchOperation).ConfigureAwait(false);
                 result.AddRange(r);
             }
 
@@ -247,7 +247,7 @@
         /// <param name="entity">Entity</param>
         public virtual async Task<TableResult> InsertOrReplace(ITableEntity entity)
         {
-            return await this.reference.ExecuteAsync(TableOperation.InsertOrReplace(entity));
+            return await this.reference.ExecuteAsync(TableOperation.InsertOrReplace(entity)).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -262,7 +262,7 @@
             {
                 var batchOperation = new TableBatchOperation();
                 batch.ToList().ForEach(e => batchOperation.InsertOrReplace(e));
-                var r = await this.reference.ExecuteBatchAsync(batchOperation);
+                var r = await this.reference.ExecuteBatchAsync(batchOperation).ConfigureAwait(false);
                 result.AddRange(r);
             }
 
@@ -292,7 +292,7 @@
             var etag = entity.Keys.Contains(ETag) ? entity[ETag].ToString() : null;
             var dynamicEntity = new DynamicTableEntity(partitionKey, rowKey, etag, properties);
 
-            return await this.InsertOrReplace(dynamicEntity);
+            return await this.InsertOrReplace(dynamicEntity).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -319,7 +319,7 @@
                     batchOperation.InsertOrMerge(new DynamicTableEntity(partitionKey, rowKey, etag, properties));
                 }
 
-                var r = await this.reference.ExecuteBatchAsync(batchOperation);
+                var r = await this.reference.ExecuteBatchAsync(batchOperation).ConfigureAwait(false);
                 result.AddRange(r);
             }
 
@@ -338,7 +338,7 @@
             where T : ITableEntity, new()
         {
             var query = new TableQuery<T>().Where(TableQuery.GenerateFilterCondition(PartitionKey, QueryComparisons.Equal, partitionKey));
-            return await this.Query<T>(query);
+            return await this.Query<T>(query).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -354,7 +354,7 @@
             where T : ITableEntity, new()
         {
             var query = new TableQuery<T>().Where(TableQuery.GenerateFilterCondition(RowKey, QueryComparisons.Equal, rowKey));
-            return await this.Query<T>(query);
+            return await this.Query<T>(query).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -372,7 +372,7 @@
             var filter = TableQuery.CombineFilters(partitionFilter, TableOperators.And, rowFilter);
             var query = new TableQuery<T>().Where(filter);
 
-            var result = await this.Query<T>(query);
+            var result = await this.Query<T>(query).ConfigureAwait(false);
             return result.FirstOrDefault();
         }
 
@@ -396,7 +396,7 @@
                 throw new InvalidOperationException("maxResults: must be above 0.");
             }
 
-            var items = await this.Query<T>(new TableQuery<T>());
+            var items = await this.Query<T>(new TableQuery<T>()).ConfigureAwait(false);
 
             return items.Where(predicate).Take(maxResults);
         }
@@ -420,7 +420,7 @@
 
             do
             {
-                var queryResult = await this.reference.ExecuteQuerySegmentedAsync<T>(query, token);
+                var queryResult = await this.reference.ExecuteQuerySegmentedAsync<T>(query, token).ConfigureAwait(false);
                 entities.AddRange(queryResult.Results);
                 token = queryResult.ContinuationToken;
             }
@@ -451,7 +451,7 @@
         /// <returns>Entities</returns>
         public virtual async Task<IEnumerable<IDictionary<string, object>>> QueryByPartition(string partitionKey)
         {
-            return await this.Query(new TableQuery().Where(TableQuery.GenerateFilterCondition(TableStorage.PartitionKey, QueryComparisons.Equal, partitionKey)));
+            return await this.Query(new TableQuery().Where(TableQuery.GenerateFilterCondition(TableStorage.PartitionKey, QueryComparisons.Equal, partitionKey))).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -464,7 +464,7 @@
         /// <returns>Entities</returns>
         public virtual async Task<IEnumerable<IDictionary<string, object>>> QueryByRow(string rowKey)
         {
-            return await this.Query(new TableQuery().Where(TableQuery.GenerateFilterCondition(TableStorage.RowKey, QueryComparisons.Equal, rowKey)));
+            return await this.Query(new TableQuery().Where(TableQuery.GenerateFilterCondition(TableStorage.RowKey, QueryComparisons.Equal, rowKey))).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -480,7 +480,7 @@
             var filter = TableQuery.CombineFilters(partitionFilter, TableOperators.And, rowFilter);
             var query = new TableQuery().Where(filter);
 
-            var result = await this.Query(query);
+            var result = await this.Query(query).ConfigureAwait(false);
             return result.FirstOrDefault();
         }
 
@@ -508,7 +508,7 @@
 
             do
             {
-                var queryResult = await this.reference.ExecuteQuerySegmentedAsync<DynamicTableEntity>(q, token);
+                var queryResult = await this.reference.ExecuteQuerySegmentedAsync<DynamicTableEntity>(q, token).ConfigureAwait(false);
                 entities.AddRange(queryResult.Results);
                 token = queryResult.ContinuationToken;
             }

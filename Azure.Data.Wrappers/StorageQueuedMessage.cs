@@ -52,7 +52,7 @@
         /// <returns>Task</returns>
         public virtual async Task Complete()
         {
-            await this.queue.Delete(this.message);
+            await this.queue.Delete(this.message).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -61,7 +61,7 @@
         /// <returns>Task</returns>
         public virtual async Task Abandon()
         {
-            await Task.Factory.StartNew(() => { }); //No Abandon?
+            await Task.Factory.StartNew(() => { }).ConfigureAwait(false); //No Abandon?
         }
 
         /// <summary>
@@ -70,7 +70,7 @@
         /// <returns>Data</returns>
         public virtual async Task<T> Data()
         {
-            return await Task.Factory.StartNew(() => JsonConvert.DeserializeObject<T>(this.message.AsString));
+            return await Task.Factory.StartNew(() => JsonConvert.DeserializeObject<T>(this.message.AsString)).ConfigureAwait(false);
         }
         #endregion
     }

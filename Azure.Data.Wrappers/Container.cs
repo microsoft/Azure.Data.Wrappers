@@ -125,7 +125,7 @@
         /// <returns>Created</returns>
         public virtual async Task<bool> CreateIfNotExists()
         {
-            var result = await this.reference.CreateIfNotExistsAsync();
+            var result = await this.reference.CreateIfNotExistsAsync().ConfigureAwait(false);
             if (result)
             {
                 var permissions = new BlobContainerPermissions()
@@ -133,7 +133,7 @@
                     PublicAccess = this.isPublic ? BlobContainerPublicAccessType.Blob : BlobContainerPublicAccessType.Off
                 };
 
-                await this.reference.SetPermissionsAsync(permissions);
+                await this.reference.SetPermissionsAsync(permissions).ConfigureAwait(false);
             }
 
             return result;
@@ -145,7 +145,7 @@
         /// <returns>Task</returns>
         public virtual async Task Delete()
         {
-            await this.reference.DeleteAsync();
+            await this.reference.DeleteAsync().ConfigureAwait(false);
         }
 
         /// <summary>
@@ -163,7 +163,7 @@
 
             var delSnapshots = deleteHistory ? DeleteSnapshotsOption.IncludeSnapshots : DeleteSnapshotsOption.None;
             var blob = this.GetBlockReference(blobName);
-            await blob.DeleteAsync(delSnapshots, AccessCondition.GenerateEmptyCondition(), new BlobRequestOptions(), new OperationContext());
+            await blob.DeleteAsync(delSnapshots, AccessCondition.GenerateEmptyCondition(), new BlobRequestOptions(), new OperationContext()).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -179,7 +179,7 @@
             }
 
             var blob = this.GetBlockReference(blobName);
-            return await blob.ExistsAsync();
+            return await blob.ExistsAsync().ConfigureAwait(false);
         }
 
         /// <summary>
@@ -202,7 +202,7 @@
 
             var json = JsonConvert.SerializeObject(obj);
 
-            await this.Save(blobName, json, "application/json");
+            await this.Save(blobName, json, "application/json").ConfigureAwait(false);
         }
 
         /// <summary>
@@ -224,11 +224,11 @@
             }
 
             var blob = this.GetBlockReference(blobName);
-            var cacheProperties = await this.Properties(blobName);
+            var cacheProperties = await this.Properties(blobName).ConfigureAwait(false);
 
-            await blob.UploadTextAsync(text);
+            await blob.UploadTextAsync(text).ConfigureAwait(false);
 
-            await this.Set(blob, cacheProperties, contentType);
+            await this.Set(blob, cacheProperties, contentType).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -244,7 +244,7 @@
         /// <returns></returns>
         public virtual async Task Set(CloudBlockBlob blob, BlobProperties cached, string type = null, string cacheControl = null, string disposition = null, string encoding = null, string language = null)
         {
-            await blob.FetchAttributesAsync();
+            await blob.FetchAttributesAsync().ConfigureAwait(false);
 
             if (null != cached)
             {
@@ -261,7 +261,7 @@
             blob.Properties.ContentLanguage = string.IsNullOrWhiteSpace(language) ? blob.Properties.ContentLanguage : language;
             blob.Properties.ContentType = string.IsNullOrWhiteSpace(type) ? blob.Properties.ContentType : type;
 
-            await blob.SetPropertiesAsync();
+            await blob.SetPropertiesAsync().ConfigureAwait(false);
         }
 
         /// <summary>
@@ -277,7 +277,7 @@
                 throw new ArgumentException("blobName");
             }
 
-            var json = await this.GetText(blobName);
+            var json = await this.GetText(blobName).ConfigureAwait(false);
             return JsonConvert.DeserializeObject<T>(json);
         }
 
@@ -294,10 +294,10 @@
             }
 
             var blob = this.GetBlockReference(blobName);
-            await blob.FetchAttributesAsync();
+            await blob.FetchAttributesAsync().ConfigureAwait(false);
 
             var bytes = new byte[blob.Properties.Length];
-            await blob.DownloadToByteArrayAsync(bytes, 0);
+            await blob.DownloadToByteArrayAsync(bytes, 0).ConfigureAwait(false);
 
             return bytes;
         }
@@ -315,7 +315,7 @@
             }
 
             var blob = this.GetBlockReference(blobName);
-            return await blob.DownloadTextAsync();
+            return await blob.DownloadTextAsync().ConfigureAwait(false);
         }
 
         /// <summary>
@@ -336,11 +336,11 @@
             }
 
             var blob = this.GetBlockReference(blobName);
-            var cached = await this.Properties(blobName);
+            var cached = await this.Properties(blobName).ConfigureAwait(false);
 
-            await blob.UploadFromByteArrayAsync(bytes, 0, bytes.Length);
+            await blob.UploadFromByteArrayAsync(bytes, 0, bytes.Length).ConfigureAwait(false);
 
-            await this.Set(blob, cached, contentType);
+            await this.Set(blob, cached, contentType).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -355,11 +355,11 @@
                 throw new ArgumentException("blobName");
             }
 
-            var exists = await this.Exists(blobName);
+            var exists = await this.Exists(blobName).ConfigureAwait(false);
             if (exists)
             {
                 var blob = this.GetBlockReference(blobName);
-                await blob.FetchAttributesAsync();
+                await blob.FetchAttributesAsync().ConfigureAwait(false);
                 return blob.Properties;
             }
             else
@@ -384,7 +384,7 @@
             cacheDuration = cacheDuration < 1 ? DefaultCacheDuration : cacheDuration;
 
             var blob = this.GetBlockReference(blobName);
-            await this.Set(blob, null, null, string.Format("public, max-age={0}", cacheDuration));
+            await this.Set(blob, null, null, string.Format("public, max-age={0}", cacheDuration)).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -431,10 +431,10 @@
                 throw new ArgumentException("blobName");
             }
 
-            var properties = await this.Properties(blobName);
+            var properties = await this.Properties(blobName).ConfigureAwait(false);
             var blob = this.GetBlockReference(blobName);
             var stream = new MemoryStream();
-            await blob.DownloadRangeToStreamAsync(stream, 0, properties.Length);
+            await blob.DownloadRangeToStreamAsync(stream, 0, properties.Length).ConfigureAwait(false);
             stream.Position = 0;
             return stream;
         }
@@ -454,7 +454,7 @@
 
             do
             {
-                var segments = await this.reference.ListBlobsSegmentedAsync(prefix, useFlatBlobListing, details, maxResults, token, options, operationContext);
+                var segments = await this.reference.ListBlobsSegmentedAsync(prefix, useFlatBlobListing, details, maxResults, token, options, operationContext).ConfigureAwait(false);
                 blobs.AddRange(segments.Results);
                 token = segments.ContinuationToken;
             }
@@ -480,17 +480,17 @@
                 LocationMode = LocationMode.PrimaryOnly,
             };
 
-            var blobs = await this.List(blobName);
+            var blobs = await this.List(blobName).ConfigureAwait(false);
             var blob = blobs.FirstOrDefault();
             var block = blob as CloudBlockBlob;
             if (null != block)
             {
-                return await block.CreateSnapshotAsync(null, null, options, null);
+                return await block.CreateSnapshotAsync(null, null, options, null).ConfigureAwait(false);
             }
             var page = blob as CloudPageBlob;
             if (null != page)
             {
-                return await page.CreateSnapshotAsync(null, null, options, null);
+                return await page.CreateSnapshotAsync(null, null, options, null).ConfigureAwait(false);
             }
 
             return null;
@@ -515,7 +515,7 @@
 
             var source = this.GetBlockReference(from);
             var target = this.GetBlockReference(to);
-            return await target.StartCopyAsync(source);
+            return await target.StartCopyAsync(source).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -527,7 +527,7 @@
         /// <returns>Blob Uri</returns>
         public virtual async Task<string> Copy(string from, string target, string to)
         {
-            return await this.Copy(from, new Container(target, this.Account), to);
+            return await this.Copy(from, new Container(target, this.Account), to).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -554,7 +554,7 @@
 
             var source = this.GetBlockReference(from);
             var targetBlockBlob = target.GetBlockReference(to);
-            return await targetBlockBlob.StartCopyAsync(source);
+            return await targetBlockBlob.StartCopyAsync(source).ConfigureAwait(false);
         }
 
         /// <summary>

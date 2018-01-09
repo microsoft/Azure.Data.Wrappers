@@ -37,7 +37,7 @@
 
             do
             {
-                var segments = await client.ListTablesSegmentedAsync(token);
+                var segments = await client.ListTablesSegmentedAsync(token).ConfigureAwait(false);
                 names.AddRange(segments.Results.Select(s => s.Name));
                 token = segments.ContinuationToken;
             }
@@ -54,7 +54,7 @@
         {
             var tables = new List<ITableStorage>();
 
-            var names = await this.TableNames();
+            var names = await this.TableNames().ConfigureAwait(false);
             foreach (var name in names)
             {
                 tables.Add(new TableStorage(name, base.Account));
@@ -76,7 +76,7 @@
 
             do
             {
-                var segments = await client.ListContainersSegmentedAsync(token);
+                var segments = await client.ListContainersSegmentedAsync(token).ConfigureAwait(false);
                 names.AddRange(segments.Results.Select(s => s.Name));
                 token = segments.ContinuationToken;
             }
@@ -92,7 +92,7 @@
         public virtual async Task<IEnumerable<IContainer>> Containers()
         {
             var containers = new List<IContainer>();
-            var names = await this.ContainerNames();
+            var names = await this.ContainerNames().ConfigureAwait(false);
             foreach (var name in names)
             {
                 containers.Add(new Container(name, base.Account));
@@ -114,7 +114,7 @@
 
             do
             {
-                var segments = await client.ListQueuesSegmentedAsync(token);
+                var segments = await client.ListQueuesSegmentedAsync(token).ConfigureAwait(false);
                 names.AddRange(segments.Results.Select(s => s.Name));
                 token = segments.ContinuationToken;
             }
@@ -130,7 +130,7 @@
         public virtual async Task<IEnumerable<IStorageQueue>> Queues()
         {
             var queues = new List<IStorageQueue>();
-            var names = await this.QueueNames();
+            var names = await this.QueueNames().ConfigureAwait(false);
             foreach (var name in names)
             {
                 queues.Add(new StorageQueue(name, base.Account));
