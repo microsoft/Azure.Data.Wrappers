@@ -64,7 +64,7 @@
         /// <returns>Queued Item</returns>
         public virtual async Task<IQueued<T>> Poll()
         {
-            var msg = await this.queue.Get();
+            var msg = await this.queue.Get().ConfigureAwait(false);
             return null == msg ? null : new StorageQueuedMessage<T>(this.queue, msg);
         }
 
@@ -76,7 +76,7 @@
         {
             messageCount = 0 >= messageCount ? 5 : messageCount;
 
-            var msgs = await this.queue.GetMany(messageCount);
+            var msgs = await this.queue.GetMany(messageCount).ConfigureAwait(false);
             if (null == msgs || !msgs.Any())
             {
                 return null;

@@ -110,7 +110,7 @@
         /// <returns>Created</returns>
         public virtual async Task<bool> CreateIfNotExists()
         {
-            return await this.reference.CreateIfNotExistsAsync();
+            return await this.reference.CreateIfNotExistsAsync().ConfigureAwait(false);
         }
 
         /// <summary>
@@ -119,7 +119,7 @@
         /// <returns>Task</returns>
         public virtual async Task Delete()
         {
-            await this.reference.DeleteAsync();
+            await this.reference.DeleteAsync().ConfigureAwait(false);
         }
 
         /// <summary>
@@ -128,7 +128,7 @@
         /// <returns>Message</returns>
         public virtual async Task<CloudQueueMessage> Get()
         {
-            return await this.reference.GetMessageAsync(this.visibilityTimeout, null, null);
+            return await this.reference.GetMessageAsync(this.visibilityTimeout, null, null).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -137,7 +137,7 @@
         /// <returns>Message Count</returns>
         public virtual async Task<long?> ApproixmateMessageCount()
         {
-            await this.reference.FetchAttributesAsync();
+            await this.reference.FetchAttributesAsync().ConfigureAwait(false);
             return this.reference.ApproximateMessageCount;
         }
 
@@ -153,7 +153,7 @@
                 messageCount = 1;
             }
 
-            return await this.reference.GetMessagesAsync(messageCount, this.visibilityTimeout, null, null);
+            return await this.reference.GetMessagesAsync(messageCount, this.visibilityTimeout, null, null).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -162,7 +162,7 @@
         /// <returns>Message</returns>
         public virtual async Task<T> GetAsync<T>()
         {
-            var returned = await this.reference.GetMessageAsync(this.visibilityTimeout, null, null);
+            var returned = await this.reference.GetMessageAsync(this.visibilityTimeout, null, null).ConfigureAwait(false);
             return JsonConvert.DeserializeObject<T>(returned.AsString);
         }
 
@@ -179,7 +179,7 @@
                 messageCount = 1;
             }
 
-            var returned = await this.reference.GetMessagesAsync(messageCount, this.visibilityTimeout, null, null);
+            var returned = await this.reference.GetMessagesAsync(messageCount, this.visibilityTimeout, null, null).ConfigureAwait(false);
             return returned.Select(m => JsonConvert.DeserializeObject<T>(m.AsString));
         }
 
@@ -195,7 +195,7 @@
                 throw new ArgumentNullException(nameof(message));
             }
 
-            await this.reference.AddMessageAsync(message);
+            await this.reference.AddMessageAsync(message).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -205,7 +205,7 @@
         /// <returns>Task</returns>
         public virtual async Task Send(object obj)
         {
-            await this.SendAsync(obj);
+            await this.SendAsync(obj).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -222,11 +222,11 @@
 
             if (message is CloudQueueMessage)
             {
-                await this.Send(message as CloudQueueMessage);
+                await this.Send(message as CloudQueueMessage).ConfigureAwait(false);
             }
             else
             {
-                await this.Send(new CloudQueueMessage(JsonConvert.SerializeObject(message)));
+                await this.Send(new CloudQueueMessage(JsonConvert.SerializeObject(message))).ConfigureAwait(false);
             }
             
         }
@@ -243,7 +243,7 @@
                 throw new ArgumentNullException("message");
             }
 
-            await this.reference.DeleteMessageAsync(message);
+            await this.reference.DeleteMessageAsync(message).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -252,7 +252,7 @@
         /// <returns></returns>
         public virtual async Task ClearAsync()
         {
-            await this.reference.ClearAsync();
+            await this.reference.ClearAsync().ConfigureAwait(false);
         }
 
         /// <summary>
@@ -262,7 +262,7 @@
         /// <returns>Messages</returns>
         public virtual async Task<IEnumerable<CloudQueueMessage>> PeekAsync(int count = 1)
         {
-            return await this.reference.PeekMessagesAsync(count);
+            return await this.reference.PeekMessagesAsync(count).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -272,7 +272,7 @@
         /// <returns>Messages</returns>
         public virtual async Task<IEnumerable<T>> PeekAsync<T>(int count = 1)
         {
-            var returned = await this.reference.PeekMessagesAsync(count);
+            var returned = await this.reference.PeekMessagesAsync(count).ConfigureAwait(false);
             return returned.Select(m => JsonConvert.DeserializeObject<T>(m.AsString));
         }
         #endregion

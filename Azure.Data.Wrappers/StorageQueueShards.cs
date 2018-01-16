@@ -109,7 +109,7 @@
             var success = true;
             foreach (var q in this.queues)
             {
-                success &= await q.CreateIfNotExists();
+                success &= await q.CreateIfNotExists().ConfigureAwait(false);
             }
 
             return success;
@@ -123,7 +123,7 @@
         {
             foreach (var q in this.queues)
             {
-                await q.Delete();
+                await q.Delete().ConfigureAwait(false);
             }
         }
 
@@ -137,7 +137,7 @@
         {
             var index = this.Index(shardTarget);
             var q = this.queues.ElementAt(index);
-            await q.Send(obj);
+            await q.Send(obj).ConfigureAwait(false);
         }
 
         /// <summary>
