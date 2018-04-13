@@ -2,6 +2,7 @@
 {
     using Azure.Data.Wrappers;
     using Microsoft.WindowsAzure.Storage;
+    using Microsoft.WindowsAzure.Storage.RetryPolicies;
     using Microsoft.WindowsAzure.Storage.Table;
     using NUnit.Framework;
     using System;
@@ -761,7 +762,42 @@
                 Assert.IsTrue(exists);
             }
         }
+        private class TestRetryPolicy : IRetryPolicy
+        {
+            public IRetryPolicy CreateInstance()
+            {
+                throw new NotImplementedException();
+            }
 
+            public bool ShouldRetry(int currentRetryCount, int statusCode, Exception lastException, out TimeSpan retryInterval, OperationContext operationContext)
+            {
+                throw new NotImplementedException();
+            }
+        }
+        [Test]
+        public void QueryWithOptions()
+        {
+            TableRequestOptions options = new TableRequestOptions();
+            options.RetryPolicy = new TestRetryPolicy();
+
+            var table = 'a' + Guid.NewGuid().ToString().ToLowerInvariant().Replace('-', 'a');
+            ITableStorage storageWithOptions = new TableStorage(table, TestHelpers.DevConnectionString, options);
+
+            var random = new Random();
+            var count = random.Next(2, 25);
+            var entities = new List<IDictionary<string, object>>();
+            var partition = Guid.NewGuid().ToString();
+            for (var i = 0; i < count; i++)
+            {
+                var dic = new Dictionary<string, object>();
+                dic.Add(TableStorage.PartitionKey, partition);
+                dic.Add(TableStorage.RowKey, Guid.NewGuid().ToString());
+                dic.Add("Id", Guid.NewGuid());
+                entities.Add(dic);
+            }
+
+            Assert.That(() => storageWithOptions.Insert(entities), Throws.TypeOf<NotImplementedException>());
+        }
         [Test]
         public async Task QueryFunction()
         {
