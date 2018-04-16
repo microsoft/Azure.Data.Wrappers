@@ -4,6 +4,7 @@
     using Microsoft.WindowsAzure.Storage;
     using Microsoft.WindowsAzure.Storage.RetryPolicies;
     using Microsoft.WindowsAzure.Storage.Table;
+    using NSubstitute;
     using NUnit.Framework;
     using System;
     using System.Collections.Generic;
@@ -762,24 +763,16 @@
                 Assert.IsTrue(exists);
             }
         }
-        private class TestRetryPolicy : IRetryPolicy
-        {
-            public IRetryPolicy CreateInstance()
-            {
-                throw new NotImplementedException();
-            }
-
-            public bool ShouldRetry(int currentRetryCount, int statusCode, Exception lastException, out TimeSpan retryInterval, OperationContext operationContext)
-            {
-                throw new NotImplementedException();
-            }
-        }
         [Test]
         public void QueryWithOptions()
         {
-            TableRequestOptions options = new TableRequestOptions();
-            options.RetryPolicy = new TestRetryPolicy();
+            NoRetry noRetry = new NoRetry();
+            var retry = Substitute.For<IRetryPolicy>();
+            retry.CreateInstance().Returns(noRetry);
 
+            TableRequestOptions options = new TableRequestOptions();
+            options.RetryPolicy = retry;
+            
             var table = 'a' + Guid.NewGuid().ToString().ToLowerInvariant().Replace('-', 'a');
             ITableStorage storageWithOptions = new TableStorage(table, TestHelpers.DevConnectionString, options);
 
@@ -795,8 +788,8 @@
                 dic.Add("Id", Guid.NewGuid());
                 entities.Add(dic);
             }
-
-            Assert.That(() => storageWithOptions.Insert(entities), Throws.TypeOf<NotImplementedException>());
+            storageWithOptions.Insert(entities);
+            retry.Received().CreateInstance();
         }
         [Test]
         public async Task QueryFunction()
