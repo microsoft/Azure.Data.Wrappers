@@ -30,7 +30,7 @@ Added ConfigureAwait(false) to all awaited methods.  https://msdn.microsoft.com/
     <RepositoryUrl>https://github.com/Microsoft/Azure.Data.Wrappers</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <RootNamespace>Azure.Data.Wrappers</RootNamespace>
-    <Version>3.0.9</Version>
+    <Version>3.0.10</Version>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 

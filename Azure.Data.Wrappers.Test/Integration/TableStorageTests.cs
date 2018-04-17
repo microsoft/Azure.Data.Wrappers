@@ -2,7 +2,9 @@
 {
     using Azure.Data.Wrappers;
     using Microsoft.WindowsAzure.Storage;
+    using Microsoft.WindowsAzure.Storage.RetryPolicies;
     using Microsoft.WindowsAzure.Storage.Table;
+    using NSubstitute;
     using NUnit.Framework;
     using System;
     using System.Collections.Generic;
@@ -761,7 +763,34 @@
                 Assert.IsTrue(exists);
             }
         }
+        [Test]
+        public void QueryWithOptions()
+        {
+            NoRetry noRetry = new NoRetry();
+            var retry = Substitute.For<IRetryPolicy>();
+            retry.CreateInstance().Returns(noRetry);
 
+            TableRequestOptions options = new TableRequestOptions();
+            options.RetryPolicy = retry;
+            
+            var table = 'a' + Guid.NewGuid().ToString().ToLowerInvariant().Replace('-', 'a');
+            ITableStorage storageWithOptions = new TableStorage(table, TestHelpers.DevConnectionString, options);
+
+            var random = new Random();
+            var count = random.Next(2, 25);
+            var entities = new List<IDictionary<string, object>>();
+            var partition = Guid.NewGuid().ToString();
+            for (var i = 0; i < count; i++)
+            {
+                var dic = new Dictionary<string, object>();
+                dic.Add(TableStorage.PartitionKey, partition);
+                dic.Add(TableStorage.RowKey, Guid.NewGuid().ToString());
+                dic.Add("Id", Guid.NewGuid());
+                entities.Add(dic);
+            }
+            storageWithOptions.Insert(entities);
+            retry.Received().CreateInstance();
+        }
         [Test]
         public async Task QueryFunction()
         {

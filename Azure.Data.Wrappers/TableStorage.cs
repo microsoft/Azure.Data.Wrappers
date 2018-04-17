@@ -81,6 +81,37 @@
 
             this.reference = client.GetTableReference(tableName);
         }
+        /// <summary>
+        /// Table Storage
+        /// </summary>
+        /// <param name="tableName">Table Name</param>
+        /// <param name="connectionString">Connection String</param>
+        /// <param name="options">Default request options</param>
+        public TableStorage(string tableName, string connectionString, TableRequestOptions options)
+            : this(tableName, CloudStorageAccount.Parse(connectionString), options)
+        {
+        }
+        /// <summary>
+        /// Table Storage
+        /// </summary>
+        /// <param name="tableName">Table Name</param>
+        /// <param name="account">Storage Account</param>
+        /// <param name="options">Default request options</param>
+        public TableStorage(string tableName, CloudStorageAccount account, TableRequestOptions options)
+            : base(account)
+        {
+            if (string.IsNullOrWhiteSpace(tableName))
+            {
+                throw new ArgumentException("tableName");
+            }
+            if (options == null)
+                throw new ArgumentNullException("options");
+
+            this.client = base.Account.CreateCloudTableClient();
+            this.client.DefaultRequestOptions = options;
+
+            this.reference = client.GetTableReference(tableName);
+        }
         #endregion
 
         #region Properties

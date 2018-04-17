@@ -18,7 +18,16 @@
         {
             new TableStorage("TestTable", ConnectionString);
         }
-
+        [Test]
+        public void ConstructorWithOptions()
+        {
+            new TableStorage("TestTable", ConnectionString, new TableRequestOptions());
+        }
+        [Test]
+        public void ConstructorWithOptionsNull()
+        {
+            Assert.That(() => new TableStorage("TestTable", ConnectionString, null), Throws.TypeOf<ArgumentNullException>());
+        }
         [Test]
         public void IsITableStorage()
         {
