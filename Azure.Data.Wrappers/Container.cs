@@ -1,4 +1,4 @@
-﻿namespace Azure.Data.Wrappers
+namespace Azure.Data.Wrappers
 {
     using Microsoft.WindowsAzure.Storage;
     using Microsoft.WindowsAzure.Storage.Blob;
@@ -566,6 +566,105 @@
         public virtual string GetSharedAccessSignature(SharedAccessBlobPolicy policy, string groupPolicyIdentifier = null)
         {
             return string.IsNullOrEmpty(groupPolicyIdentifier) ? reference.GetSharedAccessSignature(policy) : reference.GetSharedAccessSignature(policy, groupPolicyIdentifier);
+        }
+
+        /// <summary>
+        /// Get Reference
+        /// </summary>
+        /// <param name="relativeAddress">Directory Name</param>
+        /// <returns>Cloud Block Directory</returns>
+        public virtual CloudBlobDirectory GetDirectoryReference(string relativeAddress)
+        {
+            if (string.IsNullOrWhiteSpace(relativeAddress))
+            {
+                throw new ArgumentException("blobName");
+            }
+
+            return reference.GetDirectoryReference(relativeAddress);
+        }
+
+        /// <summary>
+        /// Returns a shared access signature for the container..
+        /// </summary>
+        /// <param name="policy">the access policy for the shared access signature.</param>
+        /// <param name="groupPolicyIdentifier">A container-level access policy</param>
+        /// <returns>A shared access signature, as a URI.</returns>
+        public virtual string GetContainerSasUriWithPolicy(SharedAccessBlobPolicy policy, string groupPolicyIdentifier)
+        {
+            var sasContainerToken = GetSharedAccessSignature(policy, groupPolicyIdentifier);
+            return reference.Uri + sasContainerToken;
+        }
+
+        /// <summary>
+        /// Returns a shared access signature for a blob in the container.
+        /// </summary>
+        /// <param name="blobName">the name of the blob in the container.</param>
+        /// <param name="policy">The name of the shared access policy.</param>
+        /// <param name="groupPolicyIdentifier">A container-level access policy</param>
+        /// <returns>A shared access signature, as a URI</returns>
+        public virtual string GetBlobSasUriWithPolicy(string blobName, SharedAccessBlobPolicy policy, string groupPolicyIdentifier)
+        {
+            if (string.IsNullOrWhiteSpace(blobName))
+            {
+                throw new ArgumentException("blobName");
+            }
+
+            var blob = reference.GetBlockBlobReference(blobName);
+
+            //Generate the shared access signature on the blob.
+            var sasBlobToken = blob.GetSharedAccessSignature(null, groupPolicyIdentifier);
+
+            //Return the URI string for the container, including the SAS token.
+            return blob.Uri + sasBlobToken;
+        }
+
+        /// <summary>
+        /// Set Shared Access Policy
+        /// </summary>
+        /// <param name="policyName">The shared signature policy name</param>
+        /// <param name="minutesToExpire">The amount in time for the shared access signature to expire.</param>
+        /// <param name="policyPermissions">The shared access policy permissions</param>
+        /// <returns>Task</returns>
+        public virtual async Task SetSharedAccessPolicy(string policyName, double minutesToExpire, List<SharedAccessBlobPermissions> policyPermissions)
+        {
+            if (string.IsNullOrEmpty(policyName))
+            {
+                throw new ArgumentException("policyName");
+            }
+
+            if (minutesToExpire <= 0)
+            {
+                throw new ArgumentException("minutesToExpire must be greater than 0");
+            }
+
+            await ClearContainerPermissions();
+
+            var permissions = await reference.GetPermissionsAsync().ConfigureAwait(false);
+
+            var sharedPolicy = new SharedAccessBlobPolicy
+            {
+                SharedAccessExpiryTime = DateTimeOffset.Now.AddMinutes(minutesToExpire)
+            };
+
+            // Loop through list of inputted permissions and add them to the policy.
+            foreach (var perm in policyPermissions)
+            {
+                sharedPolicy.Permissions = sharedPolicy.Permissions | perm;
+            }
+
+            permissions.SharedAccessPolicies.Add(policyName, sharedPolicy);
+            await reference.SetPermissionsAsync(permissions).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Clears the shared access policies on the container.
+        /// </summary>
+        /// <returns>Task</returns>
+        private async Task ClearContainerPermissions()
+        {
+            var perms = await reference.GetPermissionsAsync().ConfigureAwait(false);
+            perms.SharedAccessPolicies.Clear();
+            await reference.SetPermissionsAsync(perms).ConfigureAwait(false);
         }
 
         #endregion
