@@ -32,7 +32,15 @@ Added ConfigureAwait(false) to all awaited methods.  https://msdn.microsoft.com/
     <RootNamespace>Azure.Data.Wrappers</RootNamespace>
     <Version>3.0.10</Version>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+  </ItemGroup>
+
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netcoreapp1.0|AnyCPU'">
     <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
